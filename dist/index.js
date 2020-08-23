@@ -1605,7 +1605,9 @@ Toolkit.run(
       // We only have five lines to work with
       .slice(0, MAX_LINES)
       // Call the serializer to construct a string
-      .map((item) => serializers[item.type](item));
+      .map((item) => serializers[item.type](item))
+      // Filter falsy (empty) items
+      .filter((item) => item);
 
     const readmeContent = fs.readFileSync("./README.md", "utf-8").split("\n");
 
