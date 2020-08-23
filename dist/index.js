@@ -1564,7 +1564,7 @@ const serializers = {
   },
   ForkEvent: (item) => {
     return `🍴 Forked ${toUrlFormat(item.repo.name)} in ${toUrlFormat(item.payload.forkee.name)}`
-  }
+  },
   IssueCommentEvent: (item) => {
     return `🗣 Commented on ${toUrlFormat(item)} in ${toUrlFormat(
       item.repo.name
