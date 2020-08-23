@@ -1563,7 +1563,6 @@ const serializers = {
     if (item.payload.ref_type === "branch" && item.payload.ref !== "master") return `📂 Created branch ${toUrlFormat(item.repo.name, item.payload.ref)} in ${toUrlFormat(item.repo.name)}`;
   },
   ForkEvent: (item) => {
-    tools.log.debug(item.forkee);
     return `🍴 Forked ${toUrlFormat(item.repo.name)} in ${toUrlFormat(item.payload.forkee.name)}`
   },
   IssueCommentEvent: (item) => {
@@ -1601,7 +1600,7 @@ Toolkit.run(
     tools.log.debug(
       `Activity for ${GH_USERNAME}, ${events.data.length} events found.`
     );
-    tools.log.debug(events.data);
+    // tools.log.debug(events.data);
     for (const data of events.data) {
         if (["ForkEvent", "WatchEvent"].includes(data.type)) tools.log.debug(data.payload);
     }
