@@ -1563,7 +1563,7 @@ const serializers = {
     if (item.payload.ref_type === "branch" && item.payload.ref !== "master") return `📂 Created branch ${toUrlFormat(item.repo.name, item.payload.ref)} in ${toUrlFormat(item.repo.name)}`;
   },
   ForkEvent: (item) => {
-    return ` Forked ${toUrlFormat(item.repo.name)} in ${toUrlFormat(item.payload.forkee.full_name)}`
+    return `<img alt="🍴" src="https://github.com/cheesits456/github-activity-readme/raw/master/icons/fork.svg" height="18"> Forked ${toUrlFormat(item.repo.name)} to ${toUrlFormat(item.payload.forkee.full_name)}`
   },
   IssueCommentEvent: (item) => {
     return `🗣 Commented on ${toUrlFormat(item)} in ${toUrlFormat(
