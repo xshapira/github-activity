@@ -1479,7 +1479,7 @@ const path = __webpack_require__(622);
 const { spawn } = __webpack_require__(129);
 const { Toolkit } = __webpack_require__(461);
 
-const MAX_LINES = 5;
+const MAX_LINES = 100;
 
 /**
  * Returns the sentence case representation
