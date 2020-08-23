@@ -1499,13 +1499,13 @@ const urlPrefix = "https://github.com/";
  * @returns {String}
  */
 
-const toUrlFormat = (item) => {
+const toUrlFormat = (item, branch) => {
   if (typeof item === "object") {
     return Object.hasOwnProperty.call(item.payload, "issue")
       ? `[#${item.payload.issue.number}](${urlPrefix}/${item.repo.name}/issues/${item.payload.issue.number})`
       : `[#${item.payload.pull_request.number}](${urlPrefix}/${item.repo.name}/pull/${item.payload.pull_request.number})`;
   }
-  return `[${item}](${urlPrefix}/${item})`;
+  return `[${branch || item}](${urlPrefix}/${item}${branch ? `/tree/${branch}` : ""})`;
 };
 
 /**
@@ -1575,6 +1575,13 @@ const serializers = {
       : `${emoji} ${capitalize(item.payload.action)}`;
     return `${line} PR ${toUrlFormat(item)} in ${toUrlFormat(item.repo.name)}`;
   },
+  CreateEvent: (item) => {
+    if (item.payload.ref_type === "repository") return `🗂 Created repository ${toUrlFormat(item.repo.name)}`;
+    if (item.payload.ref_type === "branch" && item.payload.ref !== "master") return `📂 Created branch ${toUrlFormat(item.repo.name, item.payload.ref)} in ${toUrlFormat(item.repo.name)}`;
+  },
+  PushEvent: (item) => {
+    return `📝 Made **${item.payload.size}** commit${item.payload.size === 1 ? "" : "s"} in ${toUrlFormat(item.repo.name)}`;
+  }
 };
 
 Toolkit.run(
@@ -1583,7 +1590,7 @@ Toolkit.run(
 
     // Get the user's public events
     tools.log.debug(`Getting activity for ${GH_USERNAME}`);
-    const events = await tools.github.activity.listPublicEventsForUser({
+    const events = await tools.github.activity.listEventsForUser({
       username: GH_USERNAME,
       per_page: 100,
     });
