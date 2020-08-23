@@ -1594,7 +1594,7 @@ Toolkit.run(
 
     // Get the user's public events
     tools.log.debug(`Getting activity for ${GH_USERNAME}`);
-    const events = await tools.github.activity.listEventsForUser({
+    const events = await tools.github.activity.listEventsForAuthenticatedUser({
       username: GH_USERNAME,
       per_page: 100,
     });
@@ -1602,6 +1602,9 @@ Toolkit.run(
       `Activity for ${GH_USERNAME}, ${events.data.length} events found.`
     );
     tools.log.debug(events.data);
+    for (const data of events.data) {
+        if (["ForkEvent", "WatchEvent"].includes(data.type)) tools.log.debug(data.payload);
+    }
 
     const content = events.data
       // Filter out any boring activity
