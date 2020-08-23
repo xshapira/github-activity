@@ -1558,6 +1558,13 @@ const commitFile = async () => {
 };
 
 const serializers = {
+  CreateEvent: (item) => {
+    if (item.payload.ref_type === "repository") return `🗂 Created repository ${toUrlFormat(item.repo.name)}`;
+    if (item.payload.ref_type === "branch" && item.payload.ref !== "master") return `📂 Created branch ${toUrlFormat(item.repo.name, item.payload.ref)} in ${toUrlFormat(item.repo.name)}`;
+  },
+  ForkEvent: (item) => {
+    return `🍴 Forked ${toUrlFormat(item.repo.name)} in ${toUrlFormat(item.payload.forkee.name)}`
+  }
   IssueCommentEvent: (item) => {
     return `🗣 Commented on ${toUrlFormat(item)} in ${toUrlFormat(
       item.repo.name
@@ -1575,12 +1582,8 @@ const serializers = {
       : `${emoji} ${capitalize(item.payload.action)}`;
     return `${line} PR ${toUrlFormat(item)} in ${toUrlFormat(item.repo.name)}`;
   },
-  CreateEvent: (item) => {
-    if (item.payload.ref_type === "repository") return `🗂 Created repository ${toUrlFormat(item.repo.name)}`;
-    if (item.payload.ref_type === "branch" && item.payload.ref !== "master") return `📂 Created branch ${toUrlFormat(item.repo.name, item.payload.ref)} in ${toUrlFormat(item.repo.name)}`;
-  },
   PushEvent: (item) => {
-    return `📝 Made **${item.payload.size}** commit${item.payload.size === 1 ? "" : "s"} in ${toUrlFormat(item.repo.name)}`;
+    return `📝 Made ${item.payload.size} commit${item.payload.size === 1 ? "" : "s"} in ${toUrlFormat(item.repo.name)}`;
   }
 };
 
