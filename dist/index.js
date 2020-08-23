@@ -1505,7 +1505,7 @@ const toUrlFormat = (item, branch) => {
       ? `[#${item.payload.issue.number}](${urlPrefix}/${item.repo.name}/issues/${item.payload.issue.number})`
       : `[#${item.payload.pull_request.number}](${urlPrefix}/${item.repo.name}/pull/${item.payload.pull_request.number})`;
   }
-  return `[${branch || item}](${urlPrefix}/${item}${branch ? `/tree/${branch}` : ""})`;
+  return `[${branch || item}](${urlPrefix}${item}${branch ? `/tree/${branch}` : ""})`;
 };
 
 /**
