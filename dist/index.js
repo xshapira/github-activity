@@ -1605,7 +1605,9 @@ Toolkit.run(
       if (["ForkEvent", "WatchEvent"].includes(data.type)) tools.log.debug(data.payload);
     }
 
-    events.data = events.data.reduce((acc, cur) => {
+    let arr = Array.from(events.data);
+
+    events.data = arr.reduce((acc, cur) => {
       if (acc.length && cur.type === "PushEvent" && acc[acc.length - 1].type === "PushEvent" && cur.repo.name === acc[acc.length - 1].name) {
         acc[acc.length - 1].payload.size += cur.payload.size;
         return acc;
