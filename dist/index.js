@@ -1584,6 +1584,9 @@ const serializers = {
   },
   PushEvent: (item) => {
     return `<img alt="📝" src="https://github.com/cheesits456/github-activity-readme/raw/master/icons/commit.svg" align="top" height="18"> Made ${item.payload.size} commit${item.payload.size === 1 ? "" : "s"} in ${toUrlFormat(item.repo.name)}`;
+  },
+  WatchEvent: (item) => {
+    return `<img alt="⭐" src="https://github.com/cheesits456/github-activity-readme/raw/master/icons/star.svg" align="top" height="18"> Starred ${toUrlFormat(item.repo.name)}`
   }
 };
 
@@ -1602,7 +1605,7 @@ Toolkit.run(
     );
     // tools.log.debug(events.data);
     for (const data of events.data) {
-      if (["ForkEvent", "WatchEvent"].includes(data.type)) tools.log.debug(data.payload);
+      if (!["CreateEvent", "ForkEvent", "IssueCommentEvent", "IssuesEvent", "PullRequestEvent", "PushEvent", "WatchEvent"].includes(data.type)) tools.log.debug(data);
     }
 
     let last = array => array[array.length-1];
