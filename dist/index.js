@@ -1656,15 +1656,15 @@ Toolkit.run(
       // Add one since the content needs to be inserted just after the initial comment
       startIdx++;
       content.forEach((line, idx) =>
-        readmeContent.splice(startIdx + idx, 0, line)
+        readmeContent.splice(startIdx + idx, 0, `${idx === 10 ? "\n\n<details><summary>Show More</summary>\n\n" : ""}${line}  ${idx === content.length - 1 ? "\n\n</details>\n<!--END_SECTION:activity-->" : "" }`)
       );
 
-      // Append <!--END_SECTION:activity--> comment
-      readmeContent.splice(
-        startIdx + content.length,
-        0,
-        "<!--END_SECTION:activity-->"
-      );
+      // // Append <!--END_SECTION:activity--> comment
+      // readmeContent.splice(
+      //   startIdx + content.length,
+      //   0,
+      //   "<!--END_SECTION:activity-->"
+      // );
 
       // Update README
       fs.writeFileSync("./README.md", readmeContent.join("\n"));
@@ -1679,55 +1679,55 @@ Toolkit.run(
       tools.exit.success("Wrote to README");
     }
 
-    const oldContent = readmeContent.slice(startIdx + 1, endIdx).join("\n");
-    const newContent = content
-      .map((line, idx) => `${idx + 1}. ${line}`)
-      .join("\n");
+    // const oldContent = readmeContent.slice(startIdx + 1, endIdx).join("\n");
+    // const newContent = content
+    //   .map((line, idx) => `${idx + 1}. ${line}`)
+    //   .join("\n");
 
-    if (oldContent.trim() === newContent.trim())
-      tools.exit.success("No changes detected");
+    // if (oldContent.trim() === newContent.trim())
+    //   tools.exit.success("No changes detected");
 
-    startIdx++;
+    // startIdx++;
 
-    // Recent GitHub Activity content between the comments
-    const readmeActivitySection = readmeContent.slice(startIdx, endIdx);
-    if (!readmeActivitySection.length) {
-      content.some((line, idx) => {
-        // User doesn't have 5 public events
-        if (!line) {
-          return true;
-        }
-        readmeContent.splice(startIdx + idx, 0, `${idx + 1}. ${line}`);
-      });
-      tools.log.success("Wrote to README");
-    } else {
-      // It is likely that a newline is inserted after the <!--START_SECTION:activity--> comment (code formatter)
-      let count = 0;
+    // // Recent GitHub Activity content between the comments
+    // const readmeActivitySection = readmeContent.slice(startIdx, endIdx);
+    // if (!readmeActivitySection.length) {
+    //   content.some((line, idx) => {
+    //     // User doesn't have 5 public events
+    //     if (!line) {
+    //       return true;
+    //     }
+    //     readmeContent.splice(startIdx + idx, 0, `${idx + 1}. ${line}`);
+    //   });
+    //   tools.log.success("Wrote to README");
+    // } else {
+    //   // It is likely that a newline is inserted after the <!--START_SECTION:activity--> comment (code formatter)
+    //   let count = 0;
 
-      readmeActivitySection.some((line, idx) => {
-        // User doesn't have 5 public events
-        if (!content[count]) {
-          return true;
-        }
-        if (line !== "") {
-          readmeContent[startIdx + idx] = `${count + 1}. ${content[count]}`;
-          count++;
-        }
-      });
-      tools.log.success("Updated README with the recent activity");
-    }
+    //   readmeActivitySection.some((line, idx) => {
+    //     // User doesn't have 5 public events
+    //     if (!content[count]) {
+    //       return true;
+    //     }
+    //     if (line !== "") {
+    //       readmeContent[startIdx + idx] = `${count + 1}. ${content[count]}`;
+    //       count++;
+    //     }
+    //   });
+    //   tools.log.success("Updated README with the recent activity");
+    // }
 
-    // Update README
-    fs.writeFileSync("./README.md", readmeContent.join("\n"));
+    // // Update README
+    // fs.writeFileSync("./README.md", readmeContent.join("\n"));
 
-    // Commit to the remote repository
-    try {
-      await commitFile();
-    } catch (err) {
-      tools.log.debug("Something went wrong");
-      return tools.exit.failure(err);
-    }
-    tools.exit.success("Pushed to remote repository");
+    // // Commit to the remote repository
+    // try {
+    //   await commitFile();
+    // } catch (err) {
+    //   tools.log.debug("Something went wrong");
+    //   return tools.exit.failure(err);
+    // }
+    // tools.exit.success("Pushed to remote repository");
   },
   {
     event: ["schedule", "workflow_dispatch"],
