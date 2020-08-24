@@ -1542,7 +1542,10 @@ module.exports = /******/ (function (modules, runtime) {
                         per_page: 100,
                     });
                     tools.log.debug(`Activity for ${GH_USERNAME}, ${events.data.length} events found.`);
-                    tools.log.debug(events.data.map(data => data.type));
+
+                    for (const data of events.data) {
+                        if (["ReleaseEvent", "DeleteEvent"].includes(data.type)) tools.log.debug(data);
+                    }
 
                     let last = array => array[array.length - 1];
 
