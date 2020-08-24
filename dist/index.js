@@ -1559,31 +1559,31 @@ const commitFile = async () => {
 
 const serializers = {
   CreateEvent: (item) => {
-    if (item.payload.ref_type === "repository") return `🗂 Created repository ${toUrlFormat(item.repo.name)}`;
-    if (item.payload.ref_type === "branch" && item.payload.ref !== "master") return `📂 Created branch ${toUrlFormat(item.repo.name, item.payload.ref)} in ${toUrlFormat(item.repo.name)}`;
+    if (item.payload.ref_type === "repository") return `<img alt="➕" src="https://github.com/cheesits456/github-activity-readme/raw/master/icons/create-repo.svg" align="top" height="18"> Created repository ${toUrlFormat(item.repo.name)}`;
+    if (item.payload.ref_type === "branch" && item.payload.ref !== "master") return `<img alt="📂" src="https://github.com/cheesits456/github-activity-readme/raw/master/icons/create-branch.svg" align="top" height="18"> Created branch ${toUrlFormat(item.repo.name, item.payload.ref)} in ${toUrlFormat(item.repo.name)}`;
   },
   ForkEvent: (item) => {
-    return `<img alt="🍴" src="https://github.com/cheesits456/github-activity-readme/raw/master/icons/fork.svg" height="18"> Forked ${toUrlFormat(item.repo.name)} to ${toUrlFormat(item.payload.forkee.full_name)}`
+    return `<img alt="🍴" src="https://github.com/cheesits456/github-activity-readme/raw/master/icons/fork.svg" align="top" height="18"> Forked ${toUrlFormat(item.repo.name)} to ${toUrlFormat(item.payload.forkee.full_name)}`
   },
   IssueCommentEvent: (item) => {
-    return `🗣 Commented on ${toUrlFormat(item)} in ${toUrlFormat(
+    return `<img alt="🗣" src="https://github.com/cheesits456/github-activity-readme/raw/master/icons/comment.svg" align="top" height="18"> Commented on ${toUrlFormat(item)} in ${toUrlFormat(
       item.repo.name
     )}`;
   },
   IssuesEvent: (item) => {
-    return `❗️ ${capitalize(item.payload.action)} issue ${toUrlFormat(
+    return `<img alt="❗️" src="https://github.com/cheesits456/github-activity-readme/raw/master/icons/issue.svg" align="top" height="18"> ${capitalize(item.payload.action)} issue ${toUrlFormat(
       item
     )} in ${toUrlFormat(item.repo.name)}`;
   },
   PullRequestEvent: (item) => {
-    const emoji = item.payload.action === "opened" ? "💪" : "❌";
+    const emoji = item.payload.action === "opened" ? '<img alt="✅" src="https://github.com/cheesits456/github-activity-readme/raw/master/icons/pr-open.svg" align="top" height="18">' : '<img alt="❌" src="https://github.com/cheesits456/github-activity-readme/raw/master/icons/pr-close.svg" align="top" height="18">';
     const line = item.payload.pull_request.merged
-      ? "🎉 Merged"
+      ? '<img alt="🎉" src="https://github.com/cheesits456/github-activity-readme/raw/master/icons/merge.svg" align="top" height="18"> Merged'
       : `${emoji} ${capitalize(item.payload.action)}`;
     return `${line} PR ${toUrlFormat(item)} in ${toUrlFormat(item.repo.name)}`;
   },
   PushEvent: (item) => {
-    return `📝 Made ${item.payload.size} commit${item.payload.size === 1 ? "" : "s"} in ${toUrlFormat(item.repo.name)}`;
+    return `<img alt="📝" src="https://github.com/cheesits456/github-activity-readme/raw/master/icons/commit.svg" align="top" height="18"> Made ${item.payload.size} commit${item.payload.size === 1 ? "" : "s"} in ${toUrlFormat(item.repo.name)}`;
   }
 };
 
@@ -1602,8 +1602,17 @@ Toolkit.run(
     );
     // tools.log.debug(events.data);
     for (const data of events.data) {
-        if (["ForkEvent", "WatchEvent"].includes(data.type)) tools.log.debug(data.payload);
+      if (["ForkEvent", "WatchEvent"].includes(data.type)) tools.log.debug(data.payload);
     }
+
+    data = data.reduce((acc, cur) => {
+      if (cur.type === "PushEvent" && acc[acc.length - 1]?.type === "PushEvent" && cur.repo.name === acc[acc.length - 1]?.name) {
+        acc[acc.length - 1].payload.size += cur.payload.size;
+      } else {
+        acc.push(cur);
+      }
+      return;
+    }, []);
 
     const content = events.data
       // Filter out any boring activity
