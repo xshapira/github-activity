@@ -1598,7 +1598,7 @@ Toolkit.run(
     tools.log.debug(`Getting activity for ${GH_USERNAME}`);
     const events = await tools.github.activity.listEventsForAuthenticatedUser({
       username: GH_USERNAME,
-      per_page: 100,
+      per_page: 1000,
     });
     tools.log.debug(
       `Activity for ${GH_USERNAME}, ${events.data.length} events found.`
