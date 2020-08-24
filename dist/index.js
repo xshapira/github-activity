@@ -1605,19 +1605,14 @@ Toolkit.run(
       if (["ForkEvent", "WatchEvent"].includes(data.type)) tools.log.debug(data.payload);
     }
 
-    let arr = Array.from(events.data);
+    let arr = [];
 
-    events.data = arr.reduce((acc, cur) => {
-      if (acc.length && cur.type === "PushEvent" && acc[acc.length - 1].type === "PushEvent" && cur.repo.name === acc[acc.length - 1].name) {
-        acc[acc.length - 1].payload.size += cur.payload.size;
-        return acc;
-      } else {
-        acc.push(cur);
-        return acc
-      }
-    }, []);
+    for (const data of events.data) {
+      if (arr.length && data.type === "PushEvent" && last(arr).type === "PushEvent" && data.repo.name === last(arr).repo.name) arr[arr.length-1].payload.size += data.payload.size;
+      else arr.push(data)
+    }
 
-    const content = events.data
+    const content = arr
       // Filter out any boring activity
       .filter((event) => serializers.hasOwnProperty(event.type))
       // We only have five lines to work with
