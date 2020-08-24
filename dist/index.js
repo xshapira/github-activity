@@ -1559,34 +1559,34 @@ const commitFile = async () => {
 
 const serializers = {
   CreateEvent: (item) => {
-    if (item.payload.ref_type === "repository") return `<img alt="➕" src="https://github.com/cheesits456/github-activity-readme/raw/master/icons/create-repo.svg" align="top" height="18"> Created repository ${toUrlFormat(item.repo.name)}`;
-    if (item.payload.ref_type === "branch" && item.payload.ref !== "master") return `<img alt="📂" src="https://github.com/cheesits456/github-activity-readme/raw/master/icons/create-branch.svg" align="top" height="18"> Created branch ${toUrlFormat(item.repo.name, item.payload.ref)} in ${toUrlFormat(item.repo.name)}`;
+    if (item.payload.ref_type === "repository") return `<img alt="➕" src="https://github.com/cheesits456/github-activity-readme/raw/master/icons/create-repo.png" align="top" height="18"> Created repository ${toUrlFormat(item.repo.name)}`;
+    if (item.payload.ref_type === "branch" && item.payload.ref !== "master") return `<img alt="📂" src="https://github.com/cheesits456/github-activity-readme/raw/master/icons/create-branch.png" align="top" height="18"> Created branch ${toUrlFormat(item.repo.name, item.payload.ref)} in ${toUrlFormat(item.repo.name)}`;
   },
   ForkEvent: (item) => {
-    return `<img alt="🍴" src="https://github.com/cheesits456/github-activity-readme/raw/master/icons/fork.svg" align="top" height="18"> Forked ${toUrlFormat(item.repo.name)} to ${toUrlFormat(item.payload.forkee.full_name)}`
+    return `<img alt="🍴" src="https://github.com/cheesits456/github-activity-readme/raw/master/icons/fork.png" align="top" height="18"> Forked ${toUrlFormat(item.repo.name)} to ${toUrlFormat(item.payload.forkee.full_name)}`
   },
   IssueCommentEvent: (item) => {
-    return `<img alt="🗣" src="https://github.com/cheesits456/github-activity-readme/raw/master/icons/comment.svg" align="top" height="18"> Commented on ${toUrlFormat(item)} in ${toUrlFormat(
+    return `<img alt="🗣" src="https://github.com/cheesits456/github-activity-readme/raw/master/icons/comment.png" align="top" height="18"> Commented on ${toUrlFormat(item)} in ${toUrlFormat(
       item.repo.name
     )}`;
   },
   IssuesEvent: (item) => {
-    return `<img alt="❗️" src="https://github.com/cheesits456/github-activity-readme/raw/master/icons/issue.svg" align="top" height="18"> ${capitalize(item.payload.action)} issue ${toUrlFormat(
+    return `<img alt="❗️" src="https://github.com/cheesits456/github-activity-readme/raw/master/icons/issue.png" align="top" height="18"> ${capitalize(item.payload.action)} issue ${toUrlFormat(
       item
     )} in ${toUrlFormat(item.repo.name)}`;
   },
   PullRequestEvent: (item) => {
-    const emoji = item.payload.action === "opened" ? '<img alt="✅" src="https://github.com/cheesits456/github-activity-readme/raw/master/icons/pr-open.svg" align="top" height="18">' : '<img alt="❌" src="https://github.com/cheesits456/github-activity-readme/raw/master/icons/pr-close.svg" align="top" height="18">';
+    const emoji = item.payload.action === "opened" ? '<img alt="✅" src="https://github.com/cheesits456/github-activity-readme/raw/master/icons/pr-open.png" align="top" height="18">' : '<img alt="❌" src="https://github.com/cheesits456/github-activity-readme/raw/master/icons/pr-close.png" align="top" height="18">';
     const line = item.payload.pull_request.merged
-      ? '<img alt="🎉" src="https://github.com/cheesits456/github-activity-readme/raw/master/icons/merge.svg" align="top" height="18"> Merged'
+      ? '<img alt="🎉" src="https://github.com/cheesits456/github-activity-readme/raw/master/icons/merge.png" align="top" height="18"> Merged'
       : `${emoji} ${capitalize(item.payload.action)}`;
     return `${line} PR ${toUrlFormat(item)} in ${toUrlFormat(item.repo.name)}`;
   },
   PushEvent: (item) => {
-    return `<img alt="📝" src="https://github.com/cheesits456/github-activity-readme/raw/master/icons/commit.svg" align="top" height="18"> Made ${item.payload.size} commit${item.payload.size === 1 ? "" : "s"} in ${toUrlFormat(item.repo.name)}`;
+    return `<img alt="📝" src="https://github.com/cheesits456/github-activity-readme/raw/master/icons/commit.png" align="top" height="18"> Made ${item.payload.size} commit${item.payload.size === 1 ? "" : "s"} in ${toUrlFormat(item.repo.name)}`;
   },
   WatchEvent: (item) => {
-    return `<img alt="⭐" src="https://github.com/cheesits456/github-activity-readme/raw/master/icons/star.svg" align="top" height="18"> Starred ${toUrlFormat(item.repo.name)}`
+    return `<img alt="⭐" src="https://github.com/cheesits456/github-activity-readme/raw/master/icons/star.png" align="top" height="18"> Starred ${toUrlFormat(item.repo.name)}`
   }
 };
 
