@@ -1606,12 +1606,13 @@ Toolkit.run(
     }
 
     data = data.reduce((acc, cur) => {
-      if (cur.type === "PushEvent" && acc[acc.length - 1]?.type === "PushEvent" && cur.repo.name === acc[acc.length - 1]?.name) {
+      if (acc.length && cur.type === "PushEvent" && acc[acc.length - 1].type === "PushEvent" && cur.repo.name === acc[acc.length - 1].name) {
         acc[acc.length - 1].payload.size += cur.payload.size;
+        return acc;
       } else {
         acc.push(cur);
+        return acc
       }
-      return;
     }, []);
 
     const content = events.data
