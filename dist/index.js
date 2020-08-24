@@ -1622,6 +1622,8 @@ Toolkit.run(
       .slice(0, MAX_LINES)
       // Call the serializer to construct a string
       .map((item) => `${timestamper(item)} ${serializers[item.type](item)}`);
+      // Filter out undefined lines
+      .filter((item) => !item.match(/^`\[\d{1,2}\/\d{1,2} \d{1,2}:\d{2}]` undefined  $/))
 
     const readmeContent = fs.readFileSync("./README.md", "utf-8").split("\n");
 
@@ -1656,7 +1658,7 @@ Toolkit.run(
       // Add one since the content needs to be inserted just after the initial comment
       startIdx++;
       content.forEach((line, idx) =>
-        readmeContent.splice(startIdx + idx, 0, `${idx === 10 ? "\n\n<details><summary>Show More</summary>\n\n" : ""}${line}  ${idx === content.length - 1 ? "\n\n</details>\n<!--END_SECTION:activity-->" : "" }`)
+        readmeContent.splice(startIdx + idx, 0, `${idx === 10 ? "\n<details><summary>Show More</summary>\n\n" : ""}${line}  ${idx === content.length - 1 ? "\n\n</details>\n<!--END_SECTION:activity-->" : "" }`)
       );
 
       // // Append <!--END_SECTION:activity--> comment
