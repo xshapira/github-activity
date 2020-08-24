@@ -1474,6 +1474,11 @@ module.exports = (function (modules, runtime) {
 						item.payload.size
 					} commit${item.payload.size === 1 ? "" : "s"} in ${toUrlFormat(item.repo.name)}`;
 				},
+				ReleaseEvent: item => {
+					return `<img alt="🏷" src="https://github.com/cheesits456/github-activity-readme/raw/master/icons/release.png" align="top" height="18"> Released [${
+						item.payload.release.tag_name
+					}](${item.payload.release.html_url}) in ${toUrlFormat(item.repo.name)}`;
+				},
 				WatchEvent: item => {
 					return `<img alt="⭐" src="https://github.com/cheesits456/github-activity-readme/raw/master/icons/star.png" align="top" height="18"> Starred ${toUrlFormat(
 						item.repo.name
