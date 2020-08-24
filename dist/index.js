@@ -1509,7 +1509,7 @@ module.exports = (function (modules, runtime) {
 						// Filter out any boring activity
 						.filter(event => {
 							let r = serializers.hasOwnProperty(event.type);
-							if (!r) tools.log.debug(data);
+							if (!r) tools.log.debug(event);
 							return r;
 						})
 						// We only have five lines to work with
