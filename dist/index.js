@@ -1590,6 +1590,8 @@ const serializers = {
   }
 };
 
+const timestamper = (item) => `\`[${item.created_at.split("T")[0].replace(/-/g, "/")} ${item.created_at.split("T")[1].split(":").slice(0,2).join(":")} UTC±0]\``;
+
 Toolkit.run(
   async (tools) => {
     const GH_USERNAME = core.getInput("USERNAME");
@@ -1598,22 +1600,18 @@ Toolkit.run(
     tools.log.debug(`Getting activity for ${GH_USERNAME}`);
     const events = await tools.github.activity.listEventsForAuthenticatedUser({
       username: GH_USERNAME,
-      per_page: 1000,
+      per_page: 100,
     });
     tools.log.debug(
       `Activity for ${GH_USERNAME}, ${events.data.length} events found.`
     );
-    // tools.log.debug(events.data);
-    for (const data of events.data) {
-      if (!["CreateEvent", "ForkEvent", "IssueCommentEvent", "IssuesEvent", "PullRequestEvent", "PushEvent", "WatchEvent"].includes(data.type)) tools.log.debug(data);
-    }
 
-    let last = array => array[array.length-1];
+    let last = array => array[array.length - 1];
 
     let arr = [];
 
     for (const data of events.data) {
-      if (arr.length && data.type === "PushEvent" && last(arr).type === "PushEvent" && data.repo.name === last(arr).repo.name) arr[arr.length-1].payload.size += data.payload.size;
+      if (arr.length && data.type === "PushEvent" && last(arr).type === "PushEvent" && data.repo.name === last(arr).repo.name) arr[arr.length - 1].payload.size += data.payload.size;
       else arr.push(data)
     }
 
@@ -1623,9 +1621,7 @@ Toolkit.run(
       // We only have five lines to work with
       .slice(0, MAX_LINES)
       // Call the serializer to construct a string
-      .map((item) => serializers[item.type](item))
-      // Filter falsy (empty) items
-      .filter((item) => item);
+      .map((item) => `${timestamper(item)}\t${serializers[item.type](item)}`);
 
     const readmeContent = fs.readFileSync("./README.md", "utf-8").split("\n");
 
@@ -1654,11 +1650,13 @@ Toolkit.run(
       tools.log.info("Found less than 5 activities");
     }
 
-    if (startIdx !== -1 && endIdx === -1) {
+    content.splice(startIdx + 1, endIdx - startIdx);
+
+    if (startIdx !== -1) {
       // Add one since the content needs to be inserted just after the initial comment
       startIdx++;
       content.forEach((line, idx) =>
-        readmeContent.splice(startIdx + idx, 0, `${idx + 1}. ${line}`)
+        readmeContent.splice(startIdx + idx, 0, line)
       );
 
       // Append <!--END_SECTION:activity--> comment
