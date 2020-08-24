@@ -1623,7 +1623,7 @@ Toolkit.run(
       // Call the serializer to construct a string
       .map((item) => `${timestamper(item)} ${serializers[item.type](item)}`)
       // Filter out undefined lines
-      .filter((item) => !item.match(/^`\[\d{1,2}\/\d{1,2} \d{1,2}:\d{2}]` undefined  $/));
+      .filter((item) => !item.match(/^`\[\d{1,2}\/\d{1,2} \d{1,2}:\d{2}]` undefined$/));
 
     const readmeContent = fs.readFileSync("./README.md", "utf-8").split("\n");
 
