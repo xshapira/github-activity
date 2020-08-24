@@ -1590,7 +1590,7 @@ const serializers = {
   }
 };
 
-const timestamper = (item) => `\`[${item.created_at.split("T")[0].replace(/-/g, "/")} ${item.created_at.split("T")[1].split(":").slice(0,2).join(":")} UTC±0]\``;
+const timestamper = (item) => `\`[${item.created_at.split("T")[0].split("-").slice(1,3).join("/")} ${item.created_at.split("T")[1].split(":").slice(0,2).join(":")}]\``;
 
 Toolkit.run(
   async (tools) => {
@@ -1621,7 +1621,7 @@ Toolkit.run(
       // We only have five lines to work with
       .slice(0, MAX_LINES)
       // Call the serializer to construct a string
-      .map((item) => `${timestamper(item)}\t${serializers[item.type](item)}`);
+      .map((item) => `${timestamper(item)} ${serializers[item.type](item)}`);
 
     const readmeContent = fs.readFileSync("./README.md", "utf-8").split("\n");
 
@@ -1650,7 +1650,7 @@ Toolkit.run(
       tools.log.info("Found less than 5 activities");
     }
 
-    content.splice(startIdx + 1, endIdx - startIdx);
+    readmeContent.splice(startIdx + 1, endIdx - startIdx);
 
     if (startIdx !== -1) {
       // Add one since the content needs to be inserted just after the initial comment
