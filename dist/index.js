@@ -1605,6 +1605,8 @@ Toolkit.run(
       if (["ForkEvent", "WatchEvent"].includes(data.type)) tools.log.debug(data.payload);
     }
 
+    let last = array => array[array.length-1];
+
     let arr = [];
 
     for (const data of events.data) {
