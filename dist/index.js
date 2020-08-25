@@ -1433,6 +1433,11 @@ module.exports = (function (modules, runtime) {
 			};
 
 			const serializers = {
+				CommitCommentEvent: item => {
+					return `<img alt="🗣" src="https://github.com/cheesits456/github-activity-readme/raw/master/icons/comment.png" align="top" height="18"> Commented on [${
+						item.payload.commit_id
+					}](${item.payload.html_url}) in ${toUrlFormat(item.repo.name)}`;
+				},
 				CreateEvent: item => {
 					if (item.payload.ref_type === "repository")
 						return `<img alt="➕" src="https://github.com/cheesits456/github-activity-readme/raw/master/icons/create-repo.png" align="top" height="18"> Created repository ${toUrlFormat(
