@@ -1445,9 +1445,9 @@ module.exports = (function (modules, runtime) {
 						)} in ${toUrlFormat(item.repo.name)}`;
 				},
 				DeleteEvent: item => {
-					return `<img alt="❌" src="https://github.com/cheesits456/github-activity-readme/raw/master/icons/delete.png" align="top" height="18"> Deleted ${
-						item.payload.ref_type
-					} **${item.payload.ref}** from ${toUrlFormat(item.repo.name)}`;
+					return `<img alt="❌" src="https://github.com/cheesits456/github-activity-readme/raw/master/icons/delete.png" align="top" height="18"> Deleted **${
+						item.payload.ref
+					}** from ${toUrlFormat(item.repo.name)}`;
 				},
 				ForkEvent: item => {
 					return `<img alt="🍴" src="https://github.com/cheesits456/github-activity-readme/raw/master/icons/fork.png" align="top" height="18"> Forked ${toUrlFormat(
