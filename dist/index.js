@@ -1386,10 +1386,10 @@ module.exports = (function (modules, runtime) {
 			const toUrlFormat = (item, branch) => {
 				if (typeof item === "object") {
 					return Object.hasOwnProperty.call(item.payload, "issue")
-						? `[#${item.payload.issue.number}](${urlPrefix}/${item.repo.name}/issues/${item.payload.issue.number})`
-						: `[#${item.payload.pull_request.number}](${urlPrefix}/${item.repo.name}/pull/${item.payload.pull_request.number})`;
+						? `[\`#${item.payload.issue.number}\`](${urlPrefix}/${item.repo.name}/issues/${item.payload.issue.number})`
+						: `[\`#${item.payload.pull_request.number}\`](${urlPrefix}/${item.repo.name}/pull/${item.payload.pull_request.number})`;
 				}
-				return `[${branch || item}](${urlPrefix}${item}${branch ? `/tree/${branch}` : ""})`;
+				return `[${branch ? `\`${branch}\`` : item}](${urlPrefix}${item}${branch ? `/tree/${branch}` : ""})`;
 			};
 
 			/**
@@ -1434,9 +1434,9 @@ module.exports = (function (modules, runtime) {
 
 			const serializers = {
 				CommitCommentEvent: item => {
-					return `<img alt="🗣" src="https://github.com/cheesits456/github-activity-readme/raw/master/icons/comment.png" align="top" height="18"> Commented on \`[${
+					return `<img alt="🗣" src="https://github.com/cheesits456/github-activity-readme/raw/master/icons/comment.png" align="top" height="18"> Commented on [\`${
 						item.payload.comment.commit_id.slice(0, 7)
-					}](${item.payload.comment.html_url})\` in ${toUrlFormat(item.repo.name)}`;
+					}\`](${item.payload.comment.html_url}) in ${toUrlFormat(item.repo.name)}`;
 				},
 				CreateEvent: item => {
 					if (item.payload.ref_type === "repository")
@@ -1444,10 +1444,10 @@ module.exports = (function (modules, runtime) {
 							item.repo.name
 						)}`;
 					if (item.payload.ref_type === "branch")
-						return `<img alt="📂" src="https://github.com/cheesits456/github-activity-readme/raw/master/icons/create-branch.png" align="top" height="18"> Created branch \`${toUrlFormat(
+						return `<img alt="📂" src="https://github.com/cheesits456/github-activity-readme/raw/master/icons/create-branch.png" align="top" height="18"> Created branch ${toUrlFormat(
 							item.repo.name,
 							item.payload.ref
-						)}\` in ${toUrlFormat(item.repo.name)}`;
+						)} in ${toUrlFormat(item.repo.name)}`;
 				},
 				DeleteEvent: item => {
 					return `<img alt="❌" src="https://github.com/cheesits456/github-activity-readme/raw/master/icons/delete.png" align="top" height="18"> Deleted \`${
@@ -1460,14 +1460,14 @@ module.exports = (function (modules, runtime) {
 					)} to ${toUrlFormat(item.payload.forkee.full_name)}`;
 				},
 				IssueCommentEvent: item => {
-					return `<img alt="🗣" src="https://github.com/cheesits456/github-activity-readme/raw/master/icons/comment.png" align="top" height="18"> Commented on \`${toUrlFormat(
+					return `<img alt="🗣" src="https://github.com/cheesits456/github-activity-readme/raw/master/icons/comment.png" align="top" height="18"> Commented on ${toUrlFormat(
 						item
-					)}\` in ${toUrlFormat(item.repo.name)}`;
+					)} in ${toUrlFormat(item.repo.name)}`;
 				},
 				IssuesEvent: item => {
 					return `<img alt="❗️" src="https://github.com/cheesits456/github-activity-readme/raw/master/icons/issue.png" align="top" height="18"> ${capitalize(
 						item.payload.action
-					)} issue \`${toUrlFormat(item)}\` in ${toUrlFormat(item.repo.name)}`;
+					)} issue ${toUrlFormat(item)} in ${toUrlFormat(item.repo.name)}`;
 				},
 				PullRequestEvent: item => {
 					const emoji =
@@ -1477,7 +1477,7 @@ module.exports = (function (modules, runtime) {
 					const line = item.payload.pull_request.merged
 						? '<img alt="🎉" src="https://github.com/cheesits456/github-activity-readme/raw/master/icons/merge.png" align="top" height="18"> Merged'
 						: `${emoji} ${capitalize(item.payload.action)}`;
-					return `${line} PR \`${toUrlFormat(item)}\` in ${toUrlFormat(item.repo.name)}`;
+					return `${line} PR ${toUrlFormat(item)} in ${toUrlFormat(item.repo.name)}`;
 				},
 				PushEvent: item => {
 					return `<img alt="📝" src="https://github.com/cheesits456/github-activity-readme/raw/master/icons/commit.png" align="top" height="18"> Made \`${
@@ -1485,9 +1485,9 @@ module.exports = (function (modules, runtime) {
 					}\` commit${item.payload.size === 1 ? "" : "s"} in ${toUrlFormat(item.repo.name)}`;
 				},
 				ReleaseEvent: item => {
-					return `<img alt="🏷" src="https://github.com/cheesits456/github-activity-readme/raw/master/icons/release.png" align="top" height="18"> Released \`[${
+					return `<img alt="🏷" src="https://github.com/cheesits456/github-activity-readme/raw/master/icons/release.png" align="top" height="18"> Released [\`${
 						item.payload.release.tag_name
-					}](${item.payload.release.html_url})\` in ${toUrlFormat(item.repo.name)}`;
+					}\`](${item.payload.release.html_url}) in ${toUrlFormat(item.repo.name)}`;
 				},
 				WatchEvent: item => {
 					return `<img alt="⭐" src="https://github.com/cheesits456/github-activity-readme/raw/master/icons/star.png" align="top" height="18"> Starred ${toUrlFormat(
