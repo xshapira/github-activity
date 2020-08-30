@@ -11,7 +11,7 @@ module.exports = (function (modules, runtime) {
 		var module = (installedModules[moduleId] = {
 			i: moduleId,
 			l: false,
-			exports: {},
+			exports: {}
 		});
 		// Execute the module function
 		var threw = true;
@@ -714,7 +714,7 @@ module.exports = (function (modules, runtime) {
 						windowsVerbatimArguments: options.windowsVerbatimArguments || false,
 						failOnStdErr: options.failOnStdErr || false,
 						ignoreReturnCode: options.ignoreReturnCode || false,
-						delay: options.delay || 10000,
+						delay: options.delay || 10000
 					};
 					result.outStream = options.outStream || process.stdout;
 					result.errStream = options.errStream || process.stderr;
@@ -1074,7 +1074,7 @@ module.exports = (function (modules, runtime) {
 			const fallback = __webpack_require__(80);
 
 			const JSONError = errorEx("JSONError", {
-				fileName: errorEx.append("in %s"),
+				fileName: errorEx.append("in %s")
 			});
 
 			module.exports = (input, reviver, filename) => {
@@ -1153,7 +1153,7 @@ module.exports = (function (modules, runtime) {
 				["5.0", "2000"],
 				["4.9", "ME"],
 				["4.1", "98"],
-				["4.0", "95"],
+				["4.0", "95"]
 			]);
 
 			const windowsRelease = release => {
@@ -1243,7 +1243,7 @@ module.exports = (function (modules, runtime) {
 			function legacy(fs) {
 				return {
 					ReadStream: ReadStream,
-					WriteStream: WriteStream,
+					WriteStream: WriteStream
 				};
 
 				function ReadStream(path, options) {
@@ -1434,9 +1434,10 @@ module.exports = (function (modules, runtime) {
 
 			const serializers = {
 				CommitCommentEvent: item => {
-					return `<img alt="🗣" src="https://github.com/cheesits456/github-activity-readme/raw/master/icons/comment.png" align="top" height="18"> Commented on [\`${
-						item.payload.comment.commit_id.slice(0, 7)
-					}\`](${item.payload.comment.html_url}) in ${toUrlFormat(item.repo.name)}`;
+					return `<img alt="🗣" src="https://github.com/cheesits456/github-activity-readme/raw/master/icons/comment.png" align="top" height="18"> Commented on [\`${item.payload.comment.commit_id.slice(
+						0,
+						7
+					)}\`](${item.payload.comment.html_url}) in ${toUrlFormat(item.repo.name)}`;
 				},
 				CreateEvent: item => {
 					if (item.payload.ref_type === "repository")
@@ -1493,7 +1494,7 @@ module.exports = (function (modules, runtime) {
 					return `<img alt="⭐" src="https://github.com/cheesits456/github-activity-readme/raw/master/icons/star.png" align="top" height="18"> Starred ${toUrlFormat(
 						item.repo.name
 					)}`;
-				},
+				}
 			};
 
 			const timestamper = item => `\`[${item.created_at.split("T")[0].split("-").slice(1, 3).join("/")} ${item.created_at.split("T")[1].split(":").slice(0, 2).join(":")}]\``;
@@ -1506,7 +1507,7 @@ module.exports = (function (modules, runtime) {
 					tools.log.debug(`Getting activity for ${GH_USERNAME}`);
 					const events = await tools.github.activity.listEventsForAuthenticatedUser({
 						username: GH_USERNAME,
-						per_page: 100,
+						per_page: 100
 					});
 					tools.log.debug(`Activity for ${GH_USERNAME}, ${events.data.length} events found.`);
 
@@ -1515,6 +1516,7 @@ module.exports = (function (modules, runtime) {
 					let arr = [];
 
 					for (const data of events.data) {
+						if (data.type.toLowerCase().includes("issue")) tools.log.debug(data.payload.issue);
 						if (arr.length && data.type === "PushEvent" && last(arr).type === "PushEvent" && data.repo.name === last(arr).repo.name)
 							arr[arr.length - 1].payload.size += data.payload.size;
 						else arr.push(data);
@@ -1592,7 +1594,7 @@ module.exports = (function (modules, runtime) {
 				},
 				{
 					event: ["schedule", "workflow_dispatch"],
-					secrets: ["GITHUB_TOKEN"],
+					secrets: ["GITHUB_TOKEN"]
 				}
 			);
 		},
@@ -1850,7 +1852,7 @@ module.exports = (function (modules, runtime) {
 				[8, ["Tiger", "10.4"]],
 				[7, ["Panther", "10.3"]],
 				[6, ["Jaguar", "10.2"]],
-				[5, ["Puma", "10.1"]],
+				[5, ["Puma", "10.1"]]
 			]);
 
 			const macosRelease = release => {
@@ -1860,7 +1862,7 @@ module.exports = (function (modules, runtime) {
 
 				return {
 					name,
-					version,
+					version
 				};
 			};
 
@@ -2135,7 +2137,7 @@ module.exports = (function (modules, runtime) {
 					level,
 					hasBasic: true,
 					has256: level >= 2,
-					has16m: level >= 3,
+					has16m: level >= 3
 				};
 			}
 
@@ -2228,7 +2230,7 @@ module.exports = (function (modules, runtime) {
 			module.exports = {
 				supportsColor: getSupportLevel,
 				stdout: getSupportLevel(process.stdout),
-				stderr: getSupportLevel(process.stderr),
+				stderr: getSupportLevel(process.stderr)
 			};
 
 			/***/
@@ -2594,7 +2596,7 @@ module.exports = (function (modules, runtime) {
 						// http://jsperf.com/1-vs-infinity
 						// micro-opt, but this is simple.
 						distance: -1,
-						parent: null,
+						parent: null
 					};
 				}
 
@@ -2727,7 +2729,7 @@ module.exports = (function (modules, runtime) {
 							timers: this._timers,
 							stream: this._stream,
 							secrets: this._secrets,
-							logLevel: this._generalLogLevel,
+							logLevel: this._generalLogLevel
 						}
 					);
 				}
@@ -2769,7 +2771,7 @@ module.exports = (function (modules, runtime) {
 						timer: 1,
 						debug: 2,
 						warn: 3,
-						error: 4,
+						error: 4
 					};
 				}
 
@@ -3338,7 +3340,7 @@ module.exports = (function (modules, runtime) {
 				if (!options || typeof options !== "object") {
 					options = {
 						loose: !!options,
-						includePrerelease: false,
+						includePrerelease: false
 					};
 				}
 
@@ -3384,7 +3386,7 @@ module.exports = (function (modules, runtime) {
 				if (!options || typeof options !== "object") {
 					options = {
 						loose: !!options,
-						includePrerelease: false,
+						includePrerelease: false
 					};
 				}
 				if (version instanceof SemVer) {
@@ -3795,7 +3797,7 @@ module.exports = (function (modules, runtime) {
 				if (!options || typeof options !== "object") {
 					options = {
 						loose: !!options,
-						includePrerelease: false,
+						includePrerelease: false
 					};
 				}
 
@@ -3873,7 +3875,7 @@ module.exports = (function (modules, runtime) {
 				if (!options || typeof options !== "object") {
 					options = {
 						loose: !!options,
-						includePrerelease: false,
+						includePrerelease: false
 					};
 				}
 
@@ -3910,7 +3912,7 @@ module.exports = (function (modules, runtime) {
 				if (!options || typeof options !== "object") {
 					options = {
 						loose: !!options,
-						includePrerelease: false,
+						includePrerelease: false
 					};
 				}
 
@@ -4653,14 +4655,14 @@ module.exports = (function (modules, runtime) {
 						next() {
 							if (!url) {
 								return Promise.resolve({
-									done: true,
+									done: true
 								});
 							}
 
 							return requestMethod({
 								method,
 								url,
-								headers,
+								headers
 							})
 								.then(normalizePaginatedListResponse)
 								.then(response => {
@@ -4669,11 +4671,11 @@ module.exports = (function (modules, runtime) {
 									// sets `url` to undefined if "next" URL is not present or `link` header is not set
 									url = ((response.headers.link || "").match(/<([^>]+)>;\s*rel="next"/) || [])[1];
 									return {
-										value: response,
+										value: response
 									};
 								});
-						},
-					}),
+						}
+					})
 				};
 			}
 
@@ -4716,8 +4718,8 @@ module.exports = (function (modules, runtime) {
 			function paginateRest(octokit) {
 				return {
 					paginate: Object.assign(paginate.bind(null, octokit), {
-						iterator: iterator.bind(null, octokit),
-					}),
+						iterator: iterator.bind(null, octokit)
+					})
 				};
 			}
 			paginateRest.VERSION = VERSION;
@@ -4740,7 +4742,7 @@ module.exports = (function (modules, runtime) {
 								enumerable: true,
 								get: function () {
 									return m[k];
-								},
+								}
 							});
 					  }
 					: function (o, m, k, k2) {
@@ -4783,9 +4785,9 @@ module.exports = (function (modules, runtime) {
 							return {
 								enumerable: false,
 								configurable: true,
-								writable: true,
+								writable: true
 							};
-						},
+						}
 					}
 				);
 			}
@@ -4937,14 +4939,14 @@ module.exports = (function (modules, runtime) {
 					value: function () {
 						return once(this);
 					},
-					configurable: true,
+					configurable: true
 				});
 
 				Object.defineProperty(Function.prototype, "onceStrict", {
 					value: function () {
 						return onceStrict(this);
 					},
-					configurable: true,
+					configurable: true
 				});
 			});
 
@@ -5238,7 +5240,7 @@ module.exports = (function (modules, runtime) {
 						value: value,
 						enumerable: true,
 						configurable: true,
-						writable: true,
+						writable: true
 					});
 				} else {
 					obj[key] = value;
@@ -5291,12 +5293,12 @@ module.exports = (function (modules, runtime) {
 						baseUrl: request.request.endpoint.DEFAULTS.baseUrl,
 						headers: {},
 						request: Object.assign({}, options.request, {
-							hook: hook.bind(null, "request"),
+							hook: hook.bind(null, "request")
 						}),
 						mediaType: {
 							previews: [],
-							format: "",
-						},
+							format: ""
+						}
 					}; // prepend default user agent with `options.userAgent` if set
 
 					requestDefaults.headers["user-agent"] = [options.userAgent, `octokit-core.js/${VERSION} ${universalUserAgent.getUserAgent()}`].filter(Boolean).join(" ");
@@ -5319,7 +5321,7 @@ module.exports = (function (modules, runtime) {
 							_objectSpread2({}, requestDefaults),
 							{},
 							{
-								baseUrl: requestDefaults.baseUrl.replace(/\/api\/v3$/, "/api"),
+								baseUrl: requestDefaults.baseUrl.replace(/\/api\/v3$/, "/api")
 							}
 						)
 					);
@@ -5328,7 +5330,7 @@ module.exports = (function (modules, runtime) {
 							debug: () => {},
 							info: () => {},
 							warn: console.warn.bind(console),
-							error: console.error.bind(console),
+							error: console.error.bind(console)
 						},
 						options.log
 					);
@@ -5342,7 +5344,7 @@ module.exports = (function (modules, runtime) {
 						if (!options.auth) {
 							// (1)
 							this.auth = async () => ({
-								type: "unauthenticated",
+								type: "unauthenticated"
 							});
 						} else {
 							// (2)
@@ -5355,7 +5357,7 @@ module.exports = (function (modules, runtime) {
 						const auth = options.authStrategy(
 							Object.assign(
 								{
-									request: this.request,
+									request: this.request
 								},
 								options.auth
 							)
@@ -5383,7 +5385,7 @@ module.exports = (function (modules, runtime) {
 									options,
 									options.userAgent && defaults.userAgent
 										? {
-												userAgent: `${options.userAgent} ${defaults.userAgent}`,
+												userAgent: `${options.userAgent} ${defaults.userAgent}`
 										  }
 										: null
 								)
@@ -5409,7 +5411,7 @@ module.exports = (function (modules, runtime) {
 								"Instead of:",
 								"  Octokit.plugin([plugin1, plugin2, ...])",
 								"Use:",
-								"  Octokit.plugin(plugin1, plugin2, ...)",
+								"  Octokit.plugin(plugin1, plugin2, ...)"
 							].join("\n")
 						);
 					}
@@ -5635,14 +5637,14 @@ module.exports = (function (modules, runtime) {
 			Object.defineProperties(Blob.prototype, {
 				size: { enumerable: true },
 				type: { enumerable: true },
-				slice: { enumerable: true },
+				slice: { enumerable: true }
 			});
 
 			Object.defineProperty(Blob.prototype, Symbol.toStringTag, {
 				value: "Blob",
 				writable: false,
 				enumerable: false,
-				configurable: true,
+				configurable: true
 			});
 
 			/**
@@ -5730,7 +5732,7 @@ module.exports = (function (modules, runtime) {
 				this[INTERNALS] = {
 					body,
 					disturbed: false,
-					error: null,
+					error: null
 				};
 				this.size = size;
 				this.timeout = timeout;
@@ -5774,10 +5776,10 @@ module.exports = (function (modules, runtime) {
 						return Object.assign(
 							// Prevent copying
 							new Blob([], {
-								type: ct.toLowerCase(),
+								type: ct.toLowerCase()
 							}),
 							{
-								[BUFFER]: buf,
+								[BUFFER]: buf
 							}
 						);
 					});
@@ -5832,7 +5834,7 @@ module.exports = (function (modules, runtime) {
 					return consumeBody.call(this).then(function (buffer) {
 						return convertBody(buffer, _this3.headers);
 					});
-				},
+				}
 			};
 
 			// In browsers, all properties are enumerable.
@@ -5842,7 +5844,7 @@ module.exports = (function (modules, runtime) {
 				arrayBuffer: { enumerable: true },
 				blob: { enumerable: true },
 				json: { enumerable: true },
-				text: { enumerable: true },
+				text: { enumerable: true }
 			});
 
 			Body.mixIn = function (proto) {
@@ -6450,7 +6452,7 @@ module.exports = (function (modules, runtime) {
 				value: "Headers",
 				writable: false,
 				enumerable: false,
-				configurable: true,
+				configurable: true
 			});
 
 			Object.defineProperties(Headers.prototype, {
@@ -6462,7 +6464,7 @@ module.exports = (function (modules, runtime) {
 				delete: { enumerable: true },
 				keys: { enumerable: true },
 				values: { enumerable: true },
-				entries: { enumerable: true },
+				entries: { enumerable: true }
 			});
 
 			function getHeaders(headers) {
@@ -6491,7 +6493,7 @@ module.exports = (function (modules, runtime) {
 				iterator[INTERNAL] = {
 					target,
 					kind,
-					index: 0,
+					index: 0
 				};
 				return iterator;
 			}
@@ -6514,7 +6516,7 @@ module.exports = (function (modules, runtime) {
 						if (index >= len) {
 							return {
 								value: undefined,
-								done: true,
+								done: true
 							};
 						}
 
@@ -6522,9 +6524,9 @@ module.exports = (function (modules, runtime) {
 
 						return {
 							value: values[index],
-							done: false,
+							done: false
 						};
-					},
+					}
 				},
 				Object.getPrototypeOf(Object.getPrototypeOf([][Symbol.iterator]()))
 			);
@@ -6533,7 +6535,7 @@ module.exports = (function (modules, runtime) {
 				value: "HeadersIterator",
 				writable: false,
 				enumerable: false,
-				configurable: true,
+				configurable: true
 			});
 
 			/**
@@ -6620,7 +6622,7 @@ module.exports = (function (modules, runtime) {
 						status,
 						statusText: opts.statusText || STATUS_CODES[status],
 						headers,
-						counter: opts.counter,
+						counter: opts.counter
 					};
 				}
 
@@ -6663,7 +6665,7 @@ module.exports = (function (modules, runtime) {
 						statusText: this.statusText,
 						headers: this.headers,
 						ok: this.ok,
-						redirected: this.redirected,
+						redirected: this.redirected
 					});
 				}
 			}
@@ -6677,14 +6679,14 @@ module.exports = (function (modules, runtime) {
 				redirected: { enumerable: true },
 				statusText: { enumerable: true },
 				headers: { enumerable: true },
-				clone: { enumerable: true },
+				clone: { enumerable: true }
 			});
 
 			Object.defineProperty(Response.prototype, Symbol.toStringTag, {
 				value: "Response",
 				writable: false,
 				enumerable: false,
-				configurable: true,
+				configurable: true
 			});
 
 			const INTERNALS$2 = Symbol("Request internals");
@@ -6750,7 +6752,7 @@ module.exports = (function (modules, runtime) {
 
 					Body.call(this, inputBody, {
 						timeout: init.timeout || input.timeout || 0,
-						size: init.size || input.size || 0,
+						size: init.size || input.size || 0
 					});
 
 					const headers = new Headers(init.headers || input.headers || {});
@@ -6774,7 +6776,7 @@ module.exports = (function (modules, runtime) {
 						redirect: init.redirect || input.redirect || "follow",
 						headers,
 						parsedURL,
-						signal,
+						signal
 					};
 
 					// node-fetch-only options
@@ -6820,7 +6822,7 @@ module.exports = (function (modules, runtime) {
 				value: "Request",
 				writable: false,
 				enumerable: false,
-				configurable: true,
+				configurable: true
 			});
 
 			Object.defineProperties(Request.prototype, {
@@ -6829,7 +6831,7 @@ module.exports = (function (modules, runtime) {
 				headers: { enumerable: true },
 				redirect: { enumerable: true },
 				clone: { enumerable: true },
-				signal: { enumerable: true },
+				signal: { enumerable: true }
 			});
 
 			/**
@@ -6900,7 +6902,7 @@ module.exports = (function (modules, runtime) {
 				return Object.assign({}, parsedURL, {
 					method: request.method,
 					headers: exportNodeCompatibleHeaders(headers),
-					agent,
+					agent
 				});
 			}
 
@@ -7063,7 +7065,7 @@ module.exports = (function (modules, runtime) {
 										method: request.method,
 										body: request.body,
 										signal: request.signal,
-										timeout: request.timeout,
+										timeout: request.timeout
 									};
 
 									// HTTP-redirect fetch step 9
@@ -7100,7 +7102,7 @@ module.exports = (function (modules, runtime) {
 							headers: headers,
 							size: request.size,
 							timeout: request.timeout,
-							counter: request.counter,
+							counter: request.counter
 						};
 
 						// HTTP-network fetch step 12.1.1.3
@@ -7127,7 +7129,7 @@ module.exports = (function (modules, runtime) {
 						// Always using Z_SYNC_FLUSH is what cURL does.
 						const zlibOptions = {
 							flush: zlib.Z_SYNC_FLUSH,
-							finishFlush: zlib.Z_SYNC_FLUSH,
+							finishFlush: zlib.Z_SYNC_FLUSH
 						};
 
 						// for gzip
@@ -7206,7 +7208,7 @@ module.exports = (function (modules, runtime) {
 			module.exports = (iterable, opts) => {
 				opts = Object.assign(
 					{
-						cwd: process.cwd(),
+						cwd: process.cwd()
 					},
 					opts
 				);
@@ -7217,7 +7219,7 @@ module.exports = (function (modules, runtime) {
 			module.exports.sync = (iterable, opts) => {
 				opts = Object.assign(
 					{
-						cwd: process.cwd(),
+						cwd: process.cwd()
 					},
 					opts
 				);
@@ -7244,7 +7246,7 @@ module.exports = (function (modules, runtime) {
 								enumerable: true,
 								get: function () {
 									return m[k];
-								},
+								}
 							});
 					  }
 					: function (o, m, k, k2) {
@@ -7310,7 +7312,7 @@ module.exports = (function (modules, runtime) {
 								return t[1];
 							},
 							trys: [],
-							ops: [],
+							ops: []
 						},
 						f,
 						y,
@@ -7616,7 +7618,7 @@ module.exports = (function (modules, runtime) {
 						"GITHUB_EVENT_NAME",
 						"GITHUB_EVENT_PATH",
 						"GITHUB_WORKSPACE",
-						"GITHUB_SHA",
+						"GITHUB_SHA"
 					];
 					var requiredButMissing = requiredEnvVars.filter(function (key) {
 						return !Object.prototype.hasOwnProperty.call(process.env, key);
@@ -7742,7 +7744,7 @@ module.exports = (function (modules, runtime) {
 						get() {
 							logOnce(new deprecation.Deprecation("[@octokit/request-error] `error.code` is deprecated, use `error.status`."));
 							return statusCode;
-						},
+						}
 					});
 					this.headers = options.headers || {}; // redact request credentials without mutating original request options
 
@@ -7750,7 +7752,7 @@ module.exports = (function (modules, runtime) {
 
 					if (options.request.headers.authorization) {
 						requestCopy.headers = Object.assign({}, options.request.headers, {
-							authorization: options.request.headers.authorization.replace(/ .*$/, " [REDACTED]"),
+							authorization: options.request.headers.authorization.replace(/ .*$/, " [REDACTED]")
 						});
 					}
 
@@ -8046,7 +8048,7 @@ module.exports = (function (modules, runtime) {
 				try {
 					resolved = which.sync(parsed.command, {
 						path: (parsed.options.env || process.env)[pathKey],
-						pathExt: withoutPathExt ? path.delimiter : undefined,
+						pathExt: withoutPathExt ? path.delimiter : undefined
 					});
 				} catch (e) {
 					/* Empty */
@@ -8261,7 +8263,7 @@ module.exports = (function (modules, runtime) {
 			function HookSingular() {
 				var singularHookName = "h";
 				var singularHookState = {
-					registry: {},
+					registry: {}
 				};
 				var singularHook = register.bind(null, singularHookState, singularHookName);
 				bindApi(singularHook, singularHookState, singularHookName);
@@ -8270,7 +8272,7 @@ module.exports = (function (modules, runtime) {
 
 			function HookCollection() {
 				var state = {
-					registry: {},
+					registry: {}
 				};
 
 				var hook = register.bind(null, state);
@@ -8342,7 +8344,7 @@ module.exports = (function (modules, runtime) {
 
 				state.registry[name].push({
 					hook: hook,
-					orig: orig,
+					orig: orig
 				});
 			}
 
@@ -8359,7 +8361,7 @@ module.exports = (function (modules, runtime) {
 				opts = Object.assign(
 					{
 						cwd: process.cwd(),
-						path: process.env[pathKey()],
+						path: process.env[pathKey()]
 					},
 					opts
 				);
@@ -8383,7 +8385,7 @@ module.exports = (function (modules, runtime) {
 			module.exports.env = opts => {
 				opts = Object.assign(
 					{
-						env: process.env,
+						env: process.env
 					},
 					opts
 				);
@@ -8686,8 +8688,8 @@ module.exports = (function (modules, runtime) {
 					file: undefined,
 					original: {
 						command,
-						args,
-					},
+						args
+					}
 				};
 
 				// Delegate further parsing to shell or non-shell
@@ -8747,7 +8749,7 @@ module.exports = (function (modules, runtime) {
 						return data;
 					},
 					enumerable: false,
-					configurable: true,
+					configurable: true
 				});
 				Object.defineProperty(Context.prototype, "pullRequest", {
 					get: function () {
@@ -8762,7 +8764,7 @@ module.exports = (function (modules, runtime) {
 						return data;
 					},
 					enumerable: false,
-					configurable: true,
+					configurable: true
 				});
 				Object.defineProperty(Context.prototype, "repo", {
 					get: function () {
@@ -8775,13 +8777,13 @@ module.exports = (function (modules, runtime) {
 						if (this.payload.repository) {
 							return {
 								owner: this.payload.repository.owner.login,
-								repo: this.payload.repository.name,
+								repo: this.payload.repository.name
 							};
 						}
 						throw new Error("context.repo requires a GITHUB_REPOSITORY environment variable like 'owner/repo'");
 					},
 					enumerable: false,
-					configurable: true,
+					configurable: true
 				});
 				return Context;
 			})();
@@ -8902,7 +8904,7 @@ module.exports = (function (modules, runtime) {
 				Object.defineProperty(context, gracefulQueue, {
 					get: function () {
 						return queue;
-					},
+					}
 				});
 			}
 
@@ -8938,7 +8940,7 @@ module.exports = (function (modules, runtime) {
 					}
 
 					Object.defineProperty(close, previousSymbol, {
-						value: fs$close,
+						value: fs$close
 					});
 					return close;
 				})(fs.close);
@@ -8951,7 +8953,7 @@ module.exports = (function (modules, runtime) {
 					}
 
 					Object.defineProperty(closeSync, previousSymbol, {
-						value: fs$closeSync,
+						value: fs$closeSync
 					});
 					return closeSync;
 				})(fs.closeSync);
@@ -9089,7 +9091,7 @@ module.exports = (function (modules, runtime) {
 						ReadStream = val;
 					},
 					enumerable: true,
-					configurable: true,
+					configurable: true
 				});
 				Object.defineProperty(fs, "WriteStream", {
 					get: function () {
@@ -9099,7 +9101,7 @@ module.exports = (function (modules, runtime) {
 						WriteStream = val;
 					},
 					enumerable: true,
-					configurable: true,
+					configurable: true
 				});
 
 				// legacy names
@@ -9112,7 +9114,7 @@ module.exports = (function (modules, runtime) {
 						FileReadStream = val;
 					},
 					enumerable: true,
-					configurable: true,
+					configurable: true
 				});
 				var FileWriteStream = WriteStream;
 				Object.defineProperty(fs, "FileWriteStream", {
@@ -9123,7 +9125,7 @@ module.exports = (function (modules, runtime) {
 						FileWriteStream = val;
 					},
 					enumerable: true,
-					configurable: true,
+					configurable: true
 				});
 
 				function ReadStream(path, options) {
@@ -9239,7 +9241,7 @@ module.exports = (function (modules, runtime) {
 				ansi256: { channels: 1, labels: ["ansi256"] },
 				hcg: { channels: 3, labels: ["h", "c", "g"] },
 				apple: { channels: 3, labels: ["r16", "g16", "b16"] },
-				gray: { channels: 1, labels: ["gray"] },
+				gray: { channels: 1, labels: ["gray"] }
 			});
 
 			// hide .channels and .labels properties
@@ -10173,7 +10175,7 @@ module.exports = (function (modules, runtime) {
 						},
 						set: function (v) {
 							message = v;
-						},
+						}
 					});
 
 					var overwrittenStack = null;
@@ -10243,7 +10245,7 @@ module.exports = (function (modules, runtime) {
 						}
 
 						return message;
-					},
+					}
 				};
 			};
 
@@ -10257,7 +10259,7 @@ module.exports = (function (modules, runtime) {
 						}
 
 						return null;
-					},
+					}
 				};
 			};
 
@@ -10288,104 +10290,104 @@ module.exports = (function (modules, runtime) {
 					badge: figures.cross,
 					color: "red",
 					label: "error",
-					logLevel: "error",
+					logLevel: "error"
 				},
 				fatal: {
 					badge: figures.cross,
 					color: "red",
 					label: "fatal",
-					logLevel: "error",
+					logLevel: "error"
 				},
 				fav: {
 					badge: figures("❤"),
 					color: "magenta",
 					label: "favorite",
-					logLevel: "info",
+					logLevel: "info"
 				},
 				info: {
 					badge: figures.info,
 					color: "blue",
 					label: "info",
-					logLevel: "info",
+					logLevel: "info"
 				},
 				star: {
 					badge: figures.star,
 					color: "yellow",
 					label: "star",
-					logLevel: "info",
+					logLevel: "info"
 				},
 				success: {
 					badge: figures.tick,
 					color: "green",
 					label: "success",
-					logLevel: "info",
+					logLevel: "info"
 				},
 				wait: {
 					badge: figures.ellipsis,
 					color: "blue",
 					label: "waiting",
-					logLevel: "info",
+					logLevel: "info"
 				},
 				warn: {
 					badge: figures.warning,
 					color: "yellow",
 					label: "warning",
-					logLevel: "warn",
+					logLevel: "warn"
 				},
 				complete: {
 					badge: figures.checkboxOn,
 					color: "cyan",
 					label: "complete",
-					logLevel: "info",
+					logLevel: "info"
 				},
 				pending: {
 					badge: figures.checkboxOff,
 					color: "magenta",
 					label: "pending",
-					logLevel: "info",
+					logLevel: "info"
 				},
 				note: {
 					badge: figures.bullet,
 					color: "blue",
 					label: "note",
-					logLevel: "info",
+					logLevel: "info"
 				},
 				start: {
 					badge: figures.play,
 					color: "green",
 					label: "start",
-					logLevel: "info",
+					logLevel: "info"
 				},
 				pause: {
 					badge: figures.squareSmallFilled,
 					color: "yellow",
 					label: "pause",
-					logLevel: "info",
+					logLevel: "info"
 				},
 				debug: {
 					badge: figures("⬤"),
 					color: "red",
 					label: "debug",
-					logLevel: "debug",
+					logLevel: "debug"
 				},
 				await: {
 					badge: figures.ellipsis,
 					color: "blue",
 					label: "awaiting",
-					logLevel: "info",
+					logLevel: "info"
 				},
 				watch: {
 					badge: figures.ellipsis,
 					color: "yellow",
 					label: "watching",
-					logLevel: "info",
+					logLevel: "info"
 				},
 				log: {
 					badge: "",
 					color: "",
 					label: "",
-					logLevel: "info",
-				},
+					logLevel: "info"
+				}
 			};
 
 			/***/
@@ -10479,7 +10481,7 @@ module.exports = (function (modules, runtime) {
 						underline: [4, 24],
 						inverse: [7, 27],
 						hidden: [8, 28],
-						strikethrough: [9, 29],
+						strikethrough: [9, 29]
 					},
 					color: {
 						black: [30, 39],
@@ -10499,7 +10501,7 @@ module.exports = (function (modules, runtime) {
 						blueBright: [94, 39],
 						magentaBright: [95, 39],
 						cyanBright: [96, 39],
-						whiteBright: [97, 39],
+						whiteBright: [97, 39]
 					},
 					bgColor: {
 						bgBlack: [40, 49],
@@ -10519,8 +10521,8 @@ module.exports = (function (modules, runtime) {
 						bgBlueBright: [104, 49],
 						bgMagentaBright: [105, 49],
 						bgCyanBright: [106, 49],
-						bgWhiteBright: [107, 49],
-					},
+						bgWhiteBright: [107, 49]
+					}
 				};
 
 				// Fix humans
@@ -10534,7 +10536,7 @@ module.exports = (function (modules, runtime) {
 
 						styles[styleName] = {
 							open: `\u001B[${style[0]}m`,
-							close: `\u001B[${style[1]}m`,
+							close: `\u001B[${style[1]}m`
 						};
 
 						group[styleName] = styles[styleName];
@@ -10544,12 +10546,12 @@ module.exports = (function (modules, runtime) {
 
 					Object.defineProperty(styles, groupName, {
 						value: group,
-						enumerable: false,
+						enumerable: false
 					});
 
 					Object.defineProperty(styles, "codes", {
 						value: codes,
-						enumerable: false,
+						enumerable: false
 					});
 				}
 
@@ -10560,23 +10562,23 @@ module.exports = (function (modules, runtime) {
 				styles.bgColor.close = "\u001B[49m";
 
 				styles.color.ansi = {
-					ansi: wrapAnsi16(ansi2ansi, 0),
+					ansi: wrapAnsi16(ansi2ansi, 0)
 				};
 				styles.color.ansi256 = {
-					ansi256: wrapAnsi256(ansi2ansi, 0),
+					ansi256: wrapAnsi256(ansi2ansi, 0)
 				};
 				styles.color.ansi16m = {
-					rgb: wrapAnsi16m(rgb2rgb, 0),
+					rgb: wrapAnsi16m(rgb2rgb, 0)
 				};
 
 				styles.bgColor.ansi = {
-					ansi: wrapAnsi16(ansi2ansi, 10),
+					ansi: wrapAnsi16(ansi2ansi, 10)
 				};
 				styles.bgColor.ansi256 = {
-					ansi256: wrapAnsi256(ansi2ansi, 10),
+					ansi256: wrapAnsi256(ansi2ansi, 10)
 				};
 				styles.bgColor.ansi16m = {
-					rgb: wrapAnsi16m(rgb2rgb, 10),
+					rgb: wrapAnsi16m(rgb2rgb, 10)
 				};
 
 				for (let key of Object.keys(colorConvert)) {
@@ -10612,7 +10614,7 @@ module.exports = (function (modules, runtime) {
 			// Make the export immutable
 			Object.defineProperty(module, "exports", {
 				enumerable: true,
-				get: assembleStyles,
+				get: assembleStyles
 			});
 
 			/***/
@@ -11051,7 +11053,7 @@ module.exports = (function (modules, runtime) {
 							method: requestOptions.method,
 							body: requestOptions.body,
 							headers: requestOptions.headers,
-							redirect: requestOptions.redirect,
+							redirect: requestOptions.redirect
 						},
 						requestOptions.request
 					)
@@ -11075,14 +11077,14 @@ module.exports = (function (modules, runtime) {
 
 							throw new requestError.RequestError(response.statusText, status, {
 								headers,
-								request: requestOptions,
+								request: requestOptions
 							});
 						}
 
 						if (status === 304) {
 							throw new requestError.RequestError("Not modified", status, {
 								headers,
-								request: requestOptions,
+								request: requestOptions
 							});
 						}
 
@@ -11090,7 +11092,7 @@ module.exports = (function (modules, runtime) {
 							return response.text().then(message => {
 								const error = new requestError.RequestError(message, status, {
 									headers,
-									request: requestOptions,
+									request: requestOptions
 								});
 
 								try {
@@ -11124,7 +11126,7 @@ module.exports = (function (modules, runtime) {
 							status,
 							url,
 							headers,
-							data,
+							data
 						};
 					})
 					.catch(error => {
@@ -11134,7 +11136,7 @@ module.exports = (function (modules, runtime) {
 
 						throw new requestError.RequestError(error.message, 500, {
 							headers,
-							request: requestOptions,
+							request: requestOptions
 						});
 					});
 			}
@@ -11155,21 +11157,21 @@ module.exports = (function (modules, runtime) {
 
 					Object.assign(request, {
 						endpoint,
-						defaults: withDefaults.bind(null, endpoint),
+						defaults: withDefaults.bind(null, endpoint)
 					});
 					return endpointOptions.request.hook(request, endpointOptions);
 				};
 
 				return Object.assign(newApi, {
 					endpoint,
-					defaults: withDefaults.bind(null, endpoint),
+					defaults: withDefaults.bind(null, endpoint)
 				});
 			}
 
 			const request = withDefaults(endpoint.endpoint, {
 				headers: {
-					"user-agent": `octokit-request.js/${VERSION} ${universalUserAgent.getUserAgent()}`,
-				},
+					"user-agent": `octokit-request.js/${VERSION} ${universalUserAgent.getUserAgent()}`
+				}
 			});
 
 			exports.request = request;
@@ -11237,7 +11239,7 @@ module.exports = (function (modules, runtime) {
 				opts = Object.assign(
 					{
 						concurrency: Infinity,
-						preserveOrder: true,
+						preserveOrder: true
 					},
 					opts
 				);
@@ -11367,7 +11369,7 @@ module.exports = (function (modules, runtime) {
 					{
 						exclude: [/.+(Sync|Stream)$/],
 						errorFirst: true,
-						promiseModule: Promise,
+						promiseModule: Promise
 					},
 					opts
 				);
@@ -11412,7 +11414,7 @@ module.exports = (function (modules, runtime) {
 				return {
 					type: "token",
 					token: token,
-					tokenType,
+					tokenType
 				};
 			}
 
@@ -11446,7 +11448,7 @@ module.exports = (function (modules, runtime) {
 
 				token = token.replace(/^(token|bearer) +/i, "");
 				return Object.assign(auth.bind(null, token), {
-					hook: hook.bind(null, token),
+					hook: hook.bind(null, token)
 				});
 			};
 
@@ -11498,7 +11500,7 @@ module.exports = (function (modules, runtime) {
 				return {
 					env: pathEnv,
 					ext: pathExt,
-					extExe: pathExtExe,
+					extExe: pathExtExe
 				};
 			}
 
@@ -11659,7 +11661,7 @@ module.exports = (function (modules, runtime) {
 				["0", "\0"],
 				["\\", "\\"],
 				["e", "\u001B"],
-				["a", "\u0007"],
+				["a", "\u0007"]
 			]);
 
 			function unescape(c) {
@@ -11790,9 +11792,9 @@ module.exports = (function (modules, runtime) {
 						{},
 						{
 							renamedParameters: {
-								name: "secret_name",
-							},
-						},
+								name: "secret_name"
+							}
+						}
 					],
 					createOrUpdateSecretForRepo: [
 						"PUT /repos/{owner}/{repo}/actions/secrets/{secret_name}",
@@ -11800,16 +11802,16 @@ module.exports = (function (modules, runtime) {
 						{
 							renamed: ["actions", "createOrUpdateRepoSecret"],
 							renamedParameters: {
-								name: "secret_name",
-							},
-						},
+								name: "secret_name"
+							}
+						}
 					],
 					createRegistrationToken: [
 						"POST /repos/{owner}/{repo}/actions/runners/registration-token",
 						{},
 						{
-							renamed: ["actions", "createRegistrationTokenForRepo"],
-						},
+							renamed: ["actions", "createRegistrationTokenForRepo"]
+						}
 					],
 					createRegistrationTokenForOrg: ["POST /orgs/{org}/actions/runners/registration-token"],
 					createRegistrationTokenForRepo: ["POST /repos/{owner}/{repo}/actions/runners/registration-token"],
@@ -11817,8 +11819,8 @@ module.exports = (function (modules, runtime) {
 						"POST /repos/{owner}/{repo}/actions/runners/remove-token",
 						{},
 						{
-							renamed: ["actions", "createRemoveTokenForRepo"],
-						},
+							renamed: ["actions", "createRemoveTokenForRepo"]
+						}
 					],
 					createRemoveTokenForOrg: ["POST /orgs/{org}/actions/runners/remove-token"],
 					createRemoveTokenForRepo: ["POST /repos/{owner}/{repo}/actions/runners/remove-token"],
@@ -11829,9 +11831,9 @@ module.exports = (function (modules, runtime) {
 						{},
 						{
 							renamedParameters: {
-								name: "secret_name",
-							},
-						},
+								name: "secret_name"
+							}
+						}
 					],
 					deleteSecretFromRepo: [
 						"DELETE /repos/{owner}/{repo}/actions/secrets/{secret_name}",
@@ -11839,9 +11841,9 @@ module.exports = (function (modules, runtime) {
 						{
 							renamed: ["actions", "deleteRepoSecret"],
 							renamedParameters: {
-								name: "secret_name",
-							},
-						},
+								name: "secret_name"
+							}
+						}
 					],
 					deleteSelfHostedRunnerFromOrg: ["DELETE /orgs/{org}/actions/runners/{runner_id}"],
 					deleteSelfHostedRunnerFromRepo: ["DELETE /repos/{owner}/{repo}/actions/runners/{runner_id}"],
@@ -11852,8 +11854,8 @@ module.exports = (function (modules, runtime) {
 						"GET /repos/{owner}/{repo}/actions/jobs/{job_id}/logs",
 						{},
 						{
-							renamed: ["actions", "downloadJobLogsForWorkflowRun"],
-						},
+							renamed: ["actions", "downloadJobLogsForWorkflowRun"]
+						}
 					],
 					downloadWorkflowRunLogs: ["GET /repos/{owner}/{repo}/actions/runs/{run_id}/logs"],
 					getArtifact: ["GET /repos/{owner}/{repo}/actions/artifacts/{artifact_id}"],
@@ -11864,8 +11866,8 @@ module.exports = (function (modules, runtime) {
 						"GET /repos/{owner}/{repo}/actions/secrets/public-key",
 						{},
 						{
-							renamed: ["actions", "getRepoPublicKey"],
-						},
+							renamed: ["actions", "getRepoPublicKey"]
+						}
 					],
 					getRepoPublicKey: ["GET /repos/{owner}/{repo}/actions/secrets/public-key"],
 					getRepoSecret: [
@@ -11873,9 +11875,9 @@ module.exports = (function (modules, runtime) {
 						{},
 						{
 							renamedParameters: {
-								name: "secret_name",
-							},
-						},
+								name: "secret_name"
+							}
+						}
 					],
 					getSecret: [
 						"GET /repos/{owner}/{repo}/actions/secrets/{secret_name}",
@@ -11883,16 +11885,16 @@ module.exports = (function (modules, runtime) {
 						{
 							renamed: ["actions", "getRepoSecret"],
 							renamedParameters: {
-								name: "secret_name",
-							},
-						},
+								name: "secret_name"
+							}
+						}
 					],
 					getSelfHostedRunner: [
 						"GET /repos/{owner}/{repo}/actions/runners/{runner_id}",
 						{},
 						{
-							renamed: ["actions", "getSelfHostedRunnerForRepo"],
-						},
+							renamed: ["actions", "getSelfHostedRunnerForRepo"]
+						}
 					],
 					getSelfHostedRunnerForOrg: ["GET /orgs/{org}/actions/runners/{runner_id}"],
 					getSelfHostedRunnerForRepo: ["GET /repos/{owner}/{repo}/actions/runners/{runner_id}"],
@@ -11901,8 +11903,8 @@ module.exports = (function (modules, runtime) {
 						"GET /repos/{owner}/{repo}/actions/jobs/{job_id}",
 						{},
 						{
-							renamed: ["actions", "getJobForWorkflowRun"],
-						},
+							renamed: ["actions", "getJobForWorkflowRun"]
+						}
 					],
 					getWorkflowRun: ["GET /repos/{owner}/{repo}/actions/runs/{run_id}"],
 					getWorkflowRunUsage: ["GET /repos/{owner}/{repo}/actions/runs/{run_id}/timing"],
@@ -11912,8 +11914,8 @@ module.exports = (function (modules, runtime) {
 						"GET /repos/{owner}/{repo}/actions/runners/downloads",
 						{},
 						{
-							renamed: ["actions", "listRunnerApplicationsForRepo"],
-						},
+							renamed: ["actions", "listRunnerApplicationsForRepo"]
+						}
 					],
 					listJobsForWorkflowRun: ["GET /repos/{owner}/{repo}/actions/runs/{run_id}/jobs"],
 					listOrgSecrets: ["GET /orgs/{org}/actions/secrets"],
@@ -11922,8 +11924,8 @@ module.exports = (function (modules, runtime) {
 						"GET /repos/{owner}/{repo}/actions/runs",
 						{},
 						{
-							renamed: ["actions", "listWorkflowRunsForRepo"],
-						},
+							renamed: ["actions", "listWorkflowRunsForRepo"]
+						}
 					],
 					listRepoWorkflows: ["GET /repos/{owner}/{repo}/actions/workflows"],
 					listRunnerApplicationsForOrg: ["GET /orgs/{org}/actions/runners/downloads"],
@@ -11932,8 +11934,8 @@ module.exports = (function (modules, runtime) {
 						"GET /repos/{owner}/{repo}/actions/secrets",
 						{},
 						{
-							renamed: ["actions", "listRepoSecrets"],
-						},
+							renamed: ["actions", "listRepoSecrets"]
+						}
 					],
 					listSelectedReposForOrgSecret: ["GET /orgs/{org}/actions/secrets/{secret_name}/repositories"],
 					listSelfHostedRunnersForOrg: ["GET /orgs/{org}/actions/runners"],
@@ -11942,16 +11944,16 @@ module.exports = (function (modules, runtime) {
 						"GET /repos/{owner}/{repo}/actions/jobs/{job_id}/logs",
 						{},
 						{
-							renamed: ["actions", "downloadWorkflowJobLogs"],
-						},
+							renamed: ["actions", "downloadWorkflowJobLogs"]
+						}
 					],
 					listWorkflowRunArtifacts: ["GET /repos/{owner}/{repo}/actions/runs/{run_id}/artifacts"],
 					listWorkflowRunLogs: [
 						"GET /repos/{owner}/{repo}/actions/runs/{run_id}/logs",
 						{},
 						{
-							renamed: ["actions", "downloadWorkflowRunLogs"],
-						},
+							renamed: ["actions", "downloadWorkflowRunLogs"]
+						}
 					],
 					listWorkflowRuns: ["GET /repos/{owner}/{repo}/actions/workflows/{workflow_id}/runs"],
 					listWorkflowRunsForRepo: ["GET /repos/{owner}/{repo}/actions/runs"],
@@ -11961,10 +11963,10 @@ module.exports = (function (modules, runtime) {
 						"DELETE /repos/{owner}/{repo}/actions/runners/{runner_id}",
 						{},
 						{
-							renamed: ["actions", "deleteSelfHostedRunnerFromRepo"],
-						},
+							renamed: ["actions", "deleteSelfHostedRunnerFromRepo"]
+						}
 					],
-					setSelectedReposForOrgSecret: ["PUT /orgs/{org}/actions/secrets/{secret_name}/repositories"],
+					setSelectedReposForOrgSecret: ["PUT /orgs/{org}/actions/secrets/{secret_name}/repositories"]
 				},
 				activity: {
 					checkRepoIsStarredByAuthenticatedUser: ["GET /user/starred/{owner}/{repo}"],
@@ -11972,8 +11974,8 @@ module.exports = (function (modules, runtime) {
 						"GET /user/starred/{owner}/{repo}",
 						{},
 						{
-							renamed: ["activity", "checkRepoIsStarredByAuthenticatedUser"],
-						},
+							renamed: ["activity", "checkRepoIsStarredByAuthenticatedUser"]
+						}
 					],
 					deleteRepoSubscription: ["DELETE /repos/{owner}/{repo}/subscription"],
 					deleteThreadSubscription: ["DELETE /notifications/threads/{thread_id}/subscription"],
@@ -11984,8 +11986,8 @@ module.exports = (function (modules, runtime) {
 						"PUT /notifications",
 						{},
 						{
-							renamed: ["activity", "getThreadSubscriptionForAuthenticatedUser"],
-						},
+							renamed: ["activity", "getThreadSubscriptionForAuthenticatedUser"]
+						}
 					],
 					getThreadSubscriptionForAuthenticatedUser: ["GET /notifications/threads/{thread_id}/subscription"],
 					listEventsForAuthenticatedUser: ["GET /users/{username}/events"],
@@ -11993,37 +11995,37 @@ module.exports = (function (modules, runtime) {
 						"GET /users/{username}/events/orgs/{org}",
 						{},
 						{
-							renamed: ["activity", "listOrgEventsForAuthenticatedUser"],
-						},
+							renamed: ["activity", "listOrgEventsForAuthenticatedUser"]
+						}
 					],
 					listEventsForUser: [
 						"GET /users/{username}/events",
 						{},
 						{
-							renamed: ["activity", "listEventsForAuthenticatedUser"],
-						},
+							renamed: ["activity", "listEventsForAuthenticatedUser"]
+						}
 					],
 					listFeeds: [
 						"GET /feeds",
 						{},
 						{
-							renamed: ["activity", "getFeeds"],
-						},
+							renamed: ["activity", "getFeeds"]
+						}
 					],
 					listNotifications: [
 						"GET /notifications",
 						{},
 						{
-							renamed: ["activity", "listNotificationsForAuthenticatedUser"],
-						},
+							renamed: ["activity", "listNotificationsForAuthenticatedUser"]
+						}
 					],
 					listNotificationsForAuthenticatedUser: ["GET /notifications"],
 					listNotificationsForRepo: [
 						"GET /repos/{owner}/{repo}/notifications",
 						{},
 						{
-							renamed: ["activity", "listRepoNotificationsForAuthenticatedUser"],
-						},
+							renamed: ["activity", "listRepoNotificationsForAuthenticatedUser"]
+						}
 					],
 					listOrgEventsForAuthenticatedUser: ["GET /users/{username}/events/orgs/{org}"],
 					listPublicEvents: ["GET /events"],
@@ -12031,8 +12033,8 @@ module.exports = (function (modules, runtime) {
 						"GET /orgs/{org}/events",
 						{},
 						{
-							renamed: ["activity", "listPublicOrgEvents"],
-						},
+							renamed: ["activity", "listPublicOrgEvents"]
+						}
 					],
 					listPublicEventsForRepoNetwork: ["GET /networks/{owner}/{repo}/events"],
 					listPublicEventsForUser: ["GET /users/{username}/events/public"],
@@ -12051,16 +12053,16 @@ module.exports = (function (modules, runtime) {
 						"PUT /notifications",
 						{},
 						{
-							renamed: ["activity", "markNotificationsAsRead"],
-						},
+							renamed: ["activity", "markNotificationsAsRead"]
+						}
 					],
 					markNotificationsAsRead: ["PUT /notifications"],
 					markNotificationsAsReadForRepo: [
 						"PUT /repos/{owner}/{repo}/notifications",
 						{},
 						{
-							renamed: ["activity", "markRepoNotificationsAsRead"],
-						},
+							renamed: ["activity", "markRepoNotificationsAsRead"]
+						}
 					],
 					markRepoNotificationsAsRead: ["PUT /repos/{owner}/{repo}/notifications"],
 					markThreadAsRead: ["PATCH /notifications/threads/{thread_id}"],
@@ -12070,120 +12072,120 @@ module.exports = (function (modules, runtime) {
 						"PUT /user/starred/{owner}/{repo}",
 						{},
 						{
-							renamed: ["activity", "starRepoForAuthenticatedUser"],
-						},
+							renamed: ["activity", "starRepoForAuthenticatedUser"]
+						}
 					],
 					starRepoForAuthenticatedUser: ["PUT /user/starred/{owner}/{repo}"],
 					unstarRepo: [
 						"DELETE /user/starred/{owner}/{repo}",
 						{},
 						{
-							renamed: ["activity", "unstarRepoForAuthenticatedUser"],
-						},
+							renamed: ["activity", "unstarRepoForAuthenticatedUser"]
+						}
 					],
-					unstarRepoForAuthenticatedUser: ["DELETE /user/starred/{owner}/{repo}"],
+					unstarRepoForAuthenticatedUser: ["DELETE /user/starred/{owner}/{repo}"]
 				},
 				apps: {
 					addRepoToInstallation: [
 						"PUT /user/installations/{installation_id}/repositories/{repository_id}",
 						{
 							mediaType: {
-								previews: ["machine-man"],
-							},
-						},
+								previews: ["machine-man"]
+							}
+						}
 					],
 					checkAccountIsAssociatedWithAny: [
 						"GET /marketplace_listing/accounts/{account_id}",
 						{},
 						{
-							renamed: ["apps", "getSubscriptionPlanForAccount"],
-						},
+							renamed: ["apps", "getSubscriptionPlanForAccount"]
+						}
 					],
 					checkAccountIsAssociatedWithAnyStubbed: [
 						"GET /marketplace_listing/stubbed/accounts/{account_id}",
 						{},
 						{
-							renamed: ["apps", "getSubscriptionPlanForAccountStubbed"],
-						},
+							renamed: ["apps", "getSubscriptionPlanForAccountStubbed"]
+						}
 					],
 					checkToken: ["POST /applications/{client_id}/token"],
 					createContentAttachment: [
 						"POST /content_references/{content_reference_id}/attachments",
 						{
 							mediaType: {
-								previews: ["corsair"],
-							},
-						},
+								previews: ["corsair"]
+							}
+						}
 					],
 					createFromManifest: ["POST /app-manifests/{code}/conversions"],
 					createInstallationAccessToken: [
 						"POST /app/installations/{installation_id}/access_tokens",
 						{
 							mediaType: {
-								previews: ["machine-man"],
-							},
-						},
+								previews: ["machine-man"]
+							}
+						}
 					],
 					createInstallationToken: [
 						"POST /app/installations/{installation_id}/access_tokens",
 						{
 							mediaType: {
-								previews: ["machine-man"],
-							},
+								previews: ["machine-man"]
+							}
 						},
 						{
-							renamed: ["apps", "createInstallationAccessToken"],
-						},
+							renamed: ["apps", "createInstallationAccessToken"]
+						}
 					],
 					deleteAuthorization: ["DELETE /applications/{client_id}/grant"],
 					deleteInstallation: [
 						"DELETE /app/installations/{installation_id}",
 						{
 							mediaType: {
-								previews: ["machine-man"],
-							},
-						},
+								previews: ["machine-man"]
+							}
+						}
 					],
 					deleteToken: ["DELETE /applications/{client_id}/token"],
 					getAuthenticated: [
 						"GET /app",
 						{
 							mediaType: {
-								previews: ["machine-man"],
-							},
-						},
+								previews: ["machine-man"]
+							}
+						}
 					],
 					getBySlug: [
 						"GET /apps/{app_slug}",
 						{
 							mediaType: {
-								previews: ["machine-man"],
-							},
-						},
+								previews: ["machine-man"]
+							}
+						}
 					],
 					getInstallation: [
 						"GET /app/installations/{installation_id}",
 						{
 							mediaType: {
-								previews: ["machine-man"],
-							},
-						},
+								previews: ["machine-man"]
+							}
+						}
 					],
 					getOrgInstallation: [
 						"GET /orgs/{org}/installation",
 						{
 							mediaType: {
-								previews: ["machine-man"],
-							},
-						},
+								previews: ["machine-man"]
+							}
+						}
 					],
 					getRepoInstallation: [
 						"GET /repos/{owner}/{repo}/installation",
 						{
 							mediaType: {
-								previews: ["machine-man"],
-							},
-						},
+								previews: ["machine-man"]
+							}
+						}
 					],
 					getSubscriptionPlanForAccount: ["GET /marketplace_listing/accounts/{account_id}"],
 					getSubscriptionPlanForAccountStubbed: ["GET /marketplace_listing/stubbed/accounts/{account_id}"],
@@ -12191,9 +12193,9 @@ module.exports = (function (modules, runtime) {
 						"GET /users/{username}/installation",
 						{
 							mediaType: {
-								previews: ["machine-man"],
-							},
-						},
+								previews: ["machine-man"]
+							}
+						}
 					],
 					listAccountsForPlan: ["GET /marketplace_listing/plans/{plan_id}/accounts"],
 					listAccountsForPlanStubbed: ["GET /marketplace_listing/stubbed/plans/{plan_id}/accounts"],
@@ -12201,53 +12203,53 @@ module.exports = (function (modules, runtime) {
 						"GET /marketplace_listing/plans/{plan_id}/accounts",
 						{},
 						{
-							renamed: ["apps", "listAccountsForPlan"],
-						},
+							renamed: ["apps", "listAccountsForPlan"]
+						}
 					],
 					listAccountsUserOrOrgOnPlanStubbed: [
 						"GET /marketplace_listing/stubbed/plans/{plan_id}/accounts",
 						{},
 						{
-							renamed: ["apps", "listAccountsForPlanStubbed"],
-						},
+							renamed: ["apps", "listAccountsForPlanStubbed"]
+						}
 					],
 					listInstallationReposForAuthenticatedUser: [
 						"GET /user/installations/{installation_id}/repositories",
 						{
 							mediaType: {
-								previews: ["machine-man"],
-							},
-						},
+								previews: ["machine-man"]
+							}
+						}
 					],
 					listInstallations: [
 						"GET /app/installations",
 						{
 							mediaType: {
-								previews: ["machine-man"],
-							},
-						},
+								previews: ["machine-man"]
+							}
+						}
 					],
 					listInstallationsForAuthenticatedUser: [
 						"GET /user/installations",
 						{
 							mediaType: {
-								previews: ["machine-man"],
-							},
-						},
+								previews: ["machine-man"]
+							}
+						}
 					],
 					listMarketplacePurchasesForAuthenticatedUser: [
 						"GET /user/marketplace_purchases",
 						{},
 						{
-							renamed: ["apps", "listSubscriptionsForAuthenticatedUser"],
-						},
+							renamed: ["apps", "listSubscriptionsForAuthenticatedUser"]
+						}
 					],
 					listMarketplacePurchasesForAuthenticatedUserStubbed: [
 						"GET /user/marketplace_purchases/stubbed",
 						{},
 						{
-							renamed: ["apps", "listSubscriptionsForAuthenticatedUserStubbed"],
-						},
+							renamed: ["apps", "listSubscriptionsForAuthenticatedUserStubbed"]
+						}
 					],
 					listPlans: ["GET /marketplace_listing/plans"],
 					listPlansStubbed: ["GET /marketplace_listing/stubbed/plans"],
@@ -12255,20 +12257,20 @@ module.exports = (function (modules, runtime) {
 						"GET /installation/repositories",
 						{
 							mediaType: {
-								previews: ["machine-man"],
-							},
+								previews: ["machine-man"]
+							}
 						},
 						{
-							renamed: ["apps", "listReposAccessibleToInstallation"],
-						},
+							renamed: ["apps", "listReposAccessibleToInstallation"]
+						}
 					],
 					listReposAccessibleToInstallation: [
 						"GET /installation/repositories",
 						{
 							mediaType: {
-								previews: ["machine-man"],
-							},
-						},
+								previews: ["machine-man"]
+							}
+						}
 					],
 					listSubscriptionsForAuthenticatedUser: ["GET /user/marketplace_purchases"],
 					listSubscriptionsForAuthenticatedUserStubbed: ["GET /user/marketplace_purchases/stubbed"],
@@ -12276,9 +12278,9 @@ module.exports = (function (modules, runtime) {
 						"DELETE /user/installations/{installation_id}/repositories/{repository_id}",
 						{
 							mediaType: {
-								previews: ["machine-man"],
-							},
-						},
+								previews: ["machine-man"]
+							}
+						}
 					],
 					resetToken: ["PATCH /applications/{client_id}/token"],
 					revokeInstallationAccessToken: ["DELETE /installation/token"],
@@ -12286,145 +12288,145 @@ module.exports = (function (modules, runtime) {
 						"DELETE /installation/token",
 						{},
 						{
-							renamed: ["apps", "revokeInstallationAccessToken"],
-						},
+							renamed: ["apps", "revokeInstallationAccessToken"]
+						}
 					],
 					suspendInstallation: ["PUT /app/installations/{installation_id}/suspended"],
-					unsuspendInstallation: ["DELETE /app/installations/{installation_id}/suspended"],
+					unsuspendInstallation: ["DELETE /app/installations/{installation_id}/suspended"]
 				},
 				checks: {
 					create: [
 						"POST /repos/{owner}/{repo}/check-runs",
 						{
 							mediaType: {
-								previews: ["antiope"],
-							},
-						},
+								previews: ["antiope"]
+							}
+						}
 					],
 					createSuite: [
 						"POST /repos/{owner}/{repo}/check-suites",
 						{
 							mediaType: {
-								previews: ["antiope"],
-							},
-						},
+								previews: ["antiope"]
+							}
+						}
 					],
 					get: [
 						"GET /repos/{owner}/{repo}/check-runs/{check_run_id}",
 						{
 							mediaType: {
-								previews: ["antiope"],
-							},
-						},
+								previews: ["antiope"]
+							}
+						}
 					],
 					getSuite: [
 						"GET /repos/{owner}/{repo}/check-suites/{check_suite_id}",
 						{
 							mediaType: {
-								previews: ["antiope"],
-							},
-						},
+								previews: ["antiope"]
+							}
+						}
 					],
 					listAnnotations: [
 						"GET /repos/{owner}/{repo}/check-runs/{check_run_id}/annotations",
 						{
 							mediaType: {
-								previews: ["antiope"],
-							},
-						},
+								previews: ["antiope"]
+							}
+						}
 					],
 					listForRef: [
 						"GET /repos/{owner}/{repo}/commits/{ref}/check-runs",
 						{
 							mediaType: {
-								previews: ["antiope"],
-							},
-						},
+								previews: ["antiope"]
+							}
+						}
 					],
 					listForSuite: [
 						"GET /repos/{owner}/{repo}/check-suites/{check_suite_id}/check-runs",
 						{
 							mediaType: {
-								previews: ["antiope"],
-							},
-						},
+								previews: ["antiope"]
+							}
+						}
 					],
 					listSuitesForRef: [
 						"GET /repos/{owner}/{repo}/commits/{ref}/check-suites",
 						{
 							mediaType: {
-								previews: ["antiope"],
-							},
-						},
+								previews: ["antiope"]
+							}
+						}
 					],
 					rerequestSuite: [
 						"POST /repos/{owner}/{repo}/check-suites/{check_suite_id}/rerequest",
 						{
 							mediaType: {
-								previews: ["antiope"],
-							},
-						},
+								previews: ["antiope"]
+							}
+						}
 					],
 					setSuitesPreferences: [
 						"PATCH /repos/{owner}/{repo}/check-suites/preferences",
 						{
 							mediaType: {
-								previews: ["antiope"],
-							},
-						},
+								previews: ["antiope"]
+							}
+						}
 					],
 					update: [
 						"PATCH /repos/{owner}/{repo}/check-runs/{check_run_id}",
 						{
 							mediaType: {
-								previews: ["antiope"],
-							},
-						},
-					],
+								previews: ["antiope"]
+							}
+						}
+					]
 				},
 				codeScanning: {
 					getAlert: ["GET /repos/{owner}/{repo}/code-scanning/alerts/{alert_id}"],
-					listAlertsForRepo: ["GET /repos/{owner}/{repo}/code-scanning/alerts"],
+					listAlertsForRepo: ["GET /repos/{owner}/{repo}/code-scanning/alerts"]
 				},
 				codesOfConduct: {
 					getAllCodesOfConduct: [
 						"GET /codes_of_conduct",
 						{
 							mediaType: {
-								previews: ["scarlet-witch"],
-							},
-						},
+								previews: ["scarlet-witch"]
+							}
+						}
 					],
 					getConductCode: [
 						"GET /codes_of_conduct/{key}",
 						{
 							mediaType: {
-								previews: ["scarlet-witch"],
-							},
-						},
+								previews: ["scarlet-witch"]
+							}
+						}
 					],
 					getForRepo: [
 						"GET /repos/{owner}/{repo}/community/code_of_conduct",
 						{
 							mediaType: {
-								previews: ["scarlet-witch"],
-							},
-						},
+								previews: ["scarlet-witch"]
+							}
+						}
 					],
 					listConductCodes: [
 						"GET /codes_of_conduct",
 						{
 							mediaType: {
-								previews: ["scarlet-witch"],
-							},
+								previews: ["scarlet-witch"]
+							}
 						},
 						{
-							renamed: ["codesOfConduct", "getAllCodesOfConduct"],
-						},
-					],
+							renamed: ["codesOfConduct", "getAllCodesOfConduct"]
+						}
+					]
 				},
 				emojis: {
-					get: ["GET /emojis"],
+					get: ["GET /emojis"]
 				},
 				gists: {
 					checkIsStarred: ["GET /gists/{gist_id}/star"],
@@ -12446,14 +12448,14 @@ module.exports = (function (modules, runtime) {
 						"GET /users/{username}/gists",
 						{},
 						{
-							renamed: ["gists", "listForUser"],
-						},
+							renamed: ["gists", "listForUser"]
+						}
 					],
 					listStarred: ["GET /gists/starred"],
 					star: ["PUT /gists/{gist_id}/star"],
 					unstar: ["DELETE /gists/{gist_id}/star"],
 					update: ["PATCH /gists/{gist_id}"],
-					updateComment: ["PATCH /gists/{gist_id}/comments/{comment_id}"],
+					updateComment: ["PATCH /gists/{gist_id}/comments/{comment_id}"]
 				},
 				git: {
 					createBlob: ["POST /repos/{owner}/{repo}/git/blobs"],
@@ -12468,7 +12470,7 @@ module.exports = (function (modules, runtime) {
 					getTag: ["GET /repos/{owner}/{repo}/git/tags/{tag_sha}"],
 					getTree: ["GET /repos/{owner}/{repo}/git/trees/{tree_sha}"],
 					listMatchingRefs: ["GET /repos/{owner}/{repo}/git/matching-refs/{ref}"],
-					updateRef: ["PATCH /repos/{owner}/{repo}/git/refs/{ref}"],
+					updateRef: ["PATCH /repos/{owner}/{repo}/git/refs/{ref}"]
 				},
 				gitignore: {
 					getAllTemplates: ["GET /gitignore/templates"],
@@ -12477,81 +12479,81 @@ module.exports = (function (modules, runtime) {
 						"GET /gitignore/templates",
 						{},
 						{
-							renamed: ["gitignore", "getAllTemplates"],
-						},
-					],
+							renamed: ["gitignore", "getAllTemplates"]
+						}
+					]
 				},
 				interactions: {
 					addOrUpdateRestrictionsForOrg: [
 						"PUT /orgs/{org}/interaction-limits",
 						{
 							mediaType: {
-								previews: ["sombra"],
-							},
+								previews: ["sombra"]
+							}
 						},
 						{
-							renamed: ["interactions", "setRestrictionsForOrg"],
-						},
+							renamed: ["interactions", "setRestrictionsForOrg"]
+						}
 					],
 					addOrUpdateRestrictionsForRepo: [
 						"PUT /repos/{owner}/{repo}/interaction-limits",
 						{
 							mediaType: {
-								previews: ["sombra"],
-							},
+								previews: ["sombra"]
+							}
 						},
 						{
-							renamed: ["interactions", "setRestrictionsForRepo"],
-						},
+							renamed: ["interactions", "setRestrictionsForRepo"]
+						}
 					],
 					getRestrictionsForOrg: [
 						"GET /orgs/{org}/interaction-limits",
 						{
 							mediaType: {
-								previews: ["sombra"],
-							},
-						},
+								previews: ["sombra"]
+							}
+						}
 					],
 					getRestrictionsForRepo: [
 						"GET /repos/{owner}/{repo}/interaction-limits",
 						{
 							mediaType: {
-								previews: ["sombra"],
-							},
-						},
+								previews: ["sombra"]
+							}
+						}
 					],
 					removeRestrictionsForOrg: [
 						"DELETE /orgs/{org}/interaction-limits",
 						{
 							mediaType: {
-								previews: ["sombra"],
-							},
-						},
+								previews: ["sombra"]
+							}
+						}
 					],
 					removeRestrictionsForRepo: [
 						"DELETE /repos/{owner}/{repo}/interaction-limits",
 						{
 							mediaType: {
-								previews: ["sombra"],
-							},
-						},
+								previews: ["sombra"]
+							}
+						}
 					],
 					setRestrictionsForOrg: [
 						"PUT /orgs/{org}/interaction-limits",
 						{
 							mediaType: {
-								previews: ["sombra"],
-							},
-						},
+								previews: ["sombra"]
+							}
+						}
 					],
 					setRestrictionsForRepo: [
 						"PUT /repos/{owner}/{repo}/interaction-limits",
 						{
 							mediaType: {
-								previews: ["sombra"],
-							},
-						},
-					],
+								previews: ["sombra"]
+							}
+						}
+					]
 				},
 				issues: {
 					addAssignees: ["POST /repos/{owner}/{repo}/issues/{issue_number}/assignees"],
@@ -12560,8 +12562,8 @@ module.exports = (function (modules, runtime) {
 						"GET /repos/{owner}/{repo}/assignees/{assignee}",
 						{},
 						{
-							renamed: ["issues", "checkUserCanBeAssigned"],
-						},
+							renamed: ["issues", "checkUserCanBeAssigned"]
+						}
 					],
 					checkUserCanBeAssigned: ["GET /repos/{owner}/{repo}/assignees/{assignee}"],
 					create: ["POST /repos/{owner}/{repo}/issues"],
@@ -12586,9 +12588,9 @@ module.exports = (function (modules, runtime) {
 						"GET /repos/{owner}/{repo}/issues/{issue_number}/timeline",
 						{
 							mediaType: {
-								previews: ["mockingbird"],
-							},
-						},
+								previews: ["mockingbird"]
+							}
+						}
 					],
 					listForAuthenticatedUser: ["GET /user/issues"],
 					listForOrg: ["GET /orgs/{org}/issues"],
@@ -12601,8 +12603,8 @@ module.exports = (function (modules, runtime) {
 						"GET /repos/{owner}/{repo}/milestones",
 						{},
 						{
-							renamed: ["issues", "listMilestones"],
-						},
+							renamed: ["issues", "listMilestones"]
+						}
 					],
 					lock: ["PUT /repos/{owner}/{repo}/issues/{issue_number}/lock"],
 					removeAllLabels: ["DELETE /repos/{owner}/{repo}/issues/{issue_number}/labels"],
@@ -12612,29 +12614,29 @@ module.exports = (function (modules, runtime) {
 						"DELETE /repos/{owner}/{repo}/issues/{issue_number}/labels",
 						{},
 						{
-							renamed: ["issues", "removeAllLabels"],
-						},
+							renamed: ["issues", "removeAllLabels"]
+						}
 					],
 					replaceAllLabels: [
 						"PUT /repos/{owner}/{repo}/issues/{issue_number}/labels",
 						{},
 						{
-							renamed: ["issues", "setLabels"],
-						},
+							renamed: ["issues", "setLabels"]
+						}
 					],
 					replaceLabels: [
 						"PUT /repos/{owner}/{repo}/issues/{issue_number}/labels",
 						{},
 						{
-							renamed: ["issues", "replaceAllLabels"],
-						},
+							renamed: ["issues", "replaceAllLabels"]
+						}
 					],
 					setLabels: ["PUT /repos/{owner}/{repo}/issues/{issue_number}/labels"],
 					unlock: ["DELETE /repos/{owner}/{repo}/issues/{issue_number}/lock"],
 					update: ["PATCH /repos/{owner}/{repo}/issues/{issue_number}"],
 					updateComment: ["PATCH /repos/{owner}/{repo}/issues/comments/{comment_id}"],
 					updateLabel: ["PATCH /repos/{owner}/{repo}/labels/{name}"],
-					updateMilestone: ["PATCH /repos/{owner}/{repo}/milestones/{milestone_number}"],
+					updateMilestone: ["PATCH /repos/{owner}/{repo}/milestones/{milestone_number}"]
 				},
 				licenses: {
 					get: ["GET /licenses/{license}"],
@@ -12644,9 +12646,9 @@ module.exports = (function (modules, runtime) {
 						"GET /licenses",
 						{},
 						{
-							renamed: ["licenses", "getAllCommonlyUsed"],
-						},
-					],
+							renamed: ["licenses", "getAllCommonlyUsed"]
+						}
+					]
 				},
 				markdown: {
 					render: ["POST /markdown"],
@@ -12654,13 +12656,13 @@ module.exports = (function (modules, runtime) {
 						"POST /markdown/raw",
 						{
 							headers: {
-								"content-type": "text/plain; charset=utf-8",
-							},
-						},
-					],
+								"content-type": "text/plain; charset=utf-8"
+							}
+						}
+					]
 				},
 				meta: {
-					get: ["GET /meta"],
+					get: ["GET /meta"]
 				},
 				migrations: {
 					cancelImport: ["DELETE /repos/{owner}/{repo}/import"],
@@ -12668,41 +12670,41 @@ module.exports = (function (modules, runtime) {
 						"DELETE /user/migrations/{migration_id}/archive",
 						{
 							mediaType: {
-								previews: ["wyandotte"],
-							},
-						},
+								previews: ["wyandotte"]
+							}
+						}
 					],
 					deleteArchiveForOrg: [
 						"DELETE /orgs/{org}/migrations/{migration_id}/archive",
 						{
 							mediaType: {
-								previews: ["wyandotte"],
-							},
-						},
+								previews: ["wyandotte"]
+							}
+						}
 					],
 					downloadArchiveForOrg: [
 						"GET /orgs/{org}/migrations/{migration_id}/archive",
 						{
 							mediaType: {
-								previews: ["wyandotte"],
-							},
-						},
+								previews: ["wyandotte"]
+							}
+						}
 					],
 					getArchiveForAuthenticatedUser: [
 						"GET /user/migrations/{migration_id}/archive",
 						{
 							mediaType: {
-								previews: ["wyandotte"],
-							},
-						},
+								previews: ["wyandotte"]
+							}
+						}
 					],
 					getCommitAuthors: ["GET /repos/{owner}/{repo}/import/authors"],
 					getImportProgress: [
 						"GET /repos/{owner}/{repo}/import",
 						{},
 						{
-							renamed: ["migrations", "getImportStatus"],
-						},
+							renamed: ["migrations", "getImportStatus"]
+						}
 					],
 					getImportStatus: ["GET /repos/{owner}/{repo}/import"],
 					getLargeFiles: ["GET /repos/{owner}/{repo}/import/large_files"],
@@ -12710,49 +12712,49 @@ module.exports = (function (modules, runtime) {
 						"GET /user/migrations/{migration_id}",
 						{
 							mediaType: {
-								previews: ["wyandotte"],
-							},
-						},
+								previews: ["wyandotte"]
+							}
+						}
 					],
 					getStatusForOrg: [
 						"GET /orgs/{org}/migrations/{migration_id}",
 						{
 							mediaType: {
-								previews: ["wyandotte"],
-							},
-						},
+								previews: ["wyandotte"]
+							}
+						}
 					],
 					listForAuthenticatedUser: [
 						"GET /user/migrations",
 						{
 							mediaType: {
-								previews: ["wyandotte"],
-							},
-						},
+								previews: ["wyandotte"]
+							}
+						}
 					],
 					listForOrg: [
 						"GET /orgs/{org}/migrations",
 						{
 							mediaType: {
-								previews: ["wyandotte"],
-							},
-						},
+								previews: ["wyandotte"]
+							}
+						}
 					],
 					listReposForOrg: [
 						"GET /orgs/{org}/migrations/{migration_id}/repositories",
 						{
 							mediaType: {
-								previews: ["wyandotte"],
-							},
-						},
+								previews: ["wyandotte"]
+							}
+						}
 					],
 					listReposForUser: [
 						"GET /user/{migration_id}/repositories",
 						{
 							mediaType: {
-								previews: ["wyandotte"],
-							},
-						},
+								previews: ["wyandotte"]
+							}
+						}
 					],
 					mapCommitAuthor: ["PATCH /repos/{owner}/{repo}/import/authors/{author_id}"],
 					setLfsPreference: ["PATCH /repos/{owner}/{repo}/import/lfs"],
@@ -12763,27 +12765,27 @@ module.exports = (function (modules, runtime) {
 						"DELETE /user/migrations/{migration_id}/repos/{repo_name}/lock",
 						{
 							mediaType: {
-								previews: ["wyandotte"],
-							},
-						},
+								previews: ["wyandotte"]
+							}
+						}
 					],
 					unlockRepoForOrg: [
 						"DELETE /orgs/{org}/migrations/{migration_id}/repos/{repo_name}/lock",
 						{
 							mediaType: {
-								previews: ["wyandotte"],
-							},
-						},
+								previews: ["wyandotte"]
+							}
+						}
 					],
-					updateImport: ["PATCH /repos/{owner}/{repo}/import"],
+					updateImport: ["PATCH /repos/{owner}/{repo}/import"]
 				},
 				orgs: {
 					addOrUpdateMembership: [
 						"PUT /orgs/{org}/memberships/{username}",
 						{},
 						{
-							renamed: ["orgs", "setMembershipForUser"],
-						},
+							renamed: ["orgs", "setMembershipForUser"]
+						}
 					],
 					blockUser: ["PUT /orgs/{org}/blocks/{username}"],
 					checkBlockedUser: ["GET /orgs/{org}/blocks/{username}"],
@@ -12791,32 +12793,32 @@ module.exports = (function (modules, runtime) {
 						"GET /orgs/{org}/members/{username}",
 						{},
 						{
-							renamed: ["orgs", "checkMembershipForUser"],
-						},
+							renamed: ["orgs", "checkMembershipForUser"]
+						}
 					],
 					checkMembershipForUser: ["GET /orgs/{org}/members/{username}"],
 					checkPublicMembership: [
 						"GET /orgs/{org}/public_members/{username}",
 						{},
 						{
-							renamed: ["orgs", "checkPublicMembershipForUser"],
-						},
+							renamed: ["orgs", "checkPublicMembershipForUser"]
+						}
 					],
 					checkPublicMembershipForUser: ["GET /orgs/{org}/public_members/{username}"],
 					concealMembership: [
 						"DELETE /orgs/{org}/public_members/{username}",
 						{},
 						{
-							renamed: ["orgs", "removePublicMembershipForAuthenticatedUser"],
-						},
+							renamed: ["orgs", "removePublicMembershipForAuthenticatedUser"]
+						}
 					],
 					convertMemberToOutsideCollaborator: ["PUT /orgs/{org}/outside_collaborators/{username}"],
 					createHook: [
 						"POST /orgs/{org}/hooks",
 						{},
 						{
-							renamed: ["orgs", "createWebhook"],
-						},
+							renamed: ["orgs", "createWebhook"]
+						}
 					],
 					createInvitation: ["POST /orgs/{org}/invitations"],
 					createWebhook: ["POST /orgs/{org}/hooks"],
@@ -12824,8 +12826,8 @@ module.exports = (function (modules, runtime) {
 						"DELETE /orgs/{org}/hooks/{hook_id}",
 						{},
 						{
-							renamed: ["orgs", "deleteWebhook"],
-						},
+							renamed: ["orgs", "deleteWebhook"]
+						}
 					],
 					deleteWebhook: ["DELETE /orgs/{org}/hooks/{hook_id}"],
 					get: ["GET /orgs/{org}"],
@@ -12833,15 +12835,15 @@ module.exports = (function (modules, runtime) {
 						"GET /orgs/{org}/hooks/{hook_id}",
 						{},
 						{
-							renamed: ["orgs", "getWebhook"],
-						},
+							renamed: ["orgs", "getWebhook"]
+						}
 					],
 					getMembership: [
 						"GET /orgs/{org}/memberships/{username}",
 						{},
 						{
-							renamed: ["orgs", "getMembershipForUser"],
-						},
+							renamed: ["orgs", "getMembershipForUser"]
+						}
 					],
 					getMembershipForAuthenticatedUser: ["GET /user/memberships/orgs/{org}"],
 					getMembershipForUser: ["GET /orgs/{org}/memberships/{username}"],
@@ -12851,9 +12853,9 @@ module.exports = (function (modules, runtime) {
 						"GET /orgs/{org}/installations",
 						{
 							mediaType: {
-								previews: ["machine-man"],
-							},
-						},
+								previews: ["machine-man"]
+							}
+						}
 					],
 					listBlockedUsers: ["GET /orgs/{org}/blocks"],
 					listForAuthenticatedUser: ["GET /user/orgs"],
@@ -12862,19 +12864,19 @@ module.exports = (function (modules, runtime) {
 						"GET /orgs/{org}/hooks",
 						{},
 						{
-							renamed: ["orgs", "listWebhooks"],
-						},
+							renamed: ["orgs", "listWebhooks"]
+						}
 					],
 					listInstallations: [
 						"GET /orgs/{org}/installations",
 						{
 							mediaType: {
-								previews: ["machine-man"],
-							},
+								previews: ["machine-man"]
+							}
 						},
 						{
-							renamed: ["orgs", "listAppInstallations"],
-						},
+							renamed: ["orgs", "listAppInstallations"]
+						}
 					],
 					listInvitationTeams: ["GET /orgs/{org}/invitations/{invitation_id}/teams"],
 					listMembers: ["GET /orgs/{org}/members"],
@@ -12882,8 +12884,8 @@ module.exports = (function (modules, runtime) {
 						"GET /user/memberships/orgs",
 						{},
 						{
-							renamed: ["orgs", "listMembershipsForAuthenticatedUser"],
-						},
+							renamed: ["orgs", "listMembershipsForAuthenticatedUser"]
+						}
 					],
 					listMembershipsForAuthenticatedUser: ["GET /user/memberships/orgs"],
 					listOutsideCollaborators: ["GET /orgs/{org}/outside_collaborators"],
@@ -12894,24 +12896,24 @@ module.exports = (function (modules, runtime) {
 						"POST /orgs/{org}/hooks/{hook_id}/pings",
 						{},
 						{
-							renamed: ["orgs", "pingWebhook"],
-						},
+							renamed: ["orgs", "pingWebhook"]
+						}
 					],
 					pingWebhook: ["POST /orgs/{org}/hooks/{hook_id}/pings"],
 					publicizeMembership: [
 						"PUT /orgs/{org}/public_members/{username}",
 						{},
 						{
-							renamed: ["orgs", "setPublicMembershipForAuthenticatedUser"],
-						},
+							renamed: ["orgs", "setPublicMembershipForAuthenticatedUser"]
+						}
 					],
 					removeMember: ["DELETE /orgs/{org}/members/{username}"],
 					removeMembership: [
 						"DELETE /orgs/{org}/memberships/{username}",
 						{},
 						{
-							renamed: ["orgs", "removeMembershipForUser"],
-						},
+							renamed: ["orgs", "removeMembershipForUser"]
+						}
 					],
 					removeMembershipForUser: ["DELETE /orgs/{org}/memberships/{username}"],
 					removeOutsideCollaborator: ["DELETE /orgs/{org}/outside_collaborators/{username}"],
@@ -12924,231 +12926,231 @@ module.exports = (function (modules, runtime) {
 						"PATCH /orgs/{org}/hooks/{hook_id}",
 						{},
 						{
-							renamed: ["orgs", "updateWebhook"],
-						},
+							renamed: ["orgs", "updateWebhook"]
+						}
 					],
 					updateMembership: [
 						"PATCH /user/memberships/orgs/{org}",
 						{},
 						{
-							renamed: ["orgs", "updateMembershipForAuthenticatedUser"],
-						},
+							renamed: ["orgs", "updateMembershipForAuthenticatedUser"]
+						}
 					],
 					updateMembershipForAuthenticatedUser: ["PATCH /user/memberships/orgs/{org}"],
-					updateWebhook: ["PATCH /orgs/{org}/hooks/{hook_id}"],
+					updateWebhook: ["PATCH /orgs/{org}/hooks/{hook_id}"]
 				},
 				projects: {
 					addCollaborator: [
 						"PUT /projects/{project_id}/collaborators/{username}",
 						{
 							mediaType: {
-								previews: ["inertia"],
-							},
-						},
+								previews: ["inertia"]
+							}
+						}
 					],
 					createCard: [
 						"POST /projects/columns/{column_id}/cards",
 						{
 							mediaType: {
-								previews: ["inertia"],
-							},
-						},
+								previews: ["inertia"]
+							}
+						}
 					],
 					createColumn: [
 						"POST /projects/{project_id}/columns",
 						{
 							mediaType: {
-								previews: ["inertia"],
-							},
-						},
+								previews: ["inertia"]
+							}
+						}
 					],
 					createForAuthenticatedUser: [
 						"POST /user/projects",
 						{
 							mediaType: {
-								previews: ["inertia"],
-							},
-						},
+								previews: ["inertia"]
+							}
+						}
 					],
 					createForOrg: [
 						"POST /orgs/{org}/projects",
 						{
 							mediaType: {
-								previews: ["inertia"],
-							},
-						},
+								previews: ["inertia"]
+							}
+						}
 					],
 					createForRepo: [
 						"POST /repos/{owner}/{repo}/projects",
 						{
 							mediaType: {
-								previews: ["inertia"],
-							},
-						},
+								previews: ["inertia"]
+							}
+						}
 					],
 					delete: [
 						"DELETE /projects/{project_id}",
 						{
 							mediaType: {
-								previews: ["inertia"],
-							},
-						},
+								previews: ["inertia"]
+							}
+						}
 					],
 					deleteCard: [
 						"DELETE /projects/columns/cards/{card_id}",
 						{
 							mediaType: {
-								previews: ["inertia"],
-							},
-						},
+								previews: ["inertia"]
+							}
+						}
 					],
 					deleteColumn: [
 						"DELETE /projects/columns/{column_id}",
 						{
 							mediaType: {
-								previews: ["inertia"],
-							},
-						},
+								previews: ["inertia"]
+							}
+						}
 					],
 					get: [
 						"GET /projects/{project_id}",
 						{
 							mediaType: {
-								previews: ["inertia"],
-							},
-						},
+								previews: ["inertia"]
+							}
+						}
 					],
 					getCard: [
 						"GET /projects/columns/cards/{card_id}",
 						{
 							mediaType: {
-								previews: ["inertia"],
-							},
-						},
+								previews: ["inertia"]
+							}
+						}
 					],
 					getColumn: [
 						"GET /projects/columns/{column_id}",
 						{
 							mediaType: {
-								previews: ["inertia"],
-							},
-						},
+								previews: ["inertia"]
+							}
+						}
 					],
 					getPermissionForUser: [
 						"GET /projects/{project_id}/collaborators/{username}/permission",
 						{
 							mediaType: {
-								previews: ["inertia"],
-							},
-						},
+								previews: ["inertia"]
+							}
+						}
 					],
 					listCards: [
 						"GET /projects/columns/{column_id}/cards",
 						{
 							mediaType: {
-								previews: ["inertia"],
-							},
-						},
+								previews: ["inertia"]
+							}
+						}
 					],
 					listCollaborators: [
 						"GET /projects/{project_id}/collaborators",
 						{
 							mediaType: {
-								previews: ["inertia"],
-							},
-						},
+								previews: ["inertia"]
+							}
+						}
 					],
 					listColumns: [
 						"GET /projects/{project_id}/columns",
 						{
 							mediaType: {
-								previews: ["inertia"],
-							},
-						},
+								previews: ["inertia"]
+							}
+						}
 					],
 					listForOrg: [
 						"GET /orgs/{org}/projects",
 						{
 							mediaType: {
-								previews: ["inertia"],
-							},
-						},
+								previews: ["inertia"]
+							}
+						}
 					],
 					listForRepo: [
 						"GET /repos/{owner}/{repo}/projects",
 						{
 							mediaType: {
-								previews: ["inertia"],
-							},
-						},
+								previews: ["inertia"]
+							}
+						}
 					],
 					listForUser: [
 						"GET /users/{username}/projects",
 						{
 							mediaType: {
-								previews: ["inertia"],
-							},
-						},
+								previews: ["inertia"]
+							}
+						}
 					],
 					moveCard: [
 						"POST /projects/columns/cards/{card_id}/moves",
 						{
 							mediaType: {
-								previews: ["inertia"],
-							},
-						},
+								previews: ["inertia"]
+							}
+						}
 					],
 					moveColumn: [
 						"POST /projects/columns/{column_id}/moves",
 						{
 							mediaType: {
-								previews: ["inertia"],
-							},
-						},
+								previews: ["inertia"]
+							}
+						}
 					],
 					removeCollaborator: [
 						"DELETE /projects/{project_id}/collaborators/{username}",
 						{
 							mediaType: {
-								previews: ["inertia"],
-							},
-						},
+								previews: ["inertia"]
+							}
+						}
 					],
 					reviewUserPermissionLevel: [
 						"GET /projects/{project_id}/collaborators/{username}/permission",
 						{
 							mediaType: {
-								previews: ["inertia"],
-							},
+								previews: ["inertia"]
+							}
 						},
 						{
-							renamed: ["projects", "getPermissionForUser"],
-						},
+							renamed: ["projects", "getPermissionForUser"]
+						}
 					],
 					update: [
 						"PATCH /projects/{project_id}",
 						{
 							mediaType: {
-								previews: ["inertia"],
-							},
-						},
+								previews: ["inertia"]
+							}
+						}
 					],
 					updateCard: [
 						"PATCH /projects/columns/cards/{card_id}",
 						{
 							mediaType: {
-								previews: ["inertia"],
-							},
-						},
+								previews: ["inertia"]
+							}
+						}
 					],
 					updateColumn: [
 						"PATCH /projects/columns/{column_id}",
 						{
 							mediaType: {
-								previews: ["inertia"],
-							},
-						},
-					],
+								previews: ["inertia"]
+							}
+						}
+					]
 				},
 				pulls: {
 					checkIfMerged: ["GET /repos/{owner}/{repo}/pulls/{pull_number}/merge"],
@@ -13157,8 +13159,8 @@ module.exports = (function (modules, runtime) {
 						"POST /repos/{owner}/{repo}/pulls/{pull_number}/comments",
 						{},
 						{
-							renamed: ["pulls", "createReviewComment"],
-						},
+							renamed: ["pulls", "createReviewComment"]
+						}
 					],
 					createReplyForReviewComment: ["POST /repos/{owner}/{repo}/pulls/{pull_number}/comments/{comment_id}/replies"],
 					createReview: ["POST /repos/{owner}/{repo}/pulls/{pull_number}/reviews"],
@@ -13167,22 +13169,22 @@ module.exports = (function (modules, runtime) {
 						"POST /repos/{owner}/{repo}/pulls/{pull_number}/comments/{comment_id}/replies",
 						{},
 						{
-							renamed: ["pulls", "createReplyForReviewComment"],
-						},
+							renamed: ["pulls", "createReplyForReviewComment"]
+						}
 					],
 					createReviewRequest: [
 						"POST /repos/{owner}/{repo}/pulls/{pull_number}/requested_reviewers",
 						{},
 						{
-							renamed: ["pulls", "requestReviewers"],
-						},
+							renamed: ["pulls", "requestReviewers"]
+						}
 					],
 					deleteComment: [
 						"DELETE /repos/{owner}/{repo}/pulls/comments/{comment_id}",
 						{},
 						{
-							renamed: ["pulls", "deleteReviewComment"],
-						},
+							renamed: ["pulls", "deleteReviewComment"]
+						}
 					],
 					deletePendingReview: ["DELETE /repos/{owner}/{repo}/pulls/{pull_number}/reviews/{review_id}"],
 					deleteReviewComment: ["DELETE /repos/{owner}/{repo}/pulls/comments/{comment_id}"],
@@ -13190,8 +13192,8 @@ module.exports = (function (modules, runtime) {
 						"DELETE /repos/{owner}/{repo}/pulls/{pull_number}/requested_reviewers",
 						{},
 						{
-							renamed: ["pulls", "removeRequestedReviewers"],
-						},
+							renamed: ["pulls", "removeRequestedReviewers"]
+						}
 					],
 					dismissReview: ["PUT /repos/{owner}/{repo}/pulls/{pull_number}/reviews/{review_id}/dismissals"],
 					get: ["GET /repos/{owner}/{repo}/pulls/{pull_number}"],
@@ -13199,15 +13201,15 @@ module.exports = (function (modules, runtime) {
 						"GET /repos/{owner}/{repo}/pulls/comments/{comment_id}",
 						{},
 						{
-							renamed: ["pulls", "getReviewComment"],
-						},
+							renamed: ["pulls", "getReviewComment"]
+						}
 					],
 					getCommentsForReview: [
 						"GET /repos/{owner}/{repo}/pulls/{pull_number}/reviews/{review_id}/comments",
 						{},
 						{
-							renamed: ["pulls", "listCommentsForReview"],
-						},
+							renamed: ["pulls", "listCommentsForReview"]
+						}
 					],
 					getReview: ["GET /repos/{owner}/{repo}/pulls/{pull_number}/reviews/{review_id}"],
 					getReviewComment: ["GET /repos/{owner}/{repo}/pulls/comments/{comment_id}"],
@@ -13216,15 +13218,15 @@ module.exports = (function (modules, runtime) {
 						"GET /repos/{owner}/{repo}/pulls/{pull_number}/comments",
 						{},
 						{
-							renamed: ["pulls", "listReviewComments"],
-						},
+							renamed: ["pulls", "listReviewComments"]
+						}
 					],
 					listCommentsForRepo: [
 						"GET /repos/{owner}/{repo}/pulls/comments",
 						{},
 						{
-							renamed: ["pulls", "listReviewCommentsForRepo"],
-						},
+							renamed: ["pulls", "listReviewCommentsForRepo"]
+						}
 					],
 					listCommentsForReview: ["GET /repos/{owner}/{repo}/pulls/{pull_number}/reviews/{review_id}/comments"],
 					listCommits: ["GET /repos/{owner}/{repo}/pulls/{pull_number}/commits"],
@@ -13236,8 +13238,8 @@ module.exports = (function (modules, runtime) {
 						"GET /repos/{owner}/{repo}/pulls/{pull_number}/requested_reviewers",
 						{},
 						{
-							renamed: ["pulls", "listRequestedReviewers"],
-						},
+							renamed: ["pulls", "listRequestedReviewers"]
+						}
 					],
 					listReviews: ["GET /repos/{owner}/{repo}/pulls/{pull_number}/reviews"],
 					merge: ["PUT /repos/{owner}/{repo}/pulls/{pull_number}/merge"],
@@ -13249,190 +13251,190 @@ module.exports = (function (modules, runtime) {
 						"PUT /repos/{owner}/{repo}/pulls/{pull_number}/update-branch",
 						{
 							mediaType: {
-								previews: ["lydian"],
-							},
-						},
+								previews: ["lydian"]
+							}
+						}
 					],
 					updateComment: [
 						"PATCH /repos/{owner}/{repo}/pulls/comments/{comment_id}",
 						{},
 						{
-							renamed: ["pulls", "updateReviewComment"],
-						},
+							renamed: ["pulls", "updateReviewComment"]
+						}
 					],
 					updateReview: ["PUT /repos/{owner}/{repo}/pulls/{pull_number}/reviews/{review_id}"],
-					updateReviewComment: ["PATCH /repos/{owner}/{repo}/pulls/comments/{comment_id}"],
+					updateReviewComment: ["PATCH /repos/{owner}/{repo}/pulls/comments/{comment_id}"]
 				},
 				rateLimit: {
-					get: ["GET /rate_limit"],
+					get: ["GET /rate_limit"]
 				},
 				reactions: {
 					createForCommitComment: [
 						"POST /repos/{owner}/{repo}/comments/{comment_id}/reactions",
 						{
 							mediaType: {
-								previews: ["squirrel-girl"],
-							},
-						},
+								previews: ["squirrel-girl"]
+							}
+						}
 					],
 					createForIssue: [
 						"POST /repos/{owner}/{repo}/issues/{issue_number}/reactions",
 						{
 							mediaType: {
-								previews: ["squirrel-girl"],
-							},
-						},
+								previews: ["squirrel-girl"]
+							}
+						}
 					],
 					createForIssueComment: [
 						"POST /repos/{owner}/{repo}/issues/comments/{comment_id}/reactions",
 						{
 							mediaType: {
-								previews: ["squirrel-girl"],
-							},
-						},
+								previews: ["squirrel-girl"]
+							}
+						}
 					],
 					createForPullRequestReviewComment: [
 						"POST /repos/{owner}/{repo}/pulls/comments/{comment_id}/reactions",
 						{
 							mediaType: {
-								previews: ["squirrel-girl"],
-							},
-						},
+								previews: ["squirrel-girl"]
+							}
+						}
 					],
 					createForTeamDiscussionCommentInOrg: [
 						"POST /orgs/{org}/teams/{team_slug}/discussions/{discussion_number}/comments/{comment_number}/reactions",
 						{
 							mediaType: {
-								previews: ["squirrel-girl"],
-							},
-						},
+								previews: ["squirrel-girl"]
+							}
+						}
 					],
 					createForTeamDiscussionInOrg: [
 						"POST /orgs/{org}/teams/{team_slug}/discussions/{discussion_number}/reactions",
 						{
 							mediaType: {
-								previews: ["squirrel-girl"],
-							},
-						},
+								previews: ["squirrel-girl"]
+							}
+						}
 					],
 					delete: [
 						"DELETE /reactions/{reaction_id}",
 						{
 							mediaType: {
-								previews: ["squirrel-girl"],
-							},
+								previews: ["squirrel-girl"]
+							}
 						},
 						{
-							renamed: ["reactions", "deleteLegacy"],
-						},
+							renamed: ["reactions", "deleteLegacy"]
+						}
 					],
 					deleteForCommitComment: [
 						"DELETE /repos/{owner}/{repo}/comments/{comment_id}/reactions/{reaction_id}",
 						{
 							mediaType: {
-								previews: ["squirrel-girl"],
-							},
-						},
+								previews: ["squirrel-girl"]
+							}
+						}
 					],
 					deleteForIssue: [
 						"DELETE /repos/{owner}/{repo}/issues/{issue_number}/reactions/{reaction_id}",
 						{
 							mediaType: {
-								previews: ["squirrel-girl"],
-							},
-						},
+								previews: ["squirrel-girl"]
+							}
+						}
 					],
 					deleteForIssueComment: [
 						"DELETE /repos/{owner}/{repo}/issues/comments/{comment_id}/reactions/{reaction_id}",
 						{
 							mediaType: {
-								previews: ["squirrel-girl"],
-							},
-						},
+								previews: ["squirrel-girl"]
+							}
+						}
 					],
 					deleteForPullRequestComment: [
 						"DELETE /repos/{owner}/{repo}/pulls/comments/{comment_id}/reactions/{reaction_id}",
 						{
 							mediaType: {
-								previews: ["squirrel-girl"],
-							},
-						},
+								previews: ["squirrel-girl"]
+							}
+						}
 					],
 					deleteForTeamDiscussion: [
 						"DELETE /orgs/{org}/teams/{team_slug}/discussions/{discussion_number}/reactions/{reaction_id}",
 						{
 							mediaType: {
-								previews: ["squirrel-girl"],
-							},
-						},
+								previews: ["squirrel-girl"]
+							}
+						}
 					],
 					deleteForTeamDiscussionComment: [
 						"DELETE /orgs/{org}/teams/{team_slug}/discussions/{discussion_number}/comments/{comment_number}/reactions/{reaction_id}",
 						{
 							mediaType: {
-								previews: ["squirrel-girl"],
-							},
-						},
+								previews: ["squirrel-girl"]
+							}
+						}
 					],
 					deleteLegacy: [
 						"DELETE /reactions/{reaction_id}",
 						{
 							mediaType: {
-								previews: ["squirrel-girl"],
-							},
+								previews: ["squirrel-girl"]
+							}
 						},
 						{
-							deprecated: "octokit.reactions.deleteLegacy() is deprecated, see https://developer.github.com/v3/reactions/#delete-a-reaction-legacy",
-						},
+							deprecated: "octokit.reactions.deleteLegacy() is deprecated, see https://developer.github.com/v3/reactions/#delete-a-reaction-legacy"
+						}
 					],
 					listForCommitComment: [
 						"GET /repos/{owner}/{repo}/comments/{comment_id}/reactions",
 						{
 							mediaType: {
-								previews: ["squirrel-girl"],
-							},
-						},
+								previews: ["squirrel-girl"]
+							}
+						}
 					],
 					listForIssue: [
 						"GET /repos/{owner}/{repo}/issues/{issue_number}/reactions",
 						{
 							mediaType: {
-								previews: ["squirrel-girl"],
-							},
-						},
+								previews: ["squirrel-girl"]
+							}
+						}
 					],
 					listForIssueComment: [
 						"GET /repos/{owner}/{repo}/issues/comments/{comment_id}/reactions",
 						{
 							mediaType: {
-								previews: ["squirrel-girl"],
-							},
-						},
+								previews: ["squirrel-girl"]
+							}
+						}
 					],
 					listForPullRequestReviewComment: [
 						"GET /repos/{owner}/{repo}/pulls/comments/{comment_id}/reactions",
 						{
 							mediaType: {
-								previews: ["squirrel-girl"],
-							},
-						},
+								previews: ["squirrel-girl"]
+							}
+						}
 					],
 					listForTeamDiscussionCommentInOrg: [
 						"GET /orgs/{org}/teams/{team_slug}/discussions/{discussion_number}/comments/{comment_number}/reactions",
 						{
 							mediaType: {
-								previews: ["squirrel-girl"],
-							},
-						},
+								previews: ["squirrel-girl"]
+							}
+						}
 					],
 					listForTeamDiscussionInOrg: [
 						"GET /orgs/{org}/teams/{team_slug}/discussions/{discussion_number}/reactions",
 						{
 							mediaType: {
-								previews: ["squirrel-girl"],
-							},
-						},
-					],
+								previews: ["squirrel-girl"]
+							}
+						}
+					]
 				},
 				repos: {
 					acceptInvitation: ["PATCH /user/repository_invitations/{invitation_id}"],
@@ -13440,96 +13442,96 @@ module.exports = (function (modules, runtime) {
 						"POST /repos/{owner}/{repo}/branches/{branch}/protection/restrictions/apps",
 						{},
 						{
-							mapToData: "apps",
-						},
+							mapToData: "apps"
+						}
 					],
 					addCollaborator: ["PUT /repos/{owner}/{repo}/collaborators/{username}"],
 					addDeployKey: [
 						"POST /repos/{owner}/{repo}/keys",
 						{},
 						{
-							renamed: ["repos", "createDeployKey"],
-						},
+							renamed: ["repos", "createDeployKey"]
+						}
 					],
 					addProtectedBranchAdminEnforcement: [
 						"POST /repos/{owner}/{repo}/branches/{branch}/protection/enforce_admins",
 						{},
 						{
-							renamed: ["repos", "setAdminBranchProtection"],
-						},
+							renamed: ["repos", "setAdminBranchProtection"]
+						}
 					],
 					addProtectedBranchAppRestrictions: [
 						"POST /repos/{owner}/{repo}/branches/{branch}/protection/restrictions/apps",
 						{},
 						{
 							mapToData: "apps",
-							renamed: ["repos", "addAppAccessRestrictions"],
-						},
+							renamed: ["repos", "addAppAccessRestrictions"]
+						}
 					],
 					addProtectedBranchRequiredSignatures: [
 						"POST /repos/{owner}/{repo}/branches/{branch}/protection/required_signatures",
 						{
 							mediaType: {
-								previews: ["zzzax"],
-							},
+								previews: ["zzzax"]
+							}
 						},
 						{
-							renamed: ["repos", "createCommitSignatureProtection"],
-						},
+							renamed: ["repos", "createCommitSignatureProtection"]
+						}
 					],
 					addProtectedBranchRequiredStatusChecksContexts: [
 						"POST /repos/{owner}/{repo}/branches/{branch}/protection/required_status_checks/contexts",
 						{},
 						{
 							mapToData: "contexts",
-							renamed: ["repos", "addStatusCheckContexts"],
-						},
+							renamed: ["repos", "addStatusCheckContexts"]
+						}
 					],
 					addProtectedBranchTeamRestrictions: [
 						"POST /repos/{owner}/{repo}/branches/{branch}/protection/restrictions/teams",
 						{},
 						{
 							mapToData: "teams",
-							renamed: ["repos", "addTeamAccessRestrictions"],
-						},
+							renamed: ["repos", "addTeamAccessRestrictions"]
+						}
 					],
 					addProtectedBranchUserRestrictions: [
 						"POST /repos/{owner}/{repo}/branches/{branch}/protection/restrictions/users",
 						{},
 						{
 							mapToData: "users",
-							renamed: ["repos", "addUserAccessRestrictions"],
-						},
+							renamed: ["repos", "addUserAccessRestrictions"]
+						}
 					],
 					addStatusCheckContexts: [
 						"POST /repos/{owner}/{repo}/branches/{branch}/protection/required_status_checks/contexts",
 						{},
 						{
-							mapToData: "contexts",
-						},
+							mapToData: "contexts"
+						}
 					],
 					addTeamAccessRestrictions: [
 						"POST /repos/{owner}/{repo}/branches/{branch}/protection/restrictions/teams",
 						{},
 						{
-							mapToData: "teams",
-						},
+							mapToData: "teams"
+						}
 					],
 					addUserAccessRestrictions: [
 						"POST /repos/{owner}/{repo}/branches/{branch}/protection/restrictions/users",
 						{},
 						{
-							mapToData: "users",
-						},
+							mapToData: "users"
+						}
 					],
 					checkCollaborator: ["GET /repos/{owner}/{repo}/collaborators/{username}"],
 					checkVulnerabilityAlerts: [
 						"GET /repos/{owner}/{repo}/vulnerability-alerts",
 						{
 							mediaType: {
-								previews: ["dorian"],
-							},
-						},
+								previews: ["dorian"]
+							}
+						}
 					],
 					compareCommits: ["GET /repos/{owner}/{repo}/compare/{base}...{head}"],
 					createCommitComment: ["POST /repos/{owner}/{repo}/commits/{commit_sha}/comments"],
@@ -13537,9 +13539,9 @@ module.exports = (function (modules, runtime) {
 						"POST /repos/{owner}/{repo}/branches/{branch}/protection/required_signatures",
 						{
 							mediaType: {
-								previews: ["zzzax"],
-							},
-						},
+								previews: ["zzzax"]
+							}
+						}
 					],
 					createCommitStatus: ["POST /repos/{owner}/{repo}/statuses/{sha}"],
 					createDeployKey: ["POST /repos/{owner}/{repo}/keys"],
@@ -13552,41 +13554,41 @@ module.exports = (function (modules, runtime) {
 						"POST /repos/{owner}/{repo}/hooks",
 						{},
 						{
-							renamed: ["repos", "createWebhook"],
-						},
+							renamed: ["repos", "createWebhook"]
+						}
 					],
 					createInOrg: ["POST /orgs/{org}/repos"],
 					createOrUpdateFile: [
 						"PUT /repos/{owner}/{repo}/contents/{path}",
 						{},
 						{
-							renamed: ["repos", "createOrUpdateFileContents"],
-						},
+							renamed: ["repos", "createOrUpdateFileContents"]
+						}
 					],
 					createOrUpdateFileContents: ["PUT /repos/{owner}/{repo}/contents/{path}"],
 					createPagesSite: [
 						"POST /repos/{owner}/{repo}/pages",
 						{
 							mediaType: {
-								previews: ["switcheroo"],
-							},
-						},
+								previews: ["switcheroo"]
+							}
+						}
 					],
 					createRelease: ["POST /repos/{owner}/{repo}/releases"],
 					createStatus: [
 						"POST /repos/{owner}/{repo}/statuses/{sha}",
 						{},
 						{
-							renamed: ["repos", "createCommitStatus"],
-						},
+							renamed: ["repos", "createCommitStatus"]
+						}
 					],
 					createUsingTemplate: [
 						"POST /repos/{template_owner}/{template_repo}/generate",
 						{
 							mediaType: {
-								previews: ["baptiste"],
-							},
-						},
+								previews: ["baptiste"]
+							}
+						}
 					],
 					createWebhook: ["POST /repos/{owner}/{repo}/hooks"],
 					declineInvitation: ["DELETE /user/repository_invitations/{invitation_id}"],
@@ -13599,9 +13601,9 @@ module.exports = (function (modules, runtime) {
 						"DELETE /repos/{owner}/{repo}/branches/{branch}/protection/required_signatures",
 						{
 							mediaType: {
-								previews: ["zzzax"],
-							},
-						},
+								previews: ["zzzax"]
+							}
+						}
 					],
 					deleteDeployKey: ["DELETE /repos/{owner}/{repo}/keys/{key_id}"],
 					deleteDeployment: ["DELETE /repos/{owner}/{repo}/deployments/{deployment_id}"],
@@ -13611,17 +13613,17 @@ module.exports = (function (modules, runtime) {
 						"DELETE /repos/{owner}/{repo}/hooks/{hook_id}",
 						{},
 						{
-							renamed: ["repos", "deleteWebhook"],
-						},
+							renamed: ["repos", "deleteWebhook"]
+						}
 					],
 					deleteInvitation: ["DELETE /repos/{owner}/{repo}/invitations/{invitation_id}"],
 					deletePagesSite: [
 						"DELETE /repos/{owner}/{repo}/pages",
 						{
 							mediaType: {
-								previews: ["switcheroo"],
-							},
-						},
+								previews: ["switcheroo"]
+							}
+						}
 					],
 					deletePullRequestReviewProtection: ["DELETE /repos/{owner}/{repo}/branches/{branch}/protection/required_pull_request_reviews"],
 					deleteRelease: ["DELETE /repos/{owner}/{repo}/releases/{release_id}"],
@@ -13631,56 +13633,56 @@ module.exports = (function (modules, runtime) {
 						"DELETE /repos/{owner}/{repo}/automated-security-fixes",
 						{
 							mediaType: {
-								previews: ["london"],
-							},
-						},
+								previews: ["london"]
+							}
+						}
 					],
 					disablePagesSite: [
 						"DELETE /repos/{owner}/{repo}/pages",
 						{
 							mediaType: {
-								previews: ["switcheroo"],
-							},
+								previews: ["switcheroo"]
+							}
 						},
 						{
-							renamed: ["repos", "deletePagesSite"],
-						},
+							renamed: ["repos", "deletePagesSite"]
+						}
 					],
 					disableVulnerabilityAlerts: [
 						"DELETE /repos/{owner}/{repo}/vulnerability-alerts",
 						{
 							mediaType: {
-								previews: ["dorian"],
-							},
-						},
+								previews: ["dorian"]
+							}
+						}
 					],
 					downloadArchive: ["GET /repos/{owner}/{repo}/{archive_format}/{ref}"],
 					enableAutomatedSecurityFixes: [
 						"PUT /repos/{owner}/{repo}/automated-security-fixes",
 						{
 							mediaType: {
-								previews: ["london"],
-							},
-						},
+								previews: ["london"]
+							}
+						}
 					],
 					enablePagesSite: [
 						"POST /repos/{owner}/{repo}/pages",
 						{
 							mediaType: {
-								previews: ["switcheroo"],
-							},
+								previews: ["switcheroo"]
+							}
 						},
 						{
-							renamed: ["repos", "createPagesSite"],
-						},
+							renamed: ["repos", "createPagesSite"]
+						}
 					],
 					enableVulnerabilityAlerts: [
 						"PUT /repos/{owner}/{repo}/vulnerability-alerts",
 						{
 							mediaType: {
-								previews: ["dorian"],
-							},
-						},
+								previews: ["dorian"]
+							}
+						}
 					],
 					get: ["GET /repos/{owner}/{repo}"],
 					getAccessRestrictions: ["GET /repos/{owner}/{repo}/branches/{branch}/protection/restrictions"],
@@ -13690,17 +13692,17 @@ module.exports = (function (modules, runtime) {
 						"GET /repos/{owner}/{repo}/topics",
 						{
 							mediaType: {
-								previews: ["mercy"],
-							},
-						},
+								previews: ["mercy"]
+							}
+						}
 					],
 					getAppsWithAccessToProtectedBranch: ["GET /repos/{owner}/{repo}/branches/{branch}/protection/restrictions/apps"],
 					getArchiveLink: [
 						"GET /repos/{owner}/{repo}/{archive_format}/{ref}",
 						{},
 						{
-							renamed: ["repos", "downloadArchive"],
-						},
+							renamed: ["repos", "downloadArchive"]
+						}
 					],
 					getBranch: ["GET /repos/{owner}/{repo}/branches/{branch}"],
 					getBranchProtection: ["GET /repos/{owner}/{repo}/branches/{branch}/protection"],
@@ -13715,9 +13717,9 @@ module.exports = (function (modules, runtime) {
 						"GET /repos/{owner}/{repo}/branches/{branch}/protection/required_signatures",
 						{
 							mediaType: {
-								previews: ["zzzax"],
-							},
-						},
+								previews: ["zzzax"]
+							}
+						}
 					],
 					getCommunityProfileMetrics: ["GET /repos/{owner}/{repo}/community/profile"],
 					getContent: ["GET /repos/{owner}/{repo}/contents/{path}"],
@@ -13725,8 +13727,8 @@ module.exports = (function (modules, runtime) {
 						"GET /repos/{owner}/{repo}/contents/{path}",
 						{},
 						{
-							renamed: ["repos", "getContent"],
-						},
+							renamed: ["repos", "getContent"]
+						}
 					],
 					getContributorsStats: ["GET /repos/{owner}/{repo}/stats/contributors"],
 					getDeployKey: ["GET /repos/{owner}/{repo}/keys/{key_id}"],
@@ -13737,8 +13739,8 @@ module.exports = (function (modules, runtime) {
 						"GET /repos/{owner}/{repo}/hooks/{hook_id}",
 						{},
 						{
-							renamed: ["repos", "getWebhook"],
-						},
+							renamed: ["repos", "getWebhook"]
+						}
 					],
 					getLatestPagesBuild: ["GET /repos/{owner}/{repo}/pages/builds/latest"],
 					getLatestRelease: ["GET /repos/{owner}/{repo}/releases/latest"],
@@ -13749,40 +13751,40 @@ module.exports = (function (modules, runtime) {
 						"GET /repos/{owner}/{repo}/branches/{branch}/protection/enforce_admins",
 						{},
 						{
-							renamed: ["repos", "getAdminBranchProtection"],
-						},
+							renamed: ["repos", "getAdminBranchProtection"]
+						}
 					],
 					getProtectedBranchPullRequestReviewEnforcement: [
 						"GET /repos/{owner}/{repo}/branches/{branch}/protection/required_pull_request_reviews",
 						{},
 						{
-							renamed: ["repos", "getPullRequestReviewProtection"],
-						},
+							renamed: ["repos", "getPullRequestReviewProtection"]
+						}
 					],
 					getProtectedBranchRequiredSignatures: [
 						"GET /repos/{owner}/{repo}/branches/{branch}/protection/required_signatures",
 						{
 							mediaType: {
-								previews: ["zzzax"],
-							},
+								previews: ["zzzax"]
+							}
 						},
 						{
-							renamed: ["repos", "getCommitSignatureProtection"],
-						},
+							renamed: ["repos", "getCommitSignatureProtection"]
+						}
 					],
 					getProtectedBranchRequiredStatusChecks: [
 						"GET /repos/{owner}/{repo}/branches/{branch}/protection/required_status_checks",
 						{},
 						{
-							renamed: ["repos", "getStatusChecksProtection"],
-						},
+							renamed: ["repos", "getStatusChecksProtection"]
+						}
 					],
 					getProtectedBranchRestrictions: [
 						"GET /repos/{owner}/{repo}/branches/{branch}/protection/restrictions",
 						{},
 						{
-							renamed: ["repos", "getAccessRestrictions"],
-						},
+							renamed: ["repos", "getAccessRestrictions"]
+						}
 					],
 					getPullRequestReviewProtection: ["GET /repos/{owner}/{repo}/branches/{branch}/protection/required_pull_request_reviews"],
 					getPunchCardStats: ["GET /repos/{owner}/{repo}/stats/punch_card"],
@@ -13801,24 +13803,24 @@ module.exports = (function (modules, runtime) {
 						"GET /user/repos",
 						{},
 						{
-							renamed: ["repos", "listForAuthenticatedUser"],
-						},
+							renamed: ["repos", "listForAuthenticatedUser"]
+						}
 					],
 					listAssetsForRelease: [
 						"GET /repos/{owner}/{repo}/releases/{release_id}/assets",
 						{},
 						{
-							renamed: ["repos", "listReleaseAssets"],
-						},
+							renamed: ["repos", "listReleaseAssets"]
+						}
 					],
 					listBranches: ["GET /repos/{owner}/{repo}/branches"],
 					listBranchesForHeadCommit: [
 						"GET /repos/{owner}/{repo}/commits/{commit_sha}/branches-where-head",
 						{
 							mediaType: {
-								previews: ["groot"],
-							},
-						},
+								previews: ["groot"]
+							}
+						}
 					],
 					listCollaborators: ["GET /repos/{owner}/{repo}/collaborators"],
 					listCommentsForCommit: ["GET /repos/{owner}/{repo}/commits/{commit_sha}/comments"],
@@ -13826,8 +13828,8 @@ module.exports = (function (modules, runtime) {
 						"GET /repos/{owner}/{repo}/comments",
 						{},
 						{
-							renamed: ["repos", "listCommitCommentsForRepo"],
-						},
+							renamed: ["repos", "listCommitCommentsForRepo"]
+						}
 					],
 					listCommitCommentsForRepo: ["GET /repos/{owner}/{repo}/comments"],
 					listCommitStatusesForRef: ["GET /repos/{owner}/{repo}/commits/{ref}/statuses"],
@@ -13845,8 +13847,8 @@ module.exports = (function (modules, runtime) {
 						"GET /repos/{owner}/{repo}/hooks",
 						{},
 						{
-							renamed: ["repos", "listWebhooks"],
-						},
+							renamed: ["repos", "listWebhooks"]
+						}
 					],
 					listInvitations: ["GET /repos/{owner}/{repo}/invitations"],
 					listInvitationsForAuthenticatedUser: ["GET /user/repository_invitations"],
@@ -13856,17 +13858,17 @@ module.exports = (function (modules, runtime) {
 						"GET /repos/{owner}/{repo}/branches/{branch}/protection/required_status_checks/contexts",
 						{},
 						{
-							renamed: ["repos", "getAllStatusCheckContexts"],
-						},
+							renamed: ["repos", "getAllStatusCheckContexts"]
+						}
 					],
 					listPublic: ["GET /repositories"],
 					listPullRequestsAssociatedWithCommit: [
 						"GET /repos/{owner}/{repo}/commits/{commit_sha}/pulls",
 						{
 							mediaType: {
-								previews: ["groot"],
-							},
-						},
+								previews: ["groot"]
+							}
+						}
 					],
 					listReleaseAssets: ["GET /repos/{owner}/{repo}/releases/{release_id}/assets"],
 					listReleases: ["GET /repos/{owner}/{repo}/releases"],
@@ -13874,8 +13876,8 @@ module.exports = (function (modules, runtime) {
 						"GET /repos/{owner}/{repo}/commits/{ref}/statuses",
 						{},
 						{
-							renamed: ["repos", "listCommitStatusesForRef"],
-						},
+							renamed: ["repos", "listCommitStatusesForRef"]
+						}
 					],
 					listTags: ["GET /repos/{owner}/{repo}/tags"],
 					listTeams: ["GET /repos/{owner}/{repo}/teams"],
@@ -13883,12 +13885,12 @@ module.exports = (function (modules, runtime) {
 						"GET /repos/{owner}/{repo}/topics",
 						{
 							mediaType: {
-								previews: ["mercy"],
-							},
+								previews: ["mercy"]
+							}
 						},
 						{
-							renamed: ["repos", "getAllTopics"],
-						},
+							renamed: ["repos", "getAllTopics"]
+						}
 					],
 					listWebhooks: ["GET /repos/{owner}/{repo}/hooks"],
 					merge: ["POST /repos/{owner}/{repo}/merges"],
@@ -13896,226 +13898,226 @@ module.exports = (function (modules, runtime) {
 						"POST /repos/{owner}/{repo}/hooks/{hook_id}/pings",
 						{},
 						{
-							renamed: ["repos", "pingWebhook"],
-						},
+							renamed: ["repos", "pingWebhook"]
+						}
 					],
 					pingWebhook: ["POST /repos/{owner}/{repo}/hooks/{hook_id}/pings"],
 					removeAppAccessRestrictions: [
 						"DELETE /repos/{owner}/{repo}/branches/{branch}/protection/restrictions/apps",
 						{},
 						{
-							mapToData: "apps",
-						},
+							mapToData: "apps"
+						}
 					],
 					removeBranchProtection: [
 						"DELETE /repos/{owner}/{repo}/branches/{branch}/protection",
 						{},
 						{
-							renamed: ["repos", "deleteBranchProtection"],
-						},
+							renamed: ["repos", "deleteBranchProtection"]
+						}
 					],
 					removeCollaborator: ["DELETE /repos/{owner}/{repo}/collaborators/{username}"],
 					removeDeployKey: [
 						"DELETE /repos/{owner}/{repo}/keys/{key_id}",
 						{},
 						{
-							renamed: ["repos", "deleteDeployKey"],
-						},
+							renamed: ["repos", "deleteDeployKey"]
+						}
 					],
 					removeProtectedBranchAdminEnforcement: [
 						"DELETE /repos/{owner}/{repo}/branches/{branch}/protection/enforce_admins",
 						{},
 						{
-							renamed: ["repos", "deleteAdminBranchProtection"],
-						},
+							renamed: ["repos", "deleteAdminBranchProtection"]
+						}
 					],
 					removeProtectedBranchAppRestrictions: [
 						"DELETE /repos/{owner}/{repo}/branches/{branch}/protection/restrictions/apps",
 						{},
 						{
 							mapToData: "apps",
-							renamed: ["repos", "removeAppAccessRestrictions"],
-						},
+							renamed: ["repos", "removeAppAccessRestrictions"]
+						}
 					],
 					removeProtectedBranchPullRequestReviewEnforcement: [
 						"DELETE /repos/{owner}/{repo}/branches/{branch}/protection/required_pull_request_reviews",
 						{},
 						{
-							renamed: ["repos", "deletePullRequestReviewProtection"],
-						},
+							renamed: ["repos", "deletePullRequestReviewProtection"]
+						}
 					],
 					removeProtectedBranchRequiredSignatures: [
 						"DELETE /repos/{owner}/{repo}/branches/{branch}/protection/required_signatures",
 						{
 							mediaType: {
-								previews: ["zzzax"],
-							},
+								previews: ["zzzax"]
+							}
 						},
 						{
-							renamed: ["repos", "deleteCommitSignatureProtection"],
-						},
+							renamed: ["repos", "deleteCommitSignatureProtection"]
+						}
 					],
 					removeProtectedBranchRequiredStatusChecks: [
 						"DELETE /repos/{owner}/{repo}/branches/{branch}/protection/required_status_checks",
 						{},
 						{
-							renamed: ["repos", "removeStatusChecksProtection"],
-						},
+							renamed: ["repos", "removeStatusChecksProtection"]
+						}
 					],
 					removeProtectedBranchRequiredStatusChecksContexts: [
 						"DELETE /repos/{owner}/{repo}/branches/{branch}/protection/required_status_checks/contexts",
 						{},
 						{
 							mapToData: "contexts",
-							renamed: ["repos", "removeStatusCheckContexts"],
-						},
+							renamed: ["repos", "removeStatusCheckContexts"]
+						}
 					],
 					removeProtectedBranchRestrictions: [
 						"DELETE /repos/{owner}/{repo}/branches/{branch}/protection/restrictions",
 						{},
 						{
-							renamed: ["repos", "deleteAccessRestrictions"],
-						},
+							renamed: ["repos", "deleteAccessRestrictions"]
+						}
 					],
 					removeProtectedBranchTeamRestrictions: [
 						"DELETE /repos/{owner}/{repo}/branches/{branch}/protection/restrictions/teams",
 						{},
 						{
 							mapToData: "teams",
-							renamed: ["repos", "removeTeamAccessRestrictions"],
-						},
+							renamed: ["repos", "removeTeamAccessRestrictions"]
+						}
 					],
 					removeProtectedBranchUserRestrictions: [
 						"DELETE /repos/{owner}/{repo}/branches/{branch}/protection/restrictions/users",
 						{},
 						{
 							mapToData: "users",
-							renamed: ["repos", "removeUserAccessRestrictions"],
-						},
+							renamed: ["repos", "removeUserAccessRestrictions"]
+						}
 					],
 					removeStatusCheckContexts: [
 						"DELETE /repos/{owner}/{repo}/branches/{branch}/protection/required_status_checks/contexts",
 						{},
 						{
-							mapToData: "contexts",
-						},
+							mapToData: "contexts"
+						}
 					],
 					removeStatusCheckProtection: ["DELETE /repos/{owner}/{repo}/branches/{branch}/protection/required_status_checks"],
 					removeTeamAccessRestrictions: [
 						"DELETE /repos/{owner}/{repo}/branches/{branch}/protection/restrictions/teams",
 						{},
 						{
-							mapToData: "teams",
-						},
+							mapToData: "teams"
+						}
 					],
 					removeUserAccessRestrictions: [
 						"DELETE /repos/{owner}/{repo}/branches/{branch}/protection/restrictions/users",
 						{},
 						{
-							mapToData: "users",
-						},
+							mapToData: "users"
+						}
 					],
 					replaceAllTopics: [
 						"PUT /repos/{owner}/{repo}/topics",
 						{
 							mediaType: {
-								previews: ["mercy"],
-							},
-						},
+								previews: ["mercy"]
+							}
+						}
 					],
 					replaceProtectedBranchAppRestrictions: [
 						"PUT /repos/{owner}/{repo}/branches/{branch}/protection/restrictions/apps",
 						{},
 						{
 							mapToData: "apps",
-							renamed: ["repos", "setAppAccessRestrictions"],
-						},
+							renamed: ["repos", "setAppAccessRestrictions"]
+						}
 					],
 					replaceProtectedBranchRequiredStatusChecksContexts: [
 						"PUT /repos/{owner}/{repo}/branches/{branch}/protection/required_status_checks/contexts",
 						{},
 						{
 							mapToData: "contexts",
-							renamed: ["repos", "setStatusCheckContexts"],
-						},
+							renamed: ["repos", "setStatusCheckContexts"]
+						}
 					],
 					replaceProtectedBranchTeamRestrictions: [
 						"PUT /repos/{owner}/{repo}/branches/{branch}/protection/restrictions/teams",
 						{},
 						{
 							mapToData: "teams",
-							renamed: ["repos", "setTeamAccessRestrictions"],
-						},
+							renamed: ["repos", "setTeamAccessRestrictions"]
+						}
 					],
 					replaceProtectedBranchUserRestrictions: [
 						"PUT /repos/{owner}/{repo}/branches/{branch}/protection/restrictions/users",
 						{},
 						{
 							mapToData: "users",
-							renamed: ["repos", "setUserAccessRestrictions"],
-						},
+							renamed: ["repos", "setUserAccessRestrictions"]
+						}
 					],
 					replaceTopics: [
 						"PUT /repos/{owner}/{repo}/topics",
 						{
 							mediaType: {
-								previews: ["mercy"],
-							},
+								previews: ["mercy"]
+							}
 						},
 						{
-							renamed: ["repos", "replaceAllTopics"],
-						},
+							renamed: ["repos", "replaceAllTopics"]
+						}
 					],
 					requestPageBuild: [
 						"POST /repos/{owner}/{repo}/pages/builds",
 						{},
 						{
-							renamed: ["repos", "requestPagesBuild"],
-						},
+							renamed: ["repos", "requestPagesBuild"]
+						}
 					],
 					requestPagesBuild: ["POST /repos/{owner}/{repo}/pages/builds"],
 					retrieveCommunityProfileMetrics: [
 						"GET /repos/{owner}/{repo}/community/profile",
 						{},
 						{
-							renamed: ["repos", "getCommunityProfileMetrics"],
-						},
+							renamed: ["repos", "getCommunityProfileMetrics"]
+						}
 					],
 					setAdminBranchProtection: ["POST /repos/{owner}/{repo}/branches/{branch}/protection/enforce_admins"],
 					setAppAccessRestrictions: [
 						"PUT /repos/{owner}/{repo}/branches/{branch}/protection/restrictions/apps",
 						{},
 						{
-							mapToData: "apps",
-						},
+							mapToData: "apps"
+						}
 					],
 					setStatusCheckContexts: [
 						"PUT /repos/{owner}/{repo}/branches/{branch}/protection/required_status_checks/contexts",
 						{},
 						{
-							mapToData: "contexts",
-						},
+							mapToData: "contexts"
+						}
 					],
 					setTeamAccessRestrictions: [
 						"PUT /repos/{owner}/{repo}/branches/{branch}/protection/restrictions/teams",
 						{},
 						{
-							mapToData: "teams",
-						},
+							mapToData: "teams"
+						}
 					],
 					setUserAccessRestrictions: [
 						"PUT /repos/{owner}/{repo}/branches/{branch}/protection/restrictions/users",
 						{},
 						{
-							mapToData: "users",
-						},
+							mapToData: "users"
+						}
 					],
 					testPushHook: [
 						"POST /repos/{owner}/{repo}/hooks/{hook_id}/tests",
 						{},
 						{
-							renamed: ["repos", "testPushWebhook"],
-						},
+							renamed: ["repos", "testPushWebhook"]
+						}
 					],
 					testPushWebhook: ["POST /repos/{owner}/{repo}/hooks/{hook_id}/tests"],
 					transfer: ["POST /repos/{owner}/{repo}/transfer"],
@@ -14126,8 +14128,8 @@ module.exports = (function (modules, runtime) {
 						"PATCH /repos/{owner}/{repo}/hooks/{hook_id}",
 						{},
 						{
-							renamed: ["repos", "updateWebhook"],
-						},
+							renamed: ["repos", "updateWebhook"]
+						}
 					],
 					updateInformationAboutPagesSite: ["PUT /repos/{owner}/{repo}/pages"],
 					updateInvitation: ["PATCH /repos/{owner}/{repo}/invitations/{invitation_id}"],
@@ -14135,15 +14137,15 @@ module.exports = (function (modules, runtime) {
 						"PATCH /repos/{owner}/{repo}/branches/{branch}/protection/required_pull_request_reviews",
 						{},
 						{
-							renamed: ["repos", "updatePullRequestReviewProtection"],
-						},
+							renamed: ["repos", "updatePullRequestReviewProtection"]
+						}
 					],
 					updateProtectedBranchRequiredStatusChecks: [
 						"PATCH /repos/{owner}/{repo}/branches/{branch}/protection/required_status_checks",
 						{},
 						{
-							renamed: ["repos", "updateStatusChecksProtection"],
-						},
+							renamed: ["repos", "updateStatusChecksProtection"]
+						}
 					],
 					updatePullRequestReviewProtection: ["PATCH /repos/{owner}/{repo}/branches/{branch}/protection/required_pull_request_reviews"],
 					updateRelease: ["PATCH /repos/{owner}/{repo}/releases/{release_id}"],
@@ -14153,9 +14155,9 @@ module.exports = (function (modules, runtime) {
 					uploadReleaseAsset: [
 						"POST /repos/{owner}/{repo}/releases/{release_id}/assets{?name,label}",
 						{
-							baseUrl: "https://uploads.github.com",
-						},
-					],
+							baseUrl: "https://uploads.github.com"
+						}
+					]
 				},
 				search: {
 					code: ["GET /search/code"],
@@ -14163,15 +14165,15 @@ module.exports = (function (modules, runtime) {
 						"GET /search/commits",
 						{
 							mediaType: {
-								previews: ["cloak"],
-							},
-						},
+								previews: ["cloak"]
+							}
+						}
 					],
 					issuesAndPullRequests: ["GET /search/issues"],
 					labels: ["GET /search/labels"],
 					repos: ["GET /search/repositories"],
 					topics: ["GET /search/topics"],
-					users: ["GET /search/users"],
+					users: ["GET /search/users"]
 				},
 				teams: {
 					addOrUpdateMembershipForUserInOrg: ["PUT /orgs/{org}/teams/{team_slug}/memberships/{username}"],
@@ -14179,50 +14181,50 @@ module.exports = (function (modules, runtime) {
 						"PUT /orgs/{org}/teams/{team_slug}/memberships/{username}",
 						{},
 						{
-							renamed: ["teams", "addOrUpdateMembershipForUserInOrg"],
-						},
+							renamed: ["teams", "addOrUpdateMembershipForUserInOrg"]
+						}
 					],
 					addOrUpdateProjectInOrg: [
 						"PUT /orgs/{org}/teams/{team_slug}/projects/{project_id}",
 						{
 							mediaType: {
-								previews: ["inertia"],
-							},
+								previews: ["inertia"]
+							}
 						},
 						{
-							renamed: ["teams", "addOrUpdateProjectPermissionsInOrg"],
-						},
+							renamed: ["teams", "addOrUpdateProjectPermissionsInOrg"]
+						}
 					],
 					addOrUpdateProjectPermissionsInOrg: [
 						"PUT /orgs/{org}/teams/{team_slug}/projects/{project_id}",
 						{
 							mediaType: {
-								previews: ["inertia"],
-							},
-						},
+								previews: ["inertia"]
+							}
+						}
 					],
 					addOrUpdateRepoInOrg: [
 						"PUT /orgs/{org}/teams/{team_slug}/repos/{owner}/{repo}",
 						{},
 						{
-							renamed: ["teams", "addOrUpdateRepoPermissionsInOrg"],
-						},
+							renamed: ["teams", "addOrUpdateRepoPermissionsInOrg"]
+						}
 					],
 					addOrUpdateRepoPermissionsInOrg: ["PUT /orgs/{org}/teams/{team_slug}/repos/{owner}/{repo}"],
 					checkManagesRepoInOrg: [
 						"GET /orgs/{org}/teams/{team_slug}/repos/{owner}/{repo}",
 						{},
 						{
-							renamed: ["teams", "checkPermissionsForRepoInOrg"],
-						},
+							renamed: ["teams", "checkPermissionsForRepoInOrg"]
+						}
 					],
 					checkPermissionsForProjectInOrg: [
 						"GET /orgs/{org}/teams/{team_slug}/projects/{project_id}",
 						{
 							mediaType: {
-								previews: ["inertia"],
-							},
-						},
+								previews: ["inertia"]
+							}
+						}
 					],
 					checkPermissionsForRepoInOrg: ["GET /orgs/{org}/teams/{team_slug}/repos/{owner}/{repo}"],
 					create: ["POST /orgs/{org}/teams"],
@@ -14239,8 +14241,8 @@ module.exports = (function (modules, runtime) {
 						"GET /orgs/{org}/teams/{team_slug}/memberships/{username}",
 						{},
 						{
-							renamed: ["teams", "getMembershipForUserInOrg"],
-						},
+							renamed: ["teams", "getMembershipForUserInOrg"]
+						}
 					],
 					list: ["GET /orgs/{org}/teams"],
 					listChildInOrg: ["GET /orgs/{org}/teams/{team_slug}/teams"],
@@ -14253,9 +14255,9 @@ module.exports = (function (modules, runtime) {
 						"GET /orgs/{org}/teams/{team_slug}/projects",
 						{
 							mediaType: {
-								previews: ["inertia"],
-							},
-						},
+								previews: ["inertia"]
+							}
+						}
 					],
 					listReposInOrg: ["GET /orgs/{org}/teams/{team_slug}/repos"],
 					removeMembershipForUserInOrg: ["DELETE /orgs/{org}/teams/{team_slug}/memberships/{username}"],
@@ -14263,8 +14265,8 @@ module.exports = (function (modules, runtime) {
 						"DELETE /orgs/{org}/teams/{team_slug}/memberships/{username}",
 						{},
 						{
-							renamed: ["teams", "removeMembershipForUserInOrg"],
-						},
+							renamed: ["teams", "removeMembershipForUserInOrg"]
+						}
 					],
 					removeProjectInOrg: ["DELETE /orgs/{org}/teams/{team_slug}/projects/{project_id}"],
 					removeRepoInOrg: ["DELETE /orgs/{org}/teams/{team_slug}/repos/{owner}/{repo}"],
@@ -14272,16 +14274,16 @@ module.exports = (function (modules, runtime) {
 						"GET /orgs/{org}/teams/{team_slug}/projects/{project_id}",
 						{
 							mediaType: {
-								previews: ["inertia"],
-							},
+								previews: ["inertia"]
+							}
 						},
 						{
-							renamed: ["teams", "checkPermissionsForProjectInOrg"],
-						},
+							renamed: ["teams", "checkPermissionsForProjectInOrg"]
+						}
 					],
 					updateDiscussionCommentInOrg: ["PATCH /orgs/{org}/teams/{team_slug}/discussions/{discussion_number}/comments/{comment_number}"],
 					updateDiscussionInOrg: ["PATCH /orgs/{org}/teams/{team_slug}/discussions/{discussion_number}"],
-					updateInOrg: ["PATCH /orgs/{org}/teams/{team_slug}"],
+					updateInOrg: ["PATCH /orgs/{org}/teams/{team_slug}"]
 				},
 				users: {
 					addEmailForAuthenticated: ["POST /user/emails"],
@@ -14289,8 +14291,8 @@ module.exports = (function (modules, runtime) {
 						"POST /user/emails",
 						{},
 						{
-							renamed: ["users", "addEmailsForAuthenticated"],
-						},
+							renamed: ["users", "addEmailsForAuthenticated"]
+						}
 					],
 					block: ["PUT /user/blocks/{username}"],
 					checkBlocked: ["GET /user/blocks/{username}"],
@@ -14298,8 +14300,8 @@ module.exports = (function (modules, runtime) {
 						"GET /user/following/{username}",
 						{},
 						{
-							renamed: ["users", "checkPersonIsFollowedByAuthenticated"],
-						},
+							renamed: ["users", "checkPersonIsFollowedByAuthenticated"]
+						}
 					],
 					checkFollowingForUser: ["GET /users/{username}/following/{target_user}"],
 					checkPersonIsFollowedByAuthenticated: ["GET /user/following/{username}"],
@@ -14307,16 +14309,16 @@ module.exports = (function (modules, runtime) {
 						"POST /user/gpg_keys",
 						{},
 						{
-							renamed: ["users", "createGpgKeyForAuthenticated"],
-						},
+							renamed: ["users", "createGpgKeyForAuthenticated"]
+						}
 					],
 					createGpgKeyForAuthenticated: ["POST /user/gpg_keys"],
 					createPublicKey: [
 						"POST /user/keys",
 						{},
 						{
-							renamed: ["users", "createPublicSshKeyForAuthenticated"],
-						},
+							renamed: ["users", "createPublicSshKeyForAuthenticated"]
+						}
 					],
 					createPublicSshKeyForAuthenticated: ["POST /user/keys"],
 					deleteEmailForAuthenticated: ["DELETE /user/emails"],
@@ -14324,23 +14326,23 @@ module.exports = (function (modules, runtime) {
 						"DELETE /user/emails",
 						{},
 						{
-							renamed: ["users", "deleteEmailsForAuthenticated"],
-						},
+							renamed: ["users", "deleteEmailsForAuthenticated"]
+						}
 					],
 					deleteGpgKey: [
 						"DELETE /user/gpg_keys/{gpg_key_id}",
 						{},
 						{
-							renamed: ["users", "deleteGpgKeyForAuthenticated"],
-						},
+							renamed: ["users", "deleteGpgKeyForAuthenticated"]
+						}
 					],
 					deleteGpgKeyForAuthenticated: ["DELETE /user/gpg_keys/{gpg_key_id}"],
 					deletePublicKey: [
 						"DELETE /user/keys/{key_id}",
 						{},
 						{
-							renamed: ["users", "deletePublicSshKeyForAuthenticated"],
-						},
+							renamed: ["users", "deletePublicSshKeyForAuthenticated"]
+						}
 					],
 					deletePublicSshKeyForAuthenticated: ["DELETE /user/keys/{key_id}"],
 					follow: ["PUT /user/following/{username}"],
@@ -14351,16 +14353,16 @@ module.exports = (function (modules, runtime) {
 						"GET /user/gpg_keys/{gpg_key_id}",
 						{},
 						{
-							renamed: ["users", "getGpgKeyForAuthenticated"],
-						},
+							renamed: ["users", "getGpgKeyForAuthenticated"]
+						}
 					],
 					getGpgKeyForAuthenticated: ["GET /user/gpg_keys/{gpg_key_id}"],
 					getPublicKey: [
 						"GET /user/keys/{key_id}",
 						{},
 						{
-							renamed: ["users", "getPublicSshKeyForAuthenticated"],
-						},
+							renamed: ["users", "getPublicSshKeyForAuthenticated"]
+						}
 					],
 					getPublicSshKeyForAuthenticated: ["GET /user/keys/{key_id}"],
 					list: ["GET /users"],
@@ -14368,16 +14370,16 @@ module.exports = (function (modules, runtime) {
 						"GET /user/blocks",
 						{},
 						{
-							renamed: ["users", "listBlockedByAuthenticated"],
-						},
+							renamed: ["users", "listBlockedByAuthenticated"]
+						}
 					],
 					listBlockedByAuthenticated: ["GET /user/blocks"],
 					listEmails: [
 						"GET /user/emails",
 						{},
 						{
-							renamed: ["users", "listEmailsForAuthenticated"],
-						},
+							renamed: ["users", "listEmailsForAuthenticated"]
+						}
 					],
 					listEmailsForAuthenticated: ["GET /user/emails"],
 					listFollowedByAuthenticated: ["GET /user/following"],
@@ -14387,16 +14389,16 @@ module.exports = (function (modules, runtime) {
 						"GET /user/following",
 						{},
 						{
-							renamed: ["users", "listFollowedByAuthenticated"],
-						},
+							renamed: ["users", "listFollowedByAuthenticated"]
+						}
 					],
 					listFollowingForUser: ["GET /users/{username}/following"],
 					listGpgKeys: [
 						"GET /user/gpg_keys",
 						{},
 						{
-							renamed: ["users", "listGpgKeysForAuthenticated"],
-						},
+							renamed: ["users", "listGpgKeysForAuthenticated"]
+						}
 					],
 					listGpgKeysForAuthenticated: ["GET /user/gpg_keys"],
 					listGpgKeysForUser: ["GET /users/{username}/gpg_keys"],
@@ -14404,16 +14406,16 @@ module.exports = (function (modules, runtime) {
 						"GET /user/public_emails",
 						{},
 						{
-							renamed: ["users", "listPublicEmailsForAuthenticatedUser"],
-						},
+							renamed: ["users", "listPublicEmailsForAuthenticatedUser"]
+						}
 					],
 					listPublicEmailsForAuthenticated: ["GET /user/public_emails"],
 					listPublicKeys: [
 						"GET /user/keys",
 						{},
 						{
-							renamed: ["users", "listPublicSshKeysForAuthenticated"],
-						},
+							renamed: ["users", "listPublicSshKeysForAuthenticated"]
+						}
 					],
 					listPublicKeysForUser: ["GET /users/{username}/keys"],
 					listPublicSshKeysForAuthenticated: ["GET /user/keys"],
@@ -14422,13 +14424,13 @@ module.exports = (function (modules, runtime) {
 						"PATCH /user/email/visibility",
 						{},
 						{
-							renamed: ["users", "setPrimaryEmailVisibilityForAuthenticated"],
-						},
+							renamed: ["users", "setPrimaryEmailVisibilityForAuthenticated"]
+						}
 					],
 					unblock: ["DELETE /user/blocks/{username}"],
 					unfollow: ["DELETE /user/following/{username}"],
-					updateAuthenticated: ["PATCH /user"],
-				},
+					updateAuthenticated: ["PATCH /user"]
+				}
 			};
 
 			const VERSION = "3.17.0";
@@ -14443,7 +14445,7 @@ module.exports = (function (modules, runtime) {
 						const endpointDefaults = Object.assign(
 							{
 								method,
-								url,
+								url
 							},
 							defaults
 						);
@@ -14476,7 +14478,7 @@ module.exports = (function (modules, runtime) {
 					if (decorations.mapToData) {
 						options = Object.assign({}, options, {
 							data: options[decorations.mapToData],
-							[decorations.mapToData]: undefined,
+							[decorations.mapToData]: undefined
 						});
 						return requestWithDefaults(options);
 					} // NOTE: there are currently no deprecations. But we keep the code
@@ -14605,7 +14607,7 @@ module.exports = (function (modules, runtime) {
 				fourFifths: "⅘",
 				fiveSixths: "⅚",
 				fiveEighths: "⅝",
-				sevenEighths: "⅞",
+				sevenEighths: "⅞"
 			};
 
 			const win = {
@@ -14664,7 +14666,7 @@ module.exports = (function (modules, runtime) {
 				fourFifths: "4/5",
 				fiveSixths: "5/6",
 				fiveEighths: "5/8",
-				sevenEighths: "7/8",
+				sevenEighths: "7/8"
 			};
 
 			if (platform === "linux") {
@@ -14707,7 +14709,7 @@ module.exports = (function (modules, runtime) {
 								enumerable: true,
 								get: function () {
 									return m[k];
-								},
+								}
 							});
 					  }
 					: function (o, m, k, k2) {
@@ -14750,7 +14752,7 @@ module.exports = (function (modules, runtime) {
 							return {
 								enumerable: true,
 								configurable: true,
-								writable: false,
+								writable: false
 							};
 						},
 						ownKeys: function () {
@@ -14759,7 +14761,7 @@ module.exports = (function (modules, runtime) {
 								return key.startsWith("INPUT_");
 							});
 							return filtered;
-						},
+						}
 					}
 				);
 			}
@@ -14802,7 +14804,7 @@ module.exports = (function (modules, runtime) {
 					errno: "ENOENT",
 					syscall: `${syscall} ${original.command}`,
 					path: original.command,
-					spawnargs: original.args,
+					spawnargs: original.args
 				});
 			}
 
@@ -14849,7 +14851,7 @@ module.exports = (function (modules, runtime) {
 				hookChildProcess,
 				verifyENOENT,
 				verifyENOENTSync,
-				notFoundError,
+				notFoundError
 			};
 
 			/***/
@@ -15006,7 +15008,7 @@ module.exports = (function (modules, runtime) {
 				white: [255, 255, 255],
 				whitesmoke: [245, 245, 245],
 				yellow: [255, 255, 0],
-				yellowgreen: [154, 205, 50],
+				yellowgreen: [154, 205, 50]
 			};
 
 			/***/
@@ -15025,7 +15027,7 @@ module.exports = (function (modules, runtime) {
 			const VERSION = "17.11.2";
 
 			const Octokit = core.Octokit.plugin(pluginRequestLog.requestLog, pluginRestEndpointMethods.restEndpointMethods, pluginPaginateRest.paginateRest).defaults({
-				userAgent: `octokit-rest.js/${VERSION}`,
+				userAgent: `octokit-rest.js/${VERSION}`
 			});
 
 			exports.Octokit = Octokit;
@@ -15063,12 +15065,12 @@ module.exports = (function (modules, runtime) {
 					if (isPlainObject(options[key])) {
 						if (!(key in defaults))
 							Object.assign(result, {
-								[key]: options[key],
+								[key]: options[key]
 							});
 						else result[key] = mergeDeep(defaults[key], options[key]);
 					} else {
 						Object.assign(result, {
-							[key]: options[key],
+							[key]: options[key]
 						});
 					}
 				});
@@ -15082,10 +15084,10 @@ module.exports = (function (modules, runtime) {
 						url
 							? {
 									method,
-									url,
+									url
 							  }
 							: {
-									url: method,
+									url: method
 							  },
 						options
 					);
@@ -15284,7 +15286,7 @@ module.exports = (function (modules, runtime) {
 
 			function parseUrl(template) {
 				return {
-					expand: expand.bind(null, template),
+					expand: expand.bind(null, template)
 				};
 			}
 
@@ -15395,16 +15397,16 @@ module.exports = (function (modules, runtime) {
 					{
 						method,
 						url,
-						headers,
+						headers
 					},
 					typeof body !== "undefined"
 						? {
-								body,
+								body
 						  }
 						: null,
 					options.request
 						? {
-								request: options.request,
+								request: options.request
 						  }
 						: null
 				);
@@ -15421,7 +15423,7 @@ module.exports = (function (modules, runtime) {
 					DEFAULTS,
 					defaults: withDefaults.bind(null, DEFAULTS),
 					merge: merge.bind(null, DEFAULTS),
-					parse,
+					parse
 				});
 			}
 
@@ -15435,12 +15437,12 @@ module.exports = (function (modules, runtime) {
 				baseUrl: "https://api.github.com",
 				headers: {
 					accept: "application/vnd.github.v3+json",
-					"user-agent": userAgent,
+					"user-agent": userAgent
 				},
 				mediaType: {
 					format: "",
-					previews: [],
-				},
+					previews: []
+				}
 			};
 
 			const endpoint = withDefaults(null, DEFAULTS);
@@ -15483,7 +15485,7 @@ module.exports = (function (modules, runtime) {
 					typeof query === "string"
 						? (options = Object.assign(
 								{
-									query,
+									query
 								},
 								options
 						  ))
@@ -15504,7 +15506,7 @@ module.exports = (function (modules, runtime) {
 				return request(requestOptions).then(response => {
 					if (response.data.errors) {
 						throw new GraphqlError(requestOptions, {
-							data: response.data,
+							data: response.data
 						});
 					}
 
@@ -15521,21 +15523,21 @@ module.exports = (function (modules, runtime) {
 
 				return Object.assign(newApi, {
 					defaults: withDefaults.bind(null, newRequest),
-					endpoint: request.request.endpoint,
+					endpoint: request.request.endpoint
 				});
 			}
 
 			const graphql$1 = withDefaults(request.request, {
 				headers: {
-					"user-agent": `octokit-graphql.js/${VERSION} ${universalUserAgent.getUserAgent()}`,
+					"user-agent": `octokit-graphql.js/${VERSION} ${universalUserAgent.getUserAgent()}`
 				},
 				method: "POST",
-				url: "/graphql",
+				url: "/graphql"
 			});
 			function withCustomRequest(customRequest) {
 				return withDefaults(customRequest, {
 					method: "POST",
-					url: "/graphql",
+					url: "/graphql"
 				});
 			}
 
@@ -15646,14 +15648,14 @@ module.exports = (function (modules, runtime) {
 					get() {
 						const codes = ansiStyles[key];
 						return build.call(this, this._styles ? this._styles.concat(codes) : [codes], this._empty, key);
-					},
+					}
 				};
 			}
 
 			styles.visible = {
 				get() {
 					return build.call(this, this._styles || [], true, "visible");
-				},
+				}
 			};
 
 			ansiStyles.color.closeRe = new RegExp(escapeStringRegexp(ansiStyles.color.close), "g");
@@ -15670,11 +15672,11 @@ module.exports = (function (modules, runtime) {
 							const codes = {
 								open,
 								close: ansiStyles.color.close,
-								closeRe: ansiStyles.color.closeRe,
+								closeRe: ansiStyles.color.closeRe
 							};
 							return build.call(this, this._styles ? this._styles.concat(codes) : [codes], this._empty, model);
 						};
-					},
+					}
 				};
 			}
 
@@ -15693,11 +15695,11 @@ module.exports = (function (modules, runtime) {
 							const codes = {
 								open,
 								close: ansiStyles.bgColor.close,
-								closeRe: ansiStyles.bgColor.closeRe,
+								closeRe: ansiStyles.bgColor.closeRe
 							};
 							return build.call(this, this._styles ? this._styles.concat(codes) : [codes], this._empty, model);
 						};
-					},
+					}
 				};
 			}
 
@@ -15720,7 +15722,7 @@ module.exports = (function (modules, runtime) {
 					},
 					set(level) {
 						self.level = level;
-					},
+					}
 				});
 
 				Object.defineProperty(builder, "enabled", {
@@ -15730,7 +15732,7 @@ module.exports = (function (modules, runtime) {
 					},
 					set(enabled) {
 						self.enabled = enabled;
-					},
+					}
 				});
 
 				// See below for fix regarding invisible grey/dim combination on Windows
@@ -15857,7 +15859,7 @@ module.exports = (function (modules, runtime) {
 				opts = Object.assign(
 					{
 						extendEnv: true,
-						env: {},
+						env: {}
 					},
 					opts
 				);
@@ -15875,8 +15877,8 @@ module.exports = (function (modules, runtime) {
 						file: cmd,
 						original: {
 							cmd,
-							args,
-						},
+							args
+						}
 					};
 				} else {
 					parsed = crossSpawn._parse(cmd, args, opts);
@@ -15891,7 +15893,7 @@ module.exports = (function (modules, runtime) {
 						localDir: parsed.options.cwd || process.cwd(),
 						encoding: "utf8",
 						reject: true,
-						cleanup: true,
+						cleanup: true
 					},
 					parsed.options
 				);
@@ -15916,7 +15918,7 @@ module.exports = (function (modules, runtime) {
 					cmd: parsed.command,
 					args: parsed.args,
 					opts,
-					parsed,
+					parsed
 				};
 			}
 
@@ -15976,7 +15978,7 @@ module.exports = (function (modules, runtime) {
 				} else if (encoding) {
 					ret = _getStream(process[stream], {
 						encoding,
-						maxBuffer,
+						maxBuffer
 					});
 				} else {
 					ret = _getStream.buffer(process[stream], { maxBuffer });
@@ -16112,7 +16114,7 @@ module.exports = (function (modules, runtime) {
 						Promise.all([
 							processDone,
 							getStream(spawned, "stdout", { encoding, buffer, maxBuffer }),
-							getStream(spawned, "stderr", { encoding, buffer, maxBuffer }),
+							getStream(spawned, "stderr", { encoding, buffer, maxBuffer })
 						]).then(arr => {
 							const result = arr[0];
 							result.stdout = arr[1];
@@ -16122,7 +16124,7 @@ module.exports = (function (modules, runtime) {
 								const err = makeError(result, {
 									joinedCmd,
 									parsed,
-									timedOut,
+									timedOut
 								});
 
 								// TODO: missing some timeout logic for killed
@@ -16145,7 +16147,7 @@ module.exports = (function (modules, runtime) {
 								killed: false,
 								signal: null,
 								cmd: joinedCmd,
-								timedOut: false,
+								timedOut: false
 							};
 						}),
 						destroy
@@ -16183,7 +16185,7 @@ module.exports = (function (modules, runtime) {
 				if (result.error || result.status !== 0 || result.signal !== null) {
 					const err = makeError(result, {
 						joinedCmd,
-						parsed,
+						parsed
 					});
 
 					if (!parsed.opts.reject) {
@@ -16200,7 +16202,7 @@ module.exports = (function (modules, runtime) {
 					failed: false,
 					signal: null,
 					cmd: joinedCmd,
-					timedOut: false,
+					timedOut: false
 				};
 			};
 
@@ -16282,7 +16284,7 @@ module.exports = (function (modules, runtime) {
 					escapedName: "signale",
 					rawSpec: "^1.4.0",
 					saveSpec: null,
-					fetchSpec: "^1.4.0",
+					fetchSpec: "^1.4.0"
 				},
 				_requiredBy: ["/actions-toolkit"],
 				_resolved: "https://registry.npmjs.org/signale/-/signale-1.4.0.tgz",
@@ -16315,13 +16317,13 @@ module.exports = (function (modules, runtime) {
 						underlineMessage: false,
 						underlinePrefix: false,
 						underlineSuffix: false,
-						uppercaseLabel: false,
-					},
+						uppercaseLabel: false
+					}
 				},
 				repository: { type: "git", url: "git+https://github.com/klaussinani/signale.git" },
 				scripts: { test: "xo" },
 				version: "1.4.0",
-				xo: { space: 2 },
+				xo: { space: 2 }
 			};
 
 			/***/
@@ -16399,7 +16401,7 @@ module.exports = (function (modules, runtime) {
 			//# sourceMappingURL=exec.js.map
 
 			/***/
-		},
+		}
 
 		/******/
 	},
@@ -16416,14 +16418,14 @@ module.exports = (function (modules, runtime) {
 					/******/ enumerable: true,
 					/******/ get: function () {
 						return module.l;
-					},
+					}
 					/******/
 				});
 				/******/ Object.defineProperty(module, "id", {
 					/******/ enumerable: true,
 					/******/ get: function () {
 						return module.i;
-					},
+					}
 					/******/
 				});
 				/******/ return module;
