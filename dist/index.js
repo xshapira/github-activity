@@ -1516,7 +1516,6 @@ module.exports = (function (modules, runtime) {
 					let arr = [];
 
 					for (const data of events.data) {
-						if (data.type.toLowerCase().includes("issue")) tools.log.debug(data.payload.issue);
 						if (arr.length && data.type === "PushEvent" && last(arr).type === "PushEvent" && data.repo.name === last(arr).repo.name)
 							arr[arr.length - 1].payload.size += data.payload.size;
 						else arr.push(data);
