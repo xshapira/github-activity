@@ -1480,6 +1480,11 @@ module.exports = (function (modules, runtime) {
 						: `${emoji} ${capitalize(item.payload.action)}`;
 					return `${line} PR ${toUrlFormat(item)} in ${toUrlFormat(item.repo.name)}`;
 				},
+				PullRequestReviewEvent: item => {
+					return `<img alt="🔍" src="https://github.com/cheesits456/github-activity-readme/raw/master/icons/review.png" align="top" height="18"> Reviewed ${
+						toUrlFormat(item)
+					} in ${toUrlFormat(item.repo.name)}`;
+				},
 				PushEvent: item => {
 					return `<img alt="📝" src="https://github.com/cheesits456/github-activity-readme/raw/master/icons/commit.png" align="top" height="18"> Made \`${
 						item.payload.size
