@@ -102,7 +102,9 @@ module.exports = (function (modules, runtime) {
 					const sourceStat = yield ioUtil.stat(source);
 					if (sourceStat.isDirectory()) {
 						if (!recursive) {
-							throw new Error(`Failed to copy. ${source} is a directory, but tried to copy without recursive flag.`);
+							throw new Error(
+								`Failed to copy. ${source} is a directory, but tried to copy without recursive flag.`
+							);
 						} else {
 							yield cpDirRecursive(source, newDest, 0, force);
 						}
@@ -555,7 +557,30 @@ module.exports = (function (modules, runtime) {
 						return '""';
 					}
 					// determine whether the arg needs to be quoted
-					const cmdSpecialChars = [" ", "\t", "&", "(", ")", "[", "]", "{", "}", "^", "=", ";", "!", "'", "+", ",", "`", "~", "|", "<", ">", '"'];
+					const cmdSpecialChars = [
+						" ",
+						"\t",
+						"&",
+						"(",
+						")",
+						"[",
+						"]",
+						"{",
+						"}",
+						"^",
+						"=",
+						";",
+						"!",
+						"'",
+						"+",
+						",",
+						"`",
+						"~",
+						"|",
+						"<",
+						">",
+						'"'
+					];
 					let needsQuotes = false;
 					for (const char of arg) {
 						if (cmdSpecialChars.some(x => x === char)) {
@@ -743,9 +768,16 @@ module.exports = (function (modules, runtime) {
 				exec() {
 					return __awaiter(this, void 0, void 0, function* () {
 						// root the tool path if it is unrooted and contains relative pathing
-						if (!ioUtil.isRooted(this.toolPath) && (this.toolPath.includes("/") || (IS_WINDOWS && this.toolPath.includes("\\")))) {
+						if (
+							!ioUtil.isRooted(this.toolPath) &&
+							(this.toolPath.includes("/") || (IS_WINDOWS && this.toolPath.includes("\\")))
+						) {
 							// prefer options.cwd if it is specified, however options.cwd may also need to be rooted
-							this.toolPath = path.resolve(process.cwd(), this.options.cwd || process.cwd(), this.toolPath);
+							this.toolPath = path.resolve(
+								process.cwd(),
+								this.options.cwd || process.cwd(),
+								this.toolPath
+							);
 						}
 						// if the tool is only a file name, then resolve it from the PATH
 						// otherwise verify it exists (add extension on Windows if necessary)
@@ -765,7 +797,11 @@ module.exports = (function (modules, runtime) {
 								this._debug(message);
 							});
 							const fileName = this._getSpawnFileName();
-							const cp = child.spawn(fileName, this._getSpawnArgs(optionsNonNull), this._getSpawnOptions(this.options, fileName));
+							const cp = child.spawn(
+								fileName,
+								this._getSpawnArgs(optionsNonNull),
+								this._getSpawnOptions(this.options, fileName)
+							);
 							const stdbuffer = "";
 							if (cp.stdout) {
 								cp.stdout.on("data", data => {
@@ -789,8 +825,14 @@ module.exports = (function (modules, runtime) {
 									if (this.options.listeners && this.options.listeners.stderr) {
 										this.options.listeners.stderr(data);
 									}
-									if (!optionsNonNull.silent && optionsNonNull.errStream && optionsNonNull.outStream) {
-										const s = optionsNonNull.failOnStdErr ? optionsNonNull.errStream : optionsNonNull.outStream;
+									if (
+										!optionsNonNull.silent &&
+										optionsNonNull.errStream &&
+										optionsNonNull.outStream
+									) {
+										const s = optionsNonNull.failOnStdErr
+											? optionsNonNull.errStream
+											: optionsNonNull.outStream;
 										s.write(data);
 									}
 									this._processLineBuffer(data, errbuffer, line => {
@@ -938,9 +980,13 @@ module.exports = (function (modules, runtime) {
 								`There was an error when attempting to execute the process '${this.toolPath}'. This may indicate the process failed to start. Error: ${this.processError}`
 							);
 						} else if (this.processExitCode !== 0 && !this.options.ignoreReturnCode) {
-							error = new Error(`The process '${this.toolPath}' failed with exit code ${this.processExitCode}`);
+							error = new Error(
+								`The process '${this.toolPath}' failed with exit code ${this.processExitCode}`
+							);
 						} else if (this.processStderr && this.options.failOnStdErr) {
-							error = new Error(`The process '${this.toolPath}' failed because one or more lines were written to the STDERR stream`);
+							error = new Error(
+								`The process '${this.toolPath}' failed because one or more lines were written to the STDERR stream`
+							);
 						}
 					}
 					// clear the timeout
@@ -956,7 +1002,9 @@ module.exports = (function (modules, runtime) {
 						return;
 					}
 					if (!state.processClosed && state.processExited) {
-						const message = `The STDIO streams did not close within ${state.delay / 1000} seconds of the exit event from process '${
+						const message = `The STDIO streams did not close within ${
+							state.delay / 1000
+						} seconds of the exit event from process '${
 							state.toolPath
 						}'. This may indicate a child process inherited the STDIO streams and has not yet exited.`;
 						state._debug(message);
@@ -1175,7 +1223,9 @@ module.exports = (function (modules, runtime) {
 					try {
 						stdout = execa.sync("wmic", ["os", "get", "Caption"]).stdout || "";
 					} catch (_) {
-						stdout = execa.sync("powershell", ["(Get-CimInstance -ClassName Win32_OperatingSystem).caption"]).stdout || "";
+						stdout =
+							execa.sync("powershell", ["(Get-CimInstance -ClassName Win32_OperatingSystem).caption"])
+								.stdout || "";
 					}
 
 					const year = (stdout.match(/2008|2012|2016|2019/) || [])[0];
@@ -1219,11 +1269,17 @@ module.exports = (function (modules, runtime) {
 						throw new TypeError(errorMessage);
 					}
 					const syntaxErr = e.message.match(/^Unexpected token.*position\s+(\d+)/i);
-					const errIdx = syntaxErr ? +syntaxErr[1] : e.message.match(/^Unexpected end of JSON.*/i) ? txt.length - 1 : null;
+					const errIdx = syntaxErr
+						? +syntaxErr[1]
+						: e.message.match(/^Unexpected end of JSON.*/i)
+						? txt.length - 1
+						: null;
 					if (errIdx != null) {
 						const start = errIdx <= context ? 0 : errIdx - context;
 						const end = errIdx + context >= txt.length ? txt.length : errIdx + context;
-						e.message += ` while parsing near '${start === 0 ? "" : "..."}${txt.slice(start, end)}${end === txt.length ? "" : "..."}'`;
+						e.message += ` while parsing near '${start === 0 ? "" : "..."}${txt.slice(start, end)}${
+							end === txt.length ? "" : "..."
+						}'`;
 					} else {
 						e.message += ` while parsing '${txt.slice(0, context * 2)}'`;
 					}
@@ -1383,14 +1439,23 @@ module.exports = (function (modules, runtime) {
 			 * @returns {String}
 			 */
 
-			const toUrlFormat = (item, branch) => {
+			const toUrlFormat = (item, branch, public) => {
 				if (typeof item === "object") {
 					return Object.hasOwnProperty.call(item.payload, "issue")
-						? `[\`#${item.payload.issue.number}\`](${urlPrefix}/${item.repo.name}/issues/${item.payload.issue.number} '${item.payload.issue.title}')`
-						: `[\`#${item.payload.pull_request.number}\`](${urlPrefix}/${item.repo.name}/pull/${item.payload.pull_request.number} '${item.payload.pull_request.title}')`;
+						? `[\`#${item.payload.issue.number}\`](${
+								public ? `${urlPrefix}/${item.rep.name}/issues/${item.payload.issue.number}` : "#"
+						  } '${item.payload.issue.title}')`
+						: `[\`#${item.payload.pull_request.number}\`](${
+								public ? `${urlPrefix}/${item.repo.name}/pull/${item.payload.pull_request.number}` : "#"
+						  } '${item.payload.pull_request.title}')`;
 				}
-				return `[${branch ? `\`${branch}\`` : item}](${urlPrefix}${item}${branch ? `/tree/${branch}` : ""})`;
+				return `[${branch ? `\`${branch}\`` : public ? item : `🔒${item}`}](${
+					public ? `${urlPrefix}${item}${branch ? `/tree/${branch}` : ""}` : "#"
+				}${public ? "" : "'Private Repo'"})`;
 			};
+
+			const actionIcon = (name, alt) =>
+				`<img alt="${alt}" src="https://github.com/cheesits456/github-activity-readme/raw/master/icons/${name}.png" align="top" height="18">`;
 
 			/**
 			 * Execute shell command
@@ -1434,10 +1499,10 @@ module.exports = (function (modules, runtime) {
 
 			const serializers = {
 				CommitCommentEvent: item => {
-					return `<img alt="🗣" src="https://github.com/cheesits456/github-activity-readme/raw/master/icons/comment.png" align="top" height="18"> Commented on [\`${item.payload.comment.commit_id.slice(
-						0,
-						7
-					)}\`](${item.payload.comment.html_url}) in ${toUrlFormat(item.repo.name)}`;
+					const hash = item.payload.comment.commit_id.slice(0, 7);
+					return `${actionIcon("comment", "🗣")} Commented on ${
+						item.public ? `[\`${hash}\`](${item.payload.comment.html_url})` : `\`${hash}\``
+					} in ${item.public ? toUrlFormat(item.repo.name, null, true) : `🔒${item.repo.name}`}`;
 				},
 				CreateEvent: item => {
 					if (item.payload.ref_type === "repository")
@@ -1481,9 +1546,9 @@ module.exports = (function (modules, runtime) {
 					return `${line} PR ${toUrlFormat(item)} in ${toUrlFormat(item.repo.name)}`;
 				},
 				PullRequestReviewEvent: item => {
-					return `<img alt="🔍" src="https://github.com/cheesits456/github-activity-readme/raw/master/icons/review.png" align="top" height="18"> Reviewed ${
-						toUrlFormat(item)
-					} in ${toUrlFormat(item.repo.name)}`;
+					return `<img alt="🔍" src="https://github.com/cheesits456/github-activity-readme/raw/master/icons/review.png" align="top" height="18"> Reviewed ${toUrlFormat(
+						item
+					)} in ${toUrlFormat(item.repo.name)}`;
 				},
 				PushEvent: item => {
 					return `<img alt="📝" src="https://github.com/cheesits456/github-activity-readme/raw/master/icons/commit.png" align="top" height="18"> Made \`${
@@ -1502,7 +1567,12 @@ module.exports = (function (modules, runtime) {
 				}
 			};
 
-			const timestamper = item => `\`[${item.created_at.split("T")[0].split("-").slice(1, 3).join("/")} ${item.created_at.split("T")[1].split(":").slice(0, 2).join(":")}]\``;
+			const timestamper = item =>
+				`\`[${item.created_at.split("T")[0].split("-").slice(1, 3).join("/")} ${item.created_at
+					.split("T")[1]
+					.split(":")
+					.slice(0, 2)
+					.join(":")}]\``;
 
 			Toolkit.run(
 				async tools => {
@@ -1521,7 +1591,12 @@ module.exports = (function (modules, runtime) {
 					let arr = [];
 
 					for (const data of events.data) {
-						if (arr.length && data.type === "PushEvent" && last(arr).type === "PushEvent" && data.repo.name === last(arr).repo.name)
+						if (
+							arr.length &&
+							data.type === "PushEvent" &&
+							last(arr).type === "PushEvent" &&
+							data.repo.name === last(arr).repo.name
+						)
 							arr[arr.length - 1].payload.size += data.payload.size;
 						else arr.push(data);
 					}
@@ -1531,7 +1606,7 @@ module.exports = (function (modules, runtime) {
 						.filter(event => {
 							let r = serializers.hasOwnProperty(event.type);
 							if (!r) tools.log.debug(event);
-							if (event.repo.name === "cheesits456/0xDiscordBot") tools.log.debug(event)
+							if (event.repo.name === "cheesits456/0xDiscordBot") tools.log.debug(event);
 							return r;
 						})
 						// We only have five lines to work with
@@ -1544,7 +1619,9 @@ module.exports = (function (modules, runtime) {
 					const readmeContent = fs.readFileSync("./README.md", "utf-8").split("\n");
 
 					// Find the index corresponding to <!--START_SECTION:activity--> comment
-					let startIdx = readmeContent.findIndex(content => content.trim() === "<!--START_SECTION:activity-->");
+					let startIdx = readmeContent.findIndex(
+						content => content.trim() === "<!--START_SECTION:activity-->"
+					);
 
 					// Early return in case the <!--START_SECTION:activity--> comment was not found
 					if (startIdx === -1) {
@@ -1662,7 +1739,12 @@ module.exports = (function (modules, runtime) {
 				}
 
 				function argDefined(key, arg) {
-					return (flags.allBools && /^--[^=]+$/.test(arg)) || flags.strings[key] || flags.bools[key] || aliases[key];
+					return (
+						(flags.allBools && /^--[^=]+$/.test(arg)) ||
+						flags.strings[key] ||
+						flags.bools[key] ||
+						aliases[key]
+					);
 				}
 
 				function setArg(key, val, arg) {
@@ -1684,7 +1766,8 @@ module.exports = (function (modules, runtime) {
 						var key = keys[i];
 						if (key === "__proto__") return;
 						if (o[key] === undefined) o[key] = {};
-						if (o[key] === Object.prototype || o[key] === Number.prototype || o[key] === String.prototype) o[key] = {};
+						if (o[key] === Object.prototype || o[key] === Number.prototype || o[key] === String.prototype)
+							o[key] = {};
 						if (o[key] === Array.prototype) o[key] = [];
 						o = o[key];
 					}
@@ -1728,7 +1811,13 @@ module.exports = (function (modules, runtime) {
 					} else if (/^--.+/.test(arg)) {
 						var key = arg.match(/^--(.+)/)[1];
 						var next = args[i + 1];
-						if (next !== undefined && !/^-/.test(next) && !flags.bools[key] && !flags.allBools && (aliases[key] ? !aliasIsBoolean(key) : true)) {
+						if (
+							next !== undefined &&
+							!/^-/.test(next) &&
+							!flags.bools[key] &&
+							!flags.allBools &&
+							(aliases[key] ? !aliasIsBoolean(key) : true)
+						) {
 							setArg(key, next, arg);
 							i++;
 						} else if (/^(true|false)$/.test(next)) {
@@ -1772,7 +1861,12 @@ module.exports = (function (modules, runtime) {
 
 						var key = arg.slice(-1)[0];
 						if (!broken && key !== "-") {
-							if (args[i + 1] && !/^(-|--)[^-]/.test(args[i + 1]) && !flags.bools[key] && (aliases[key] ? !aliasIsBoolean(key) : true)) {
+							if (
+								args[i + 1] &&
+								!/^(-|--)[^-]/.test(args[i + 1]) &&
+								!flags.bools[key] &&
+								(aliases[key] ? !aliasIsBoolean(key) : true)
+							) {
 								setArg(key, args[i + 1], arg);
 								i++;
 							} else if (args[i + 1] && /^(true|false)$/.test(args[i + 1])) {
@@ -1950,7 +2044,8 @@ module.exports = (function (modules, runtime) {
 			}
 
 			module.exports = getStream;
-			module.exports.buffer = (stream, options) => getStream(stream, Object.assign({}, options, { encoding: "buffer" }));
+			module.exports.buffer = (stream, options) =>
+				getStream(stream, Object.assign({}, options, { encoding: "buffer" }));
 			module.exports.array = (stream, options) => getStream(stream, Object.assign({}, options, { array: true }));
 			module.exports.MaxBufferError = MaxBufferError;
 
@@ -1965,7 +2060,9 @@ module.exports = (function (modules, runtime) {
 					return false;
 				}
 
-				return obj instanceof Array || Array.isArray(obj) || (obj.length >= 0 && obj.splice instanceof Function);
+				return (
+					obj instanceof Array || Array.isArray(obj) || (obj.length >= 0 && obj.splice instanceof Function)
+				);
 			};
 
 			/***/
@@ -2034,7 +2131,11 @@ module.exports = (function (modules, runtime) {
 				}
 
 				if (opts.stdio && hasAlias(opts)) {
-					throw new Error(`It's not possible to provide \`stdio\` in combination with one of ${alias.map(x => `\`${x}\``).join(", ")}`);
+					throw new Error(
+						`It's not possible to provide \`stdio\` in combination with one of ${alias
+							.map(x => `\`${x}\``)
+							.join(", ")}`
+					);
 				}
 
 				if (typeof opts.stdio === "string") {
@@ -2044,7 +2145,9 @@ module.exports = (function (modules, runtime) {
 				const stdio = opts.stdio || [];
 
 				if (!Array.isArray(stdio)) {
-					throw new TypeError(`Expected \`stdio\` to be of type \`string\` or \`Array\`, got \`${typeof stdio}\``);
+					throw new TypeError(
+						`Expected \`stdio\` to be of type \`string\` or \`Array\`, got \`${typeof stdio}\``
+					);
 				}
 
 				const result = [];
@@ -2101,7 +2204,8 @@ module.exports = (function (modules, runtime) {
 				var o = parseInt("001", 8);
 				var ug = u | g;
 
-				var ret = mod & o || (mod & g && gid === myGid) || (mod & u && uid === myUid) || (mod & ug && myUid === 0);
+				var ret =
+					mod & o || (mod & g && gid === myGid) || (mod & u && uid === myUid) || (mod & ug && myUid === 0);
 
 				return ret;
 			}
@@ -2173,7 +2277,11 @@ module.exports = (function (modules, runtime) {
 					// release that supports 256 colors. Windows 10 build 14931 is the first release
 					// that supports 16m/TrueColor.
 					const osRelease = os.release().split(".");
-					if (Number(process.versions.node.split(".")[0]) >= 8 && Number(osRelease[0]) >= 10 && Number(osRelease[2]) >= 10586) {
+					if (
+						Number(process.versions.node.split(".")[0]) >= 8 &&
+						Number(osRelease[0]) >= 10 &&
+						Number(osRelease[2]) >= 10586
+					) {
 						return Number(osRelease[2]) >= 14931 ? 3 : 2;
 					}
 
@@ -2181,7 +2289,10 @@ module.exports = (function (modules, runtime) {
 				}
 
 				if ("CI" in env) {
-					if (["TRAVIS", "CIRCLECI", "APPVEYOR", "GITLAB_CI"].some(sign => sign in env) || env.CI_NAME === "codeship") {
+					if (
+						["TRAVIS", "CIRCLECI", "APPVEYOR", "GITLAB_CI"].some(sign => sign in env) ||
+						env.CI_NAME === "codeship"
+					) {
 						return 1;
 					}
 
@@ -2920,7 +3031,11 @@ module.exports = (function (modules, runtime) {
 					if (this._config.displayLabel && type.label) {
 						const label = this._config.uppercaseLabel ? type.label.toUpperCase() : type.label;
 						if (this._config.underlineLabel) {
-							signale.push(chalk[type.color](this._padEnd(underline(label), this._longestUnderlinedLabel.length + 1)));
+							signale.push(
+								chalk[type.color](
+									this._padEnd(underline(label), this._longestUnderlinedLabel.length + 1)
+								)
+							);
 						} else {
 							signale.push(chalk[type.color](this._padEnd(label, this._longestLabel.length + 1)));
 						}
@@ -3098,7 +3213,12 @@ module.exports = (function (modules, runtime) {
 
 			var debug;
 			/* istanbul ignore next */
-			if (typeof process === "object" && process.env && process.env.NODE_DEBUG && /\bsemver\b/i.test(process.env.NODE_DEBUG)) {
+			if (
+				typeof process === "object" &&
+				process.env &&
+				process.env.NODE_DEBUG &&
+				/\bsemver\b/i.test(process.env.NODE_DEBUG)
+			) {
 				debug = function () {
 					var args = Array.prototype.slice.call(arguments, 0);
 					args.unshift("SEMVER");
@@ -3145,10 +3265,28 @@ module.exports = (function (modules, runtime) {
 			// Three dot-separated numeric identifiers.
 
 			var MAINVERSION = R++;
-			src[MAINVERSION] = "(" + src[NUMERICIDENTIFIER] + ")\\." + "(" + src[NUMERICIDENTIFIER] + ")\\." + "(" + src[NUMERICIDENTIFIER] + ")";
+			src[MAINVERSION] =
+				"(" +
+				src[NUMERICIDENTIFIER] +
+				")\\." +
+				"(" +
+				src[NUMERICIDENTIFIER] +
+				")\\." +
+				"(" +
+				src[NUMERICIDENTIFIER] +
+				")";
 
 			var MAINVERSIONLOOSE = R++;
-			src[MAINVERSIONLOOSE] = "(" + src[NUMERICIDENTIFIERLOOSE] + ")\\." + "(" + src[NUMERICIDENTIFIERLOOSE] + ")\\." + "(" + src[NUMERICIDENTIFIERLOOSE] + ")";
+			src[MAINVERSIONLOOSE] =
+				"(" +
+				src[NUMERICIDENTIFIERLOOSE] +
+				")\\." +
+				"(" +
+				src[NUMERICIDENTIFIERLOOSE] +
+				")\\." +
+				"(" +
+				src[NUMERICIDENTIFIERLOOSE] +
+				")";
 
 			// ## Pre-release Version Identifier
 			// A numeric identifier, or a non-numeric identifier.
@@ -3157,7 +3295,8 @@ module.exports = (function (modules, runtime) {
 			src[PRERELEASEIDENTIFIER] = "(?:" + src[NUMERICIDENTIFIER] + "|" + src[NONNUMERICIDENTIFIER] + ")";
 
 			var PRERELEASEIDENTIFIERLOOSE = R++;
-			src[PRERELEASEIDENTIFIERLOOSE] = "(?:" + src[NUMERICIDENTIFIERLOOSE] + "|" + src[NONNUMERICIDENTIFIER] + ")";
+			src[PRERELEASEIDENTIFIERLOOSE] =
+				"(?:" + src[NUMERICIDENTIFIERLOOSE] + "|" + src[NONNUMERICIDENTIFIER] + ")";
 
 			// ## Pre-release Version
 			// Hyphen, followed by one or more dot-separated pre-release version
@@ -3167,7 +3306,8 @@ module.exports = (function (modules, runtime) {
 			src[PRERELEASE] = "(?:-(" + src[PRERELEASEIDENTIFIER] + "(?:\\." + src[PRERELEASEIDENTIFIER] + ")*))";
 
 			var PRERELEASELOOSE = R++;
-			src[PRERELEASELOOSE] = "(?:-?(" + src[PRERELEASEIDENTIFIERLOOSE] + "(?:\\." + src[PRERELEASEIDENTIFIERLOOSE] + ")*))";
+			src[PRERELEASELOOSE] =
+				"(?:-?(" + src[PRERELEASEIDENTIFIERLOOSE] + "(?:\\." + src[PRERELEASEIDENTIFIERLOOSE] + ")*))";
 
 			// ## Build Metadata Identifier
 			// Any combination of digits, letters, or hyphens.
@@ -3325,7 +3465,8 @@ module.exports = (function (modules, runtime) {
 			src[HYPHENRANGE] = "^\\s*(" + src[XRANGEPLAIN] + ")" + "\\s+-\\s+" + "(" + src[XRANGEPLAIN] + ")" + "\\s*$";
 
 			var HYPHENRANGELOOSE = R++;
-			src[HYPHENRANGELOOSE] = "^\\s*(" + src[XRANGEPLAINLOOSE] + ")" + "\\s+-\\s+" + "(" + src[XRANGEPLAINLOOSE] + ")" + "\\s*$";
+			src[HYPHENRANGELOOSE] =
+				"^\\s*(" + src[XRANGEPLAINLOOSE] + ")" + "\\s+-\\s+" + "(" + src[XRANGEPLAINLOOSE] + ")" + "\\s*$";
 
 			// Star ranges basically just allow anything at all.
 			var STAR = R++;
@@ -3486,7 +3627,11 @@ module.exports = (function (modules, runtime) {
 					other = new SemVer(other, this.options);
 				}
 
-				return compareIdentifiers(this.major, other.major) || compareIdentifiers(this.minor, other.minor) || compareIdentifiers(this.patch, other.patch);
+				return (
+					compareIdentifiers(this.major, other.major) ||
+					compareIdentifiers(this.minor, other.minor) ||
+					compareIdentifiers(this.patch, other.patch)
+				);
 			};
 
 			SemVer.prototype.comparePre = function (other) {
@@ -3894,14 +4039,24 @@ module.exports = (function (modules, runtime) {
 					return satisfies(comp.semver, rangeTmp, options);
 				}
 
-				var sameDirectionIncreasing = (this.operator === ">=" || this.operator === ">") && (comp.operator === ">=" || comp.operator === ">");
-				var sameDirectionDecreasing = (this.operator === "<=" || this.operator === "<") && (comp.operator === "<=" || comp.operator === "<");
+				var sameDirectionIncreasing =
+					(this.operator === ">=" || this.operator === ">") &&
+					(comp.operator === ">=" || comp.operator === ">");
+				var sameDirectionDecreasing =
+					(this.operator === "<=" || this.operator === "<") &&
+					(comp.operator === "<=" || comp.operator === "<");
 				var sameSemVer = this.semver.version === comp.semver.version;
-				var differentDirectionsInclusive = (this.operator === ">=" || this.operator === "<=") && (comp.operator === ">=" || comp.operator === "<=");
+				var differentDirectionsInclusive =
+					(this.operator === ">=" || this.operator === "<=") &&
+					(comp.operator === ">=" || comp.operator === "<=");
 				var oppositeDirectionsLessThan =
-					cmp(this.semver, "<", comp.semver, options) && (this.operator === ">=" || this.operator === ">") && (comp.operator === "<=" || comp.operator === "<");
+					cmp(this.semver, "<", comp.semver, options) &&
+					(this.operator === ">=" || this.operator === ">") &&
+					(comp.operator === "<=" || comp.operator === "<");
 				var oppositeDirectionsGreaterThan =
-					cmp(this.semver, ">", comp.semver, options) && (this.operator === "<=" || this.operator === "<") && (comp.operator === ">=" || comp.operator === ">");
+					cmp(this.semver, ">", comp.semver, options) &&
+					(this.operator === "<=" || this.operator === "<") &&
+					(comp.operator === ">=" || comp.operator === ">");
 
 				return (
 					sameDirectionIncreasing ||
@@ -4327,7 +4482,11 @@ module.exports = (function (modules, runtime) {
 
 						if (set[i].semver.prerelease.length > 0) {
 							var allowed = set[i].semver;
-							if (allowed.major === version.major && allowed.minor === version.minor && allowed.patch === version.patch) {
+							if (
+								allowed.major === version.major &&
+								allowed.minor === version.minor &&
+								allowed.patch === version.patch
+							) {
 								return true;
 							}
 						}
@@ -4650,7 +4809,10 @@ module.exports = (function (modules, runtime) {
 			}
 
 			function iterator(octokit, route, parameters) {
-				const options = typeof route === "function" ? route.endpoint(parameters) : octokit.request.endpoint(route, parameters);
+				const options =
+					typeof route === "function"
+						? route.endpoint(parameters)
+						: octokit.request.endpoint(route, parameters);
 				const requestMethod = typeof route === "function" ? route : octokit.request;
 				const method = options.method;
 				const headers = options.headers;
@@ -4768,7 +4930,8 @@ module.exports = (function (modules, runtime) {
 				function (mod) {
 					if (mod && mod.__esModule) return mod;
 					var result = {};
-					if (mod != null) for (var k in mod) if (Object.hasOwnProperty.call(mod, k)) __createBinding(result, mod, k);
+					if (mod != null)
+						for (var k in mod) if (Object.hasOwnProperty.call(mod, k)) __createBinding(result, mod, k);
 					__setModuleDefault(result, mod);
 					return result;
 				};
@@ -4810,11 +4973,21 @@ module.exports = (function (modules, runtime) {
 			});
 
 			isStream.writable = function (stream) {
-				return isStream(stream) && stream.writable !== false && typeof stream._write === "function" && typeof stream._writableState === "object";
+				return (
+					isStream(stream) &&
+					stream.writable !== false &&
+					typeof stream._write === "function" &&
+					typeof stream._writableState === "object"
+				);
 			};
 
 			isStream.readable = function (stream) {
-				return isStream(stream) && stream.readable !== false && typeof stream._read === "function" && typeof stream._readableState === "object";
+				return (
+					isStream(stream) &&
+					stream.readable !== false &&
+					typeof stream._read === "function" &&
+					typeof stream._readableState === "object"
+				);
 			};
 
 			isStream.duplex = function (stream) {
@@ -4822,7 +4995,11 @@ module.exports = (function (modules, runtime) {
 			};
 
 			isStream.transform = function (stream) {
-				return isStream.duplex(stream) && typeof stream._transform === "function" && typeof stream._transformState === "object";
+				return (
+					isStream.duplex(stream) &&
+					typeof stream._transform === "function" &&
+					typeof stream._transformState === "object"
+				);
 			};
 
 			/***/
@@ -5221,7 +5398,12 @@ module.exports = (function (modules, runtime) {
 				return toCommandValue(s).replace(/%/g, "%25").replace(/\r/g, "%0D").replace(/\n/g, "%0A");
 			}
 			function escapeProperty(s) {
-				return toCommandValue(s).replace(/%/g, "%25").replace(/\r/g, "%0D").replace(/\n/g, "%0A").replace(/:/g, "%3A").replace(/,/g, "%2C");
+				return toCommandValue(s)
+					.replace(/%/g, "%25")
+					.replace(/\r/g, "%0D")
+					.replace(/\n/g, "%0A")
+					.replace(/:/g, "%3A")
+					.replace(/,/g, "%2C");
 			}
 			//# sourceMappingURL=command.js.map
 
@@ -5306,7 +5488,12 @@ module.exports = (function (modules, runtime) {
 						}
 					}; // prepend default user agent with `options.userAgent` if set
 
-					requestDefaults.headers["user-agent"] = [options.userAgent, `octokit-core.js/${VERSION} ${universalUserAgent.getUserAgent()}`].filter(Boolean).join(" ");
+					requestDefaults.headers["user-agent"] = [
+						options.userAgent,
+						`octokit-core.js/${VERSION} ${universalUserAgent.getUserAgent()}`
+					]
+						.filter(Boolean)
+						.join(" ");
 
 					if (options.baseUrl) {
 						requestDefaults.baseUrl = options.baseUrl;
@@ -5423,7 +5610,12 @@ module.exports = (function (modules, runtime) {
 
 					const currentPlugins = this.plugins;
 					let newPlugins = [...(p1 instanceof Array ? p1 : [p1]), ...p2];
-					const NewOctokit = ((_a = class extends this {}), (_a.plugins = currentPlugins.concat(newPlugins.filter(plugin => !currentPlugins.includes(plugin)))), _a);
+					const NewOctokit =
+						((_a = class extends this {}),
+						(_a.plugins = currentPlugins.concat(
+							newPlugins.filter(plugin => !currentPlugins.includes(plugin))
+						)),
+						_a);
 					return NewOctokit;
 				}
 			}
@@ -5451,7 +5643,10 @@ module.exports = (function (modules, runtime) {
 			var isFS = function (stream) {
 				if (!ancient) return false; // newer node version do not need to care about fs is a special way
 				if (!fs) return false; // browser
-				return (stream instanceof (fs.ReadStream || noop) || stream instanceof (fs.WriteStream || noop)) && isFn(stream.close);
+				return (
+					(stream instanceof (fs.ReadStream || noop) || stream instanceof (fs.WriteStream || noop)) &&
+					isFn(stream.close)
+				);
 			};
 
 			var isRequest = function (stream) {
@@ -5744,7 +5939,14 @@ module.exports = (function (modules, runtime) {
 
 				if (body instanceof Stream) {
 					body.on("error", function (err) {
-						const error = err.name === "AbortError" ? err : new FetchError(`Invalid response body while trying to fetch ${_this.url}: ${err.message}`, "system", err);
+						const error =
+							err.name === "AbortError"
+								? err
+								: new FetchError(
+										`Invalid response body while trying to fetch ${_this.url}: ${err.message}`,
+										"system",
+										err
+								  );
 						_this[INTERNALS].error = error;
 					});
 				}
@@ -5802,7 +6004,12 @@ module.exports = (function (modules, runtime) {
 						try {
 							return JSON.parse(buffer.toString());
 						} catch (err) {
-							return Body.Promise.reject(new FetchError(`invalid json response body at ${_this2.url} reason: ${err.message}`, "invalid-json"));
+							return Body.Promise.reject(
+								new FetchError(
+									`invalid json response body at ${_this2.url} reason: ${err.message}`,
+									"invalid-json"
+								)
+							);
 						}
 					});
 				},
@@ -5917,7 +6124,12 @@ module.exports = (function (modules, runtime) {
 					if (_this4.timeout) {
 						resTimeout = setTimeout(function () {
 							abort = true;
-							reject(new FetchError(`Response timeout while trying to fetch ${_this4.url} (over ${_this4.timeout}ms)`, "body-timeout"));
+							reject(
+								new FetchError(
+									`Response timeout while trying to fetch ${_this4.url} (over ${_this4.timeout}ms)`,
+									"body-timeout"
+								)
+							);
 						}, _this4.timeout);
 					}
 
@@ -5929,7 +6141,13 @@ module.exports = (function (modules, runtime) {
 							reject(err);
 						} else {
 							// other errors, such as incorrect content-encoding
-							reject(new FetchError(`Invalid response body while trying to fetch ${_this4.url}: ${err.message}`, "system", err));
+							reject(
+								new FetchError(
+									`Invalid response body while trying to fetch ${_this4.url}: ${err.message}`,
+									"system",
+									err
+								)
+							);
 						}
 					});
 
@@ -5940,7 +6158,9 @@ module.exports = (function (modules, runtime) {
 
 						if (_this4.size && accumBytes + chunk.length > _this4.size) {
 							abort = true;
-							reject(new FetchError(`content size at ${_this4.url} over limit: ${_this4.size}`, "max-size"));
+							reject(
+								new FetchError(`content size at ${_this4.url} over limit: ${_this4.size}`, "max-size")
+							);
 							return;
 						}
 
@@ -5959,7 +6179,13 @@ module.exports = (function (modules, runtime) {
 							resolve(Buffer.concat(accum, accumBytes));
 						} catch (err) {
 							// handle streams that have accumulated too much data (issue #414)
-							reject(new FetchError(`Could not create Buffer from response body for ${_this4.url}: ${err.message}`, "system", err));
+							reject(
+								new FetchError(
+									`Could not create Buffer from response body for ${_this4.url}: ${err.message}`,
+									"system",
+									err
+								)
+							);
 						}
 					});
 				});
@@ -6046,7 +6272,11 @@ module.exports = (function (modules, runtime) {
 				}
 
 				// Brand-checking and more duck-typing as optional condition.
-				return obj.constructor.name === "URLSearchParams" || Object.prototype.toString.call(obj) === "[object URLSearchParams]" || typeof obj.sort === "function";
+				return (
+					obj.constructor.name === "URLSearchParams" ||
+					Object.prototype.toString.call(obj) === "[object URLSearchParams]" ||
+					typeof obj.sort === "function"
+				);
 			}
 
 			/**
@@ -6749,11 +6979,15 @@ module.exports = (function (modules, runtime) {
 					let method = init.method || input.method || "GET";
 					method = method.toUpperCase();
 
-					if ((init.body != null || (isRequest(input) && input.body !== null)) && (method === "GET" || method === "HEAD")) {
+					if (
+						(init.body != null || (isRequest(input) && input.body !== null)) &&
+						(method === "GET" || method === "HEAD")
+					) {
 						throw new TypeError("Request with GET/HEAD method cannot have body");
 					}
 
-					let inputBody = init.body != null ? init.body : isRequest(input) && input.body !== null ? clone(input) : null;
+					let inputBody =
+						init.body != null ? init.body : isRequest(input) && input.body !== null ? clone(input) : null;
 
 					Body.call(this, inputBody, {
 						timeout: init.timeout || input.timeout || 0,
@@ -6785,8 +7019,14 @@ module.exports = (function (modules, runtime) {
 					};
 
 					// node-fetch-only options
-					this.follow = init.follow !== undefined ? init.follow : input.follow !== undefined ? input.follow : 20;
-					this.compress = init.compress !== undefined ? init.compress : input.compress !== undefined ? input.compress : true;
+					this.follow =
+						init.follow !== undefined ? init.follow : input.follow !== undefined ? input.follow : 20;
+					this.compress =
+						init.compress !== undefined
+							? init.compress
+							: input.compress !== undefined
+							? input.compress
+							: true;
 					this.counter = init.counter || input.counter || 0;
 					this.agent = init.agent || input.agent;
 				}
@@ -7011,7 +7251,9 @@ module.exports = (function (modules, runtime) {
 					}
 
 					req.on("error", function (err) {
-						reject(new FetchError(`request to ${request.url} failed, reason: ${err.message}`, "system", err));
+						reject(
+							new FetchError(`request to ${request.url} failed, reason: ${err.message}`, "system", err)
+						);
 						finalize();
 					});
 
@@ -7031,7 +7273,9 @@ module.exports = (function (modules, runtime) {
 							// HTTP fetch step 5.5
 							switch (request.redirect) {
 								case "error":
-									reject(new FetchError(`redirect mode is set to error: ${request.url}`, "no-redirect"));
+									reject(
+										new FetchError(`redirect mode is set to error: ${request.url}`, "no-redirect")
+									);
 									finalize();
 									return;
 								case "manual":
@@ -7054,7 +7298,12 @@ module.exports = (function (modules, runtime) {
 
 									// HTTP-redirect fetch step 5
 									if (request.counter >= request.follow) {
-										reject(new FetchError(`maximum redirect reached at: ${request.url}`, "max-redirect"));
+										reject(
+											new FetchError(
+												`maximum redirect reached at: ${request.url}`,
+												"max-redirect"
+											)
+										);
 										finalize();
 										return;
 									}
@@ -7075,13 +7324,22 @@ module.exports = (function (modules, runtime) {
 
 									// HTTP-redirect fetch step 9
 									if (res.statusCode !== 303 && request.body && getTotalBytes(request) === null) {
-										reject(new FetchError("Cannot follow redirect with body being a readable stream", "unsupported-redirect"));
+										reject(
+											new FetchError(
+												"Cannot follow redirect with body being a readable stream",
+												"unsupported-redirect"
+											)
+										);
 										finalize();
 										return;
 									}
 
 									// HTTP-redirect fetch step 11
-									if (res.statusCode === 303 || ((res.statusCode === 301 || res.statusCode === 302) && request.method === "POST")) {
+									if (
+										res.statusCode === 303 ||
+										((res.statusCode === 301 || res.statusCode === 302) &&
+											request.method === "POST")
+									) {
 										requestOpts.method = "GET";
 										requestOpts.body = undefined;
 										requestOpts.headers.delete("content-length");
@@ -7121,7 +7379,13 @@ module.exports = (function (modules, runtime) {
 						// 3. no Content-Encoding header
 						// 4. no content response (204)
 						// 5. content not modified response (304)
-						if (!request.compress || request.method === "HEAD" || codings === null || res.statusCode === 204 || res.statusCode === 304) {
+						if (
+							!request.compress ||
+							request.method === "HEAD" ||
+							codings === null ||
+							res.statusCode === 204 ||
+							res.statusCode === 304
+						) {
 							response = new Response(body, response_options);
 							resolve(response);
 							return;
@@ -7272,7 +7536,8 @@ module.exports = (function (modules, runtime) {
 				function (mod) {
 					if (mod && mod.__esModule) return mod;
 					var result = {};
-					if (mod != null) for (var k in mod) if (Object.hasOwnProperty.call(mod, k)) __createBinding(result, mod, k);
+					if (mod != null)
+						for (var k in mod) if (Object.hasOwnProperty.call(mod, k)) __createBinding(result, mod, k);
 					__setModuleDefault(result, mod);
 					return result;
 				};
@@ -7342,7 +7607,14 @@ module.exports = (function (modules, runtime) {
 							try {
 								if (
 									((f = 1),
-									y && (t = op[0] & 2 ? y["return"] : op[0] ? y["throw"] || ((t = y["return"]) && t.call(y), 0) : y.next) && !(t = t.call(y, op[1])).done)
+									y &&
+										(t =
+											op[0] & 2
+												? y["return"]
+												: op[0]
+												? y["throw"] || ((t = y["return"]) && t.call(y), 0)
+												: y.next) &&
+										!(t = t.call(y, op[1])).done)
 								)
 									return t;
 								if (((y = 0), t)) op = [op[0] & 2, t.value];
@@ -7364,7 +7636,10 @@ module.exports = (function (modules, runtime) {
 										_.trys.pop();
 										continue;
 									default:
-										if (!((t = _.trys), (t = t.length > 0 && t[t.length - 1])) && (op[0] === 6 || op[0] === 2)) {
+										if (
+											!((t = _.trys), (t = t.length > 0 && t[t.length - 1])) &&
+											(op[0] === 6 || op[0] === 2)
+										) {
 											_ = 0;
 											continue;
 										}
@@ -7423,7 +7698,9 @@ module.exports = (function (modules, runtime) {
 					}
 					this.opts = opts;
 					// Create the logging instance
-					this.log = this.wrapLogger(opts.logger || new signale_1.Signale({ config: { underlineLabel: false } }));
+					this.log = this.wrapLogger(
+						opts.logger || new signale_1.Signale({ config: { underlineLabel: false } })
+					);
 					// Print a console warning for missing environment variables
 					this.warnForMissingEnvVars();
 					// Memoize environment variables and arguments
@@ -7512,7 +7789,9 @@ module.exports = (function (modules, runtime) {
 							pathToFile = path_1.default.join(this.workspace, filename);
 							if (!fs_1.default.existsSync(pathToFile)) {
 								throw new Error(
-									"File " + filename + " could not be found in your project's workspace. You may need the actions/checkout action to clone the repository first."
+									"File " +
+										filename +
+										" could not be found in your project's workspace. You may need the actions/checkout action to clone the repository first."
 								);
 							}
 							return [2 /*return*/, fs_1.default.promises.readFile(pathToFile, encoding)];
@@ -7528,7 +7807,8 @@ module.exports = (function (modules, runtime) {
 				 */
 				Toolkit.prototype.getPackageJSON = function () {
 					var pathToPackage = path_1.default.join(this.workspace, "package.json");
-					if (!fs_1.default.existsSync(pathToPackage)) throw new Error("package.json could not be found in your project's root.");
+					if (!fs_1.default.existsSync(pathToPackage))
+						throw new Error("package.json could not be found in your project's root.");
 					return require(pathToPackage);
 				};
 				/**
@@ -7547,7 +7827,14 @@ module.exports = (function (modules, runtime) {
 									if (this.context.payload.sender && this.context.payload.sender.type === "Bot") {
 										return [2 /*return*/];
 									}
-									this.checkAllowedEvents(["pull_request", "issues", "issue_comment", "commit_comment", "pull_request_review", "pull_request_review_comment"]);
+									this.checkAllowedEvents([
+										"pull_request",
+										"issues",
+										"issue_comment",
+										"commit_comment",
+										"pull_request_review",
+										"pull_request_review_comment"
+									]);
 									reg = new RegExp("^/" + command + "(?:$|\\s(.*))", "gm");
 									body = get_body_1.getBody(this.context.payload);
 									if (!body) return [2 /*return*/];
@@ -7594,7 +7881,9 @@ module.exports = (function (modules, runtime) {
 						: this.eventIsAllowed(event);
 					if (!passed) {
 						var actionStr = this.context.payload.action ? "." + this.context.payload.action : "";
-						this.log.error("Event `" + this.context.event + actionStr + "` is not supported by this action.");
+						this.log.error(
+							"Event `" + this.context.event + actionStr + "` is not supported by this action."
+						);
 						this.exit.neutral();
 					}
 				};
@@ -7635,7 +7924,9 @@ module.exports = (function (modules, runtime) {
 								return "- " + key;
 							})
 							.join("\n");
-						var warning = "There are environment variables missing from this runtime, but would be present on GitHub.\n" + list;
+						var warning =
+							"There are environment variables missing from this runtime, but would be present on GitHub.\n" +
+							list;
 						this.log.warn(warning);
 					}
 				};
@@ -7747,7 +8038,11 @@ module.exports = (function (modules, runtime) {
 					this.status = statusCode;
 					Object.defineProperty(this, "code", {
 						get() {
-							logOnce(new deprecation.Deprecation("[@octokit/request-error] `error.code` is deprecated, use `error.status`."));
+							logOnce(
+								new deprecation.Deprecation(
+									"[@octokit/request-error] `error.code` is deprecated, use `error.status`."
+								)
+							);
 							return statusCode;
 						}
 					});
@@ -8289,7 +8584,9 @@ module.exports = (function (modules, runtime) {
 			var collectionHookDeprecationMessageDisplayed = false;
 			function Hook() {
 				if (!collectionHookDeprecationMessageDisplayed) {
-					console.warn('[before-after-hook]: "Hook()" repurposing warning, use "Hook.Collection()". Read more: https://git.io/upgrade-before-after-hook-to-1.4');
+					console.warn(
+						'[before-after-hook]: "Hook()" repurposing warning, use "Hook.Collection()". Read more: https://git.io/upgrade-before-after-hook-to-1.4'
+					);
 					collectionHookDeprecationMessageDisplayed = true;
 				}
 				return HookCollection();
@@ -8529,8 +8826,10 @@ module.exports = (function (modules, runtime) {
 
 				var onclosenexttick = function () {
 					if (cancelled) return;
-					if (readable && !(rs && rs.ended && !rs.destroyed)) return callback.call(stream, new Error("premature close"));
-					if (writable && !(ws && ws.ended && !ws.destroyed)) return callback.call(stream, new Error("premature close"));
+					if (readable && !(rs && rs.ended && !rs.destroyed))
+						return callback.call(stream, new Error("premature close"));
+					if (writable && !(ws && ws.ended && !ws.destroyed))
+						return callback.call(stream, new Error("premature close"));
 				};
 
 				var onrequest = function () {
@@ -8591,7 +8890,8 @@ module.exports = (function (modules, runtime) {
 			const isCmdShimRegExp = /node_modules[\\/].bin[\\/][^\\/]+\.cmd$/i;
 
 			// `options.shell` is supported in Node ^4.8.0, ^5.7.0 and >= 6.0.0
-			const supportsShellOption = niceTry(() => semver.satisfies(process.version, "^4.8.0 || ^5.7.0 || >= 6.0.0", true)) || false;
+			const supportsShellOption =
+				niceTry(() => semver.satisfies(process.version, "^4.8.0 || ^5.7.0 || >= 6.0.0", true)) || false;
 
 			function detectShebang(parsed) {
 				parsed.file = resolveCommand(parsed);
@@ -8657,7 +8957,10 @@ module.exports = (function (modules, runtime) {
 				const shellCommand = [parsed.command].concat(parsed.args).join(" ");
 
 				if (isWin) {
-					parsed.command = typeof parsed.options.shell === "string" ? parsed.options.shell : process.env.comspec || "cmd.exe";
+					parsed.command =
+						typeof parsed.options.shell === "string"
+							? parsed.options.shell
+							: process.env.comspec || "cmd.exe";
 					parsed.args = ["/d", "/s", "/c", `"${shellCommand}"`];
 					parsed.options.windowsVerbatimArguments = true; // Tell node's spawn that the arguments are already escaped
 				} else {
@@ -8749,7 +9052,9 @@ module.exports = (function (modules, runtime) {
 							// Just sittin' there on the payload
 							data.issue_number = payload.number;
 						} else {
-							throw new Error("tools.context.issue cannot be used with this event, there is no issue or pull_request object.");
+							throw new Error(
+								"tools.context.issue cannot be used with this event, there is no issue or pull_request object."
+							);
 						}
 						return data;
 					},
@@ -8764,7 +9069,9 @@ module.exports = (function (modules, runtime) {
 							// If it's a PR, the API expects pull_number
 							data.pull_number = payload.pull_request.number;
 						} else {
-							throw new Error("tools.context.pullRequest cannot be used with this event, there is no pull_request object.");
+							throw new Error(
+								"tools.context.pullRequest cannot be used with this event, there is no pull_request object."
+							);
 						}
 						return data;
 					},
@@ -8785,7 +9092,9 @@ module.exports = (function (modules, runtime) {
 								repo: this.payload.repository.name
 							};
 						}
-						throw new Error("context.repo requires a GITHUB_REPOSITORY environment variable like 'owner/repo'");
+						throw new Error(
+							"context.repo requires a GITHUB_REPOSITORY environment variable like 'owner/repo'"
+						);
 					},
 					enumerable: false,
 					configurable: true
@@ -8997,7 +9306,8 @@ module.exports = (function (modules, runtime) {
 
 					function go$readFile(path, options, cb) {
 						return fs$readFile(path, options, function (err) {
-							if (err && (err.code === "EMFILE" || err.code === "ENFILE")) enqueue([go$readFile, [path, options, cb]]);
+							if (err && (err.code === "EMFILE" || err.code === "ENFILE"))
+								enqueue([go$readFile, [path, options, cb]]);
 							else {
 								if (typeof cb === "function") cb.apply(this, arguments);
 								retry();
@@ -9015,7 +9325,8 @@ module.exports = (function (modules, runtime) {
 
 					function go$writeFile(path, data, options, cb) {
 						return fs$writeFile(path, data, options, function (err) {
-							if (err && (err.code === "EMFILE" || err.code === "ENFILE")) enqueue([go$writeFile, [path, data, options, cb]]);
+							if (err && (err.code === "EMFILE" || err.code === "ENFILE"))
+								enqueue([go$writeFile, [path, data, options, cb]]);
 							else {
 								if (typeof cb === "function") cb.apply(this, arguments);
 								retry();
@@ -9033,7 +9344,8 @@ module.exports = (function (modules, runtime) {
 
 					function go$appendFile(path, data, options, cb) {
 						return fs$appendFile(path, data, options, function (err) {
-							if (err && (err.code === "EMFILE" || err.code === "ENFILE")) enqueue([go$appendFile, [path, data, options, cb]]);
+							if (err && (err.code === "EMFILE" || err.code === "ENFILE"))
+								enqueue([go$appendFile, [path, data, options, cb]]);
 							else {
 								if (typeof cb === "function") cb.apply(this, arguments);
 								retry();
@@ -9188,7 +9500,8 @@ module.exports = (function (modules, runtime) {
 
 					function go$open(path, flags, mode, cb) {
 						return fs$open(path, flags, mode, function (err, fd) {
-							if (err && (err.code === "EMFILE" || err.code === "ENFILE")) enqueue([go$open, [path, flags, mode, cb]]);
+							if (err && (err.code === "EMFILE" || err.code === "ENFILE"))
+								enqueue([go$open, [path, flags, mode, cb]]);
 							else {
 								if (typeof cb === "function") cb.apply(this, arguments);
 								retry();
@@ -9816,7 +10129,8 @@ module.exports = (function (modules, runtime) {
 					return Math.round(((r - 8) / 247) * 24) + 232;
 				}
 
-				var ansi = 16 + 36 * Math.round((r / 255) * 5) + 6 * Math.round((g / 255) * 5) + Math.round((b / 255) * 5);
+				var ansi =
+					16 + 36 * Math.round((r / 255) * 5) + 6 * Math.round((g / 255) * 5) + Math.round((b / 255) * 5);
 
 				return ansi;
 			};
@@ -9861,7 +10175,10 @@ module.exports = (function (modules, runtime) {
 			};
 
 			convert.rgb.hex = function (args) {
-				var integer = ((Math.round(args[0]) & 0xff) << 16) + ((Math.round(args[1]) & 0xff) << 8) + (Math.round(args[2]) & 0xff);
+				var integer =
+					((Math.round(args[0]) & 0xff) << 16) +
+					((Math.round(args[1]) & 0xff) << 8) +
+					(Math.round(args[2]) & 0xff);
 
 				var string = integer.toString(16).toUpperCase();
 				return "000000".substring(string.length) + string;
@@ -10196,7 +10513,9 @@ module.exports = (function (modules, runtime) {
 					};
 
 					stackDescriptor.get = function () {
-						var stack = (overwrittenStack || (stackGetter ? stackGetter.call(this) : stackValue)).split(/\r?\n+/g);
+						var stack = (overwrittenStack || (stackGetter ? stackGetter.call(this) : stackValue)).split(
+							/\r?\n+/g
+						);
 
 						// starting in Node 7, the stack builder caches the message.
 						// just replace it.
@@ -10775,7 +11094,9 @@ module.exports = (function (modules, runtime) {
 					} catch (err) {
 						if (err.code !== "ENOENT") {
 							// eslint-disable-next-line no-console
-							console.log(`Unexpected error attempting to determine if executable file exists '${filePath}': ${err}`);
+							console.log(
+								`Unexpected error attempting to determine if executable file exists '${filePath}': ${err}`
+							);
 						}
 					}
 					if (stats && stats.isFile()) {
@@ -10801,7 +11122,9 @@ module.exports = (function (modules, runtime) {
 						} catch (err) {
 							if (err.code !== "ENOENT") {
 								// eslint-disable-next-line no-console
-								console.log(`Unexpected error attempting to determine if executable file exists '${filePath}': ${err}`);
+								console.log(
+									`Unexpected error attempting to determine if executable file exists '${filePath}': ${err}`
+								);
 							}
 						}
 						if (stats && stats.isFile()) {
@@ -10818,7 +11141,9 @@ module.exports = (function (modules, runtime) {
 									}
 								} catch (err) {
 									// eslint-disable-next-line no-console
-									console.log(`Unexpected error attempting to determine the actual case of the file '${filePath}': ${err}`);
+									console.log(
+										`Unexpected error attempting to determine the actual case of the file '${filePath}': ${err}`
+									);
 								}
 								return filePath;
 							} else {
@@ -10847,7 +11172,11 @@ module.exports = (function (modules, runtime) {
 			//     R   W  X  R  W X R W X
 			//   256 128 64 32 16 8 4 2 1
 			function isUnixExecutable(stats) {
-				return (stats.mode & 1) > 0 || ((stats.mode & 8) > 0 && stats.gid === process.getgid()) || ((stats.mode & 64) > 0 && stats.uid === process.getuid());
+				return (
+					(stats.mode & 1) > 0 ||
+					((stats.mode & 8) > 0 && stats.gid === process.getgid()) ||
+					((stats.mode & 64) > 0 && stats.uid === process.getuid())
+				);
 			}
 			//# sourceMappingURL=io-util.js.map
 
@@ -11415,7 +11744,8 @@ module.exports = (function (modules, runtime) {
 			Object.defineProperty(exports, "__esModule", { value: true });
 
 			async function auth(token) {
-				const tokenType = token.split(/\./).length === 3 ? "app" : /^v\d+\./.test(token) ? "installation" : "oauth";
+				const tokenType =
+					token.split(/\./).length === 3 ? "app" : /^v\d+\./.test(token) ? "installation" : "oauth";
 				return {
 					type: "token",
 					token: token,
@@ -11467,7 +11797,8 @@ module.exports = (function (modules, runtime) {
 			module.exports = which;
 			which.sync = whichSync;
 
-			var isWindows = process.platform === "win32" || process.env.OSTYPE === "cygwin" || process.env.OSTYPE === "msys";
+			var isWindows =
+				process.platform === "win32" || process.env.OSTYPE === "cygwin" || process.env.OSTYPE === "msys";
 
 			var path = __webpack_require__(622);
 			var COLON = isWindows ? ";" : ":";
@@ -11686,7 +12017,9 @@ module.exports = (function (modules, runtime) {
 					if (!isNaN(chunk)) {
 						results.push(Number(chunk));
 					} else if ((matches = chunk.match(STRING_REGEX))) {
-						results.push(matches[2].replace(ESCAPE_REGEX, (m, escape, chr) => (escape ? unescape(escape) : chr)));
+						results.push(
+							matches[2].replace(ESCAPE_REGEX, (m, escape, chr) => (escape ? unescape(escape) : chr))
+						);
 					} else {
 						throw new Error(`Invalid Chalk template style argument: ${chunk} (in style '${name}')`);
 					}
@@ -11772,7 +12105,9 @@ module.exports = (function (modules, runtime) {
 				chunks.push(chunk.join(""));
 
 				if (styles.length > 0) {
-					const errMsg = `Chalk template literal is missing ${styles.length} closing bracket${styles.length === 1 ? "" : "s"} (\`}\`)`;
+					const errMsg = `Chalk template literal is missing ${styles.length} closing bracket${
+						styles.length === 1 ? "" : "s"
+					} (\`}\`)`;
 					throw new Error(errMsg);
 				}
 
@@ -11789,7 +12124,9 @@ module.exports = (function (modules, runtime) {
 
 			const Endpoints = {
 				actions: {
-					addSelectedRepoToOrgSecret: ["PUT /orgs/{org}/actions/secrets/{secret_name}/repositories/{repository_id}"],
+					addSelectedRepoToOrgSecret: [
+						"PUT /orgs/{org}/actions/secrets/{secret_name}/repositories/{repository_id}"
+					],
 					cancelWorkflowRun: ["POST /repos/{owner}/{repo}/actions/runs/{run_id}/cancel"],
 					createOrUpdateOrgSecret: ["PUT /orgs/{org}/actions/secrets/{secret_name}"],
 					createOrUpdateRepoSecret: [
@@ -11963,7 +12300,9 @@ module.exports = (function (modules, runtime) {
 					listWorkflowRuns: ["GET /repos/{owner}/{repo}/actions/workflows/{workflow_id}/runs"],
 					listWorkflowRunsForRepo: ["GET /repos/{owner}/{repo}/actions/runs"],
 					reRunWorkflow: ["POST /repos/{owner}/{repo}/actions/runs/{run_id}/rerun"],
-					removeSelectedRepoFromOrgSecret: ["DELETE /orgs/{org}/actions/secrets/{secret_name}/repositories/{repository_id}"],
+					removeSelectedRepoFromOrgSecret: [
+						"DELETE /orgs/{org}/actions/secrets/{secret_name}/repositories/{repository_id}"
+					],
 					removeSelfHostedRunner: [
 						"DELETE /repos/{owner}/{repo}/actions/runners/{runner_id}",
 						{},
@@ -13167,7 +13506,9 @@ module.exports = (function (modules, runtime) {
 							renamed: ["pulls", "createReviewComment"]
 						}
 					],
-					createReplyForReviewComment: ["POST /repos/{owner}/{repo}/pulls/{pull_number}/comments/{comment_id}/replies"],
+					createReplyForReviewComment: [
+						"POST /repos/{owner}/{repo}/pulls/{pull_number}/comments/{comment_id}/replies"
+					],
 					createReview: ["POST /repos/{owner}/{repo}/pulls/{pull_number}/reviews"],
 					createReviewComment: ["POST /repos/{owner}/{repo}/pulls/{pull_number}/comments"],
 					createReviewCommentReply: [
@@ -13233,7 +13574,9 @@ module.exports = (function (modules, runtime) {
 							renamed: ["pulls", "listReviewCommentsForRepo"]
 						}
 					],
-					listCommentsForReview: ["GET /repos/{owner}/{repo}/pulls/{pull_number}/reviews/{review_id}/comments"],
+					listCommentsForReview: [
+						"GET /repos/{owner}/{repo}/pulls/{pull_number}/reviews/{review_id}/comments"
+					],
 					listCommits: ["GET /repos/{owner}/{repo}/pulls/{pull_number}/commits"],
 					listFiles: ["GET /repos/{owner}/{repo}/pulls/{pull_number}/files"],
 					listRequestedReviewers: ["GET /repos/{owner}/{repo}/pulls/{pull_number}/requested_reviewers"],
@@ -13389,7 +13732,8 @@ module.exports = (function (modules, runtime) {
 							}
 						},
 						{
-							deprecated: "octokit.reactions.deleteLegacy() is deprecated, see https://developer.github.com/v3/reactions/#delete-a-reaction-legacy"
+							deprecated:
+								"octokit.reactions.deleteLegacy() is deprecated, see https://developer.github.com/v3/reactions/#delete-a-reaction-legacy"
 						}
 					],
 					listForCommitComment: [
@@ -13598,8 +13942,12 @@ module.exports = (function (modules, runtime) {
 					createWebhook: ["POST /repos/{owner}/{repo}/hooks"],
 					declineInvitation: ["DELETE /user/repository_invitations/{invitation_id}"],
 					delete: ["DELETE /repos/{owner}/{repo}"],
-					deleteAccessRestrictions: ["DELETE /repos/{owner}/{repo}/branches/{branch}/protection/restrictions"],
-					deleteAdminBranchProtection: ["DELETE /repos/{owner}/{repo}/branches/{branch}/protection/enforce_admins"],
+					deleteAccessRestrictions: [
+						"DELETE /repos/{owner}/{repo}/branches/{branch}/protection/restrictions"
+					],
+					deleteAdminBranchProtection: [
+						"DELETE /repos/{owner}/{repo}/branches/{branch}/protection/enforce_admins"
+					],
 					deleteBranchProtection: ["DELETE /repos/{owner}/{repo}/branches/{branch}/protection"],
 					deleteCommitComment: ["DELETE /repos/{owner}/{repo}/comments/{comment_id}"],
 					deleteCommitSignatureProtection: [
@@ -13630,7 +13978,9 @@ module.exports = (function (modules, runtime) {
 							}
 						}
 					],
-					deletePullRequestReviewProtection: ["DELETE /repos/{owner}/{repo}/branches/{branch}/protection/required_pull_request_reviews"],
+					deletePullRequestReviewProtection: [
+						"DELETE /repos/{owner}/{repo}/branches/{branch}/protection/required_pull_request_reviews"
+					],
 					deleteRelease: ["DELETE /repos/{owner}/{repo}/releases/{release_id}"],
 					deleteReleaseAsset: ["DELETE /repos/{owner}/{repo}/releases/assets/{asset_id}"],
 					deleteWebhook: ["DELETE /repos/{owner}/{repo}/hooks/{hook_id}"],
@@ -13692,7 +14042,9 @@ module.exports = (function (modules, runtime) {
 					get: ["GET /repos/{owner}/{repo}"],
 					getAccessRestrictions: ["GET /repos/{owner}/{repo}/branches/{branch}/protection/restrictions"],
 					getAdminBranchProtection: ["GET /repos/{owner}/{repo}/branches/{branch}/protection/enforce_admins"],
-					getAllStatusCheckContexts: ["GET /repos/{owner}/{repo}/branches/{branch}/protection/required_status_checks/contexts"],
+					getAllStatusCheckContexts: [
+						"GET /repos/{owner}/{repo}/branches/{branch}/protection/required_status_checks/contexts"
+					],
 					getAllTopics: [
 						"GET /repos/{owner}/{repo}/topics",
 						{
@@ -13701,7 +14053,9 @@ module.exports = (function (modules, runtime) {
 							}
 						}
 					],
-					getAppsWithAccessToProtectedBranch: ["GET /repos/{owner}/{repo}/branches/{branch}/protection/restrictions/apps"],
+					getAppsWithAccessToProtectedBranch: [
+						"GET /repos/{owner}/{repo}/branches/{branch}/protection/restrictions/apps"
+					],
 					getArchiveLink: [
 						"GET /repos/{owner}/{repo}/{archive_format}/{ref}",
 						{},
@@ -13791,17 +14145,25 @@ module.exports = (function (modules, runtime) {
 							renamed: ["repos", "getAccessRestrictions"]
 						}
 					],
-					getPullRequestReviewProtection: ["GET /repos/{owner}/{repo}/branches/{branch}/protection/required_pull_request_reviews"],
+					getPullRequestReviewProtection: [
+						"GET /repos/{owner}/{repo}/branches/{branch}/protection/required_pull_request_reviews"
+					],
 					getPunchCardStats: ["GET /repos/{owner}/{repo}/stats/punch_card"],
 					getReadme: ["GET /repos/{owner}/{repo}/readme"],
 					getRelease: ["GET /repos/{owner}/{repo}/releases/{release_id}"],
 					getReleaseAsset: ["GET /repos/{owner}/{repo}/releases/assets/{asset_id}"],
 					getReleaseByTag: ["GET /repos/{owner}/{repo}/releases/tags/{tag}"],
-					getStatusChecksProtection: ["GET /repos/{owner}/{repo}/branches/{branch}/protection/required_status_checks"],
-					getTeamsWithAccessToProtectedBranch: ["GET /repos/{owner}/{repo}/branches/{branch}/protection/restrictions/teams"],
+					getStatusChecksProtection: [
+						"GET /repos/{owner}/{repo}/branches/{branch}/protection/required_status_checks"
+					],
+					getTeamsWithAccessToProtectedBranch: [
+						"GET /repos/{owner}/{repo}/branches/{branch}/protection/restrictions/teams"
+					],
 					getTopPaths: ["GET /repos/{owner}/{repo}/traffic/popular/paths"],
 					getTopReferrers: ["GET /repos/{owner}/{repo}/traffic/popular/referrers"],
-					getUsersWithAccessToProtectedBranch: ["GET /repos/{owner}/{repo}/branches/{branch}/protection/restrictions/users"],
+					getUsersWithAccessToProtectedBranch: [
+						"GET /repos/{owner}/{repo}/branches/{branch}/protection/restrictions/users"
+					],
 					getViews: ["GET /repos/{owner}/{repo}/traffic/views"],
 					getWebhook: ["GET /repos/{owner}/{repo}/hooks/{hook_id}"],
 					list: [
@@ -14007,7 +14369,9 @@ module.exports = (function (modules, runtime) {
 							mapToData: "contexts"
 						}
 					],
-					removeStatusCheckProtection: ["DELETE /repos/{owner}/{repo}/branches/{branch}/protection/required_status_checks"],
+					removeStatusCheckProtection: [
+						"DELETE /repos/{owner}/{repo}/branches/{branch}/protection/required_status_checks"
+					],
 					removeTeamAccessRestrictions: [
 						"DELETE /repos/{owner}/{repo}/branches/{branch}/protection/restrictions/teams",
 						{},
@@ -14088,7 +14452,9 @@ module.exports = (function (modules, runtime) {
 							renamed: ["repos", "getCommunityProfileMetrics"]
 						}
 					],
-					setAdminBranchProtection: ["POST /repos/{owner}/{repo}/branches/{branch}/protection/enforce_admins"],
+					setAdminBranchProtection: [
+						"POST /repos/{owner}/{repo}/branches/{branch}/protection/enforce_admins"
+					],
 					setAppAccessRestrictions: [
 						"PUT /repos/{owner}/{repo}/branches/{branch}/protection/restrictions/apps",
 						{},
@@ -14152,10 +14518,14 @@ module.exports = (function (modules, runtime) {
 							renamed: ["repos", "updateStatusChecksProtection"]
 						}
 					],
-					updatePullRequestReviewProtection: ["PATCH /repos/{owner}/{repo}/branches/{branch}/protection/required_pull_request_reviews"],
+					updatePullRequestReviewProtection: [
+						"PATCH /repos/{owner}/{repo}/branches/{branch}/protection/required_pull_request_reviews"
+					],
 					updateRelease: ["PATCH /repos/{owner}/{repo}/releases/{release_id}"],
 					updateReleaseAsset: ["PATCH /repos/{owner}/{repo}/releases/assets/{asset_id}"],
-					updateStatusCheckPotection: ["PATCH /repos/{owner}/{repo}/branches/{branch}/protection/required_status_checks"],
+					updateStatusCheckPotection: [
+						"PATCH /repos/{owner}/{repo}/branches/{branch}/protection/required_status_checks"
+					],
 					updateWebhook: ["PATCH /repos/{owner}/{repo}/hooks/{hook_id}"],
 					uploadReleaseAsset: [
 						"POST /repos/{owner}/{repo}/releases/{release_id}/assets{?name,label}",
@@ -14233,13 +14603,19 @@ module.exports = (function (modules, runtime) {
 					],
 					checkPermissionsForRepoInOrg: ["GET /orgs/{org}/teams/{team_slug}/repos/{owner}/{repo}"],
 					create: ["POST /orgs/{org}/teams"],
-					createDiscussionCommentInOrg: ["POST /orgs/{org}/teams/{team_slug}/discussions/{discussion_number}/comments"],
+					createDiscussionCommentInOrg: [
+						"POST /orgs/{org}/teams/{team_slug}/discussions/{discussion_number}/comments"
+					],
 					createDiscussionInOrg: ["POST /orgs/{org}/teams/{team_slug}/discussions"],
-					deleteDiscussionCommentInOrg: ["DELETE /orgs/{org}/teams/{team_slug}/discussions/{discussion_number}/comments/{comment_number}"],
+					deleteDiscussionCommentInOrg: [
+						"DELETE /orgs/{org}/teams/{team_slug}/discussions/{discussion_number}/comments/{comment_number}"
+					],
 					deleteDiscussionInOrg: ["DELETE /orgs/{org}/teams/{team_slug}/discussions/{discussion_number}"],
 					deleteInOrg: ["DELETE /orgs/{org}/teams/{team_slug}"],
 					getByName: ["GET /orgs/{org}/teams/{team_slug}"],
-					getDiscussionCommentInOrg: ["GET /orgs/{org}/teams/{team_slug}/discussions/{discussion_number}/comments/{comment_number}"],
+					getDiscussionCommentInOrg: [
+						"GET /orgs/{org}/teams/{team_slug}/discussions/{discussion_number}/comments/{comment_number}"
+					],
 					getDiscussionInOrg: ["GET /orgs/{org}/teams/{team_slug}/discussions/{discussion_number}"],
 					getMembershipForUserInOrg: ["GET /orgs/{org}/teams/{team_slug}/memberships/{username}"],
 					getMembershipInOrg: [
@@ -14251,7 +14627,9 @@ module.exports = (function (modules, runtime) {
 					],
 					list: ["GET /orgs/{org}/teams"],
 					listChildInOrg: ["GET /orgs/{org}/teams/{team_slug}/teams"],
-					listDiscussionCommentsInOrg: ["GET /orgs/{org}/teams/{team_slug}/discussions/{discussion_number}/comments"],
+					listDiscussionCommentsInOrg: [
+						"GET /orgs/{org}/teams/{team_slug}/discussions/{discussion_number}/comments"
+					],
 					listDiscussionsInOrg: ["GET /orgs/{org}/teams/{team_slug}/discussions"],
 					listForAuthenticatedUser: ["GET /user/teams"],
 					listMembersInOrg: ["GET /orgs/{org}/teams/{team_slug}/members"],
@@ -14286,7 +14664,9 @@ module.exports = (function (modules, runtime) {
 							renamed: ["teams", "checkPermissionsForProjectInOrg"]
 						}
 					],
-					updateDiscussionCommentInOrg: ["PATCH /orgs/{org}/teams/{team_slug}/discussions/{discussion_number}/comments/{comment_number}"],
+					updateDiscussionCommentInOrg: [
+						"PATCH /orgs/{org}/teams/{team_slug}/discussions/{discussion_number}/comments/{comment_number}"
+					],
 					updateDiscussionInOrg: ["PATCH /orgs/{org}/teams/{team_slug}/discussions/{discussion_number}"],
 					updateInOrg: ["PATCH /orgs/{org}/teams/{team_slug}"]
 				},
@@ -14462,7 +14842,13 @@ module.exports = (function (modules, runtime) {
 						const scopeMethods = newMethods[scope];
 
 						if (decorations) {
-							scopeMethods[methodName] = decorate(octokit, scope, methodName, endpointDefaults, decorations);
+							scopeMethods[methodName] = decorate(
+								octokit,
+								scope,
+								methodName,
+								endpointDefaults,
+								decorations
+							);
 							continue;
 						}
 
@@ -14491,7 +14877,9 @@ module.exports = (function (modules, runtime) {
 
 					if (decorations.renamed) {
 						const [newScope, newMethodName] = decorations.renamed;
-						octokit.log.warn(`octokit.${scope}.${methodName}() has been renamed to octokit.${newScope}.${newMethodName}()`);
+						octokit.log.warn(
+							`octokit.${scope}.${methodName}() has been renamed to octokit.${newScope}.${newMethodName}()`
+						);
 					}
 
 					if (decorations.deprecated) {
@@ -14508,7 +14896,9 @@ module.exports = (function (modules, runtime) {
 
 							/* istanbul ignore else */
 							if (name in options) {
-								octokit.log.warn(`"${name}" parameter is deprecated for "octokit.${scope}.${methodName}()". Use "${alias}" instead`);
+								octokit.log.warn(
+									`"${name}" parameter is deprecated for "octokit.${scope}.${methodName}()". Use "${alias}" instead`
+								);
 
 								if (!(alias in options)) {
 									options[alias] = options[name];
@@ -14735,7 +15125,8 @@ module.exports = (function (modules, runtime) {
 				function (mod) {
 					if (mod && mod.__esModule) return mod;
 					var result = {};
-					if (mod != null) for (var k in mod) if (Object.hasOwnProperty.call(mod, k)) __createBinding(result, mod, k);
+					if (mod != null)
+						for (var k in mod) if (Object.hasOwnProperty.call(mod, k)) __createBinding(result, mod, k);
 					__setModuleDefault(result, mod);
 					return result;
 				};
@@ -15031,7 +15422,11 @@ module.exports = (function (modules, runtime) {
 
 			const VERSION = "17.11.2";
 
-			const Octokit = core.Octokit.plugin(pluginRequestLog.requestLog, pluginRestEndpointMethods.restEndpointMethods, pluginPaginateRest.paginateRest).defaults({
+			const Octokit = core.Octokit.plugin(
+				pluginRequestLog.requestLog,
+				pluginRestEndpointMethods.restEndpointMethods,
+				pluginPaginateRest.paginateRest
+			).defaults({
 				userAgent: `octokit-rest.js/${VERSION}`
 			});
 
@@ -15109,7 +15504,9 @@ module.exports = (function (modules, runtime) {
 						.concat(mergedOptions.mediaType.previews);
 				}
 
-				mergedOptions.mediaType.previews = mergedOptions.mediaType.previews.map(preview => preview.replace(/-preview/, ""));
+				mergedOptions.mediaType.previews = mergedOptions.mediaType.previews.map(preview =>
+					preview.replace(/-preview/, "")
+				);
 				return mergedOptions;
 			}
 
@@ -15358,7 +15755,12 @@ module.exports = (function (modules, runtime) {
 						// e.g. application/vnd.github.v3+json => application/vnd.github.v3.raw
 						headers.accept = headers.accept
 							.split(/,/)
-							.map(preview => preview.replace(/application\/vnd(\.\w+)(\.v3)?(\.\w+)?(\+json)?$/, `application/vnd$1$2.${options.mediaType.format}`))
+							.map(preview =>
+								preview.replace(
+									/application\/vnd(\.\w+)(\.v3)?(\.\w+)?(\+json)?$/,
+									`application/vnd$1$2.${options.mediaType.format}`
+								)
+							)
 							.join(",");
 					}
 
@@ -15573,11 +15975,15 @@ module.exports = (function (modules, runtime) {
 					const path = requestOptions.url.replace(options.baseUrl, "");
 					return request(options)
 						.then(response => {
-							octokit.log.info(`${requestOptions.method} ${path} - ${response.status} in ${Date.now() - start}ms`);
+							octokit.log.info(
+								`${requestOptions.method} ${path} - ${response.status} in ${Date.now() - start}ms`
+							);
 							return response;
 						})
 						.catch(error => {
-							octokit.log.info(`${requestOptions.method} ${path} - ${error.status} in ${Date.now() - start}ms`);
+							octokit.log.info(
+								`${requestOptions.method} ${path} - ${error.status} in ${Date.now() - start}ms`
+							);
 							throw error;
 						});
 				});
@@ -15599,7 +16005,8 @@ module.exports = (function (modules, runtime) {
 
 			const template = __webpack_require__(841);
 
-			const isSimpleWindowsTerm = process.platform === "win32" && !(process.env.TERM || "").toLowerCase().startsWith("xterm");
+			const isSimpleWindowsTerm =
+				process.platform === "win32" && !(process.env.TERM || "").toLowerCase().startsWith("xterm");
 
 			// `supportsColor.level` → `ansiStyles.color[name]` mapping
 			const levelMapping = ["ansi", "ansi", "ansi256", "ansi16m"];
@@ -15679,7 +16086,12 @@ module.exports = (function (modules, runtime) {
 								close: ansiStyles.color.close,
 								closeRe: ansiStyles.color.closeRe
 							};
-							return build.call(this, this._styles ? this._styles.concat(codes) : [codes], this._empty, model);
+							return build.call(
+								this,
+								this._styles ? this._styles.concat(codes) : [codes],
+								this._empty,
+								model
+							);
 						};
 					}
 				};
@@ -15702,7 +16114,12 @@ module.exports = (function (modules, runtime) {
 								close: ansiStyles.bgColor.close,
 								closeRe: ansiStyles.bgColor.closeRe
 							};
-							return build.call(this, this._styles ? this._styles.concat(codes) : [codes], this._empty, model);
+							return build.call(
+								this,
+								this._styles ? this._styles.concat(codes) : [codes],
+								this._empty,
+								model
+							);
 						};
 					}
 				};
@@ -16278,7 +16695,8 @@ module.exports = (function (modules, runtime) {
 				_from: "signale@^1.4.0",
 				_id: "signale@1.4.0",
 				_inBundle: false,
-				_integrity: "sha512-iuh+gPf28RkltuJC7W5MRi6XAjTDCAPC/prJUpQoG4vIP3MJZ+GTydVnodXA7pwvTKb2cA0m9OFZW/cdWy/I/w==",
+				_integrity:
+					"sha512-iuh+gPf28RkltuJC7W5MRi6XAjTDCAPC/prJUpQoG4vIP3MJZ+GTydVnodXA7pwvTKb2cA0m9OFZW/cdWy/I/w==",
 				_location: "/signale",
 				_phantomChildren: {},
 				_requested: {
@@ -16295,7 +16713,8 @@ module.exports = (function (modules, runtime) {
 				_resolved: "https://registry.npmjs.org/signale/-/signale-1.4.0.tgz",
 				_shasum: "c4be58302fb0262ac00fc3d886a7c113759042f1",
 				_spec: "signale@^1.4.0",
-				_where: "/Users/jamesgeorge007/CodeSpace/scripting/JavaScript/GitHub-Actions/github-activity-readme/node_modules/actions-toolkit",
+				_where:
+					"/Users/jamesgeorge007/CodeSpace/scripting/JavaScript/GitHub-Actions/github-activity-readme/node_modules/actions-toolkit",
 				author: { name: "Klaus Sinani", email: "klaussinani@gmail.com", url: "https://klaussinani.github.io" },
 				bugs: { url: "https://github.com/klaussinani/signale/issues" },
 				bundleDependencies: false,
@@ -16308,7 +16727,9 @@ module.exports = (function (modules, runtime) {
 				homepage: "https://github.com/klaussinani/signale#readme",
 				keywords: ["hackable", "colorful", "console", "logger"],
 				license: "MIT",
-				maintainers: [{ name: "Mario Sinani", email: "mariosinani@protonmail.ch", url: "https://mariocfhq.github.io" }],
+				maintainers: [
+					{ name: "Mario Sinani", email: "mariosinani@protonmail.ch", url: "https://mariocfhq.github.io" }
+				],
 				name: "signale",
 				options: {
 					default: {
@@ -16442,4 +16863,3 @@ module.exports = (function (modules, runtime) {
 		/******/
 	}
 );
-
