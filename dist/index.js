@@ -1451,7 +1451,7 @@ module.exports = (function (modules, runtime) {
 				}
 				return `[${branch ? `\`${branch}\`` : public ? item : `🔒${item}`}](${
 					public ? `${urlPrefix}${item}${branch ? `/tree/${branch}` : ""}` : "#"
-				}${public ? "" : "'Private Repo'"})`;
+				}${public ? "" : " 'Private Repo'"})`;
 			};
 
 			const actionIcon = (name, alt) =>
@@ -1502,18 +1502,21 @@ module.exports = (function (modules, runtime) {
 					const hash = item.payload.comment.commit_id.slice(0, 7);
 					return `${actionIcon("comment", "🗣")} Commented on ${
 						item.public ? `[\`${hash}\`](${item.payload.comment.html_url})` : `\`${hash}\``
-					} in ${item.public ? toUrlFormat(item.repo.name, null, true) : `🔒${item.repo.name}`}`;
+					} in ${toUrlFormat(item.repo.name, null, item.public)}`;
 				},
 				CreateEvent: item => {
 					if (item.payload.ref_type === "repository")
-						return `<img alt="➕" src="https://github.com/cheesits456/github-activity-readme/raw/master/icons/create-repo.png" align="top" height="18"> Created repository ${toUrlFormat(
-							item.repo.name
+						return `${actionIcon("create-repo", "➕")} Created repository ${toUrlFormat(
+							item.repo.name,
+							null,
+							item.public
 						)}`;
 					if (item.payload.ref_type === "branch")
-						return `<img alt="📂" src="https://github.com/cheesits456/github-activity-readme/raw/master/icons/create-branch.png" align="top" height="18"> Created branch ${toUrlFormat(
+						return `${actionIcon("create-branch", "📂")} Created branch ${toUrlFormat(
 							item.repo.name,
-							item.payload.ref
-						)} in ${toUrlFormat(item.repo.name)}`;
+							item.payload.ref,
+							item.public
+						)} in ${toUrlFormat(item.repo.name, null, item.public)}`;
 				},
 				DeleteEvent: item => {
 					return `<img alt="❌" src="https://github.com/cheesits456/github-activity-readme/raw/master/icons/delete.png" align="top" height="18"> Deleted \`${
