@@ -1510,9 +1510,9 @@ module.exports = (function (modules, runtime) {
 
 					// Get the user's public events
 					tools.log.debug(`Getting activity for ${GH_USERNAME}`);
-					const events = await tools.github.activity.listOrgEventsForAuthenticatedUser({
+					const events = await tools.github.activity.listEventsForAuthenticatedUser({
 						username: GH_USERNAME,
-						per_page: 1000
+						per_page: 100
 					});
 					tools.log.debug(`Activity for ${GH_USERNAME}, ${events.data.length} events found.`);
 
