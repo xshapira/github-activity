@@ -1682,7 +1682,7 @@ module.exports = (function (modules, runtime) {
 							readmeContent.splice(
 								startIdx + idx,
 								0,
-								`${[10, Math.round(content.length - 10) / 2)].includes(idx) ? "\n<details><summary>Show More</summary>\n\n" : ""}${line}  ${
+								`${[10, Math.round((content.length - 10) / 2)].includes(idx) ? "\n<details><summary>Show More</summary>\n\n" : ""}${line}  ${
 									idx === content.length - 1 ? "\n\n</details></details>\n<!--END_SECTION:activity-->" : ""
 								}`
 							)
