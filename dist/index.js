@@ -1452,7 +1452,7 @@ module.exports = (function (modules, runtime) {
 				return !public
 					? branch
 						? `\`${branch}\``
-						: `🔒${item}`
+						: `<span title="Private Repo">\`🔒${item}\`</span>`
 					: `[${branch ? `\`${branch}\`` : item}](${urlPrefix}${item}${branch ? `/tree/${branch}` : ""})`;
 			};
 
