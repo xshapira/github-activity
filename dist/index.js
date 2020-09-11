@@ -1601,13 +1601,31 @@ module.exports = (function (modules, runtime) {
 						username: GH_USERNAME,
 						per_page: 100
 					});
-					tools.log.debug(`Activity for ${GH_USERNAME}, ${events.data.length} events found.`);
+					const events2 = await tools.github.activity.listEventsForAuthenticatedUser({
+						username: GH_USERNAME,
+						per_page: 100,
+						page: 2
+					});
+					tools.log.debug(
+						`Activity for ${GH_USERNAME}, ${events.data.length + events2.data.length} events found.`
+					);
 
 					let last = array => array[array.length - 1];
 
 					let arr = [];
 
 					for (const data of events.data) {
+						if (
+							arr.length &&
+							data.type === "PushEvent" &&
+							last(arr).type === "PushEvent" &&
+							data.repo.name === last(arr).repo.name
+						)
+							arr[arr.length - 1].payload.size += data.payload.size;
+						else arr.push(data);
+					}
+
+					for (const data of events2.data) {
 						if (
 							arr.length &&
 							data.type === "PushEvent" &&
