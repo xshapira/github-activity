@@ -1443,7 +1443,7 @@ module.exports = (function (modules, runtime) {
 				if (typeof item === "object") {
 					return Object.hasOwnProperty.call(item.payload, "issue")
 						? public
-							? `[\`#${item.payload.issue.number}\`](${urlPrefix}/${item.rep.name}/issues/${item.payload.issue.number} '${item.payload.issue.title}')`
+							? `[\`#${item.payload.issue.number}\`](${urlPrefix}/${item.repo.name}/issues/${item.payload.issue.number} '${item.payload.issue.title}')`
 							: `\`#${item.payload.issue.number}\``
 						: public
 						? `[\`#${item.payload.pull_request.number}\`](${urlPrefix}/${item.repo.name}/pull/${item.payload.pull_request.number} '${item.payload.pull_request.title}')`
