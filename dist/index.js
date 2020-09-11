@@ -1442,16 +1442,18 @@ module.exports = (function (modules, runtime) {
 			const toUrlFormat = (item, branch, public = true) => {
 				if (typeof item === "object") {
 					return Object.hasOwnProperty.call(item.payload, "issue")
-						? `[\`#${item.payload.issue.number}\`](${
-								public ? `${urlPrefix}/${item.rep.name}/issues/${item.payload.issue.number}` : "#"
-						  } '${item.payload.issue.title}')`
-						: `[\`#${item.payload.pull_request.number}\`](${
-								public ? `${urlPrefix}/${item.repo.name}/pull/${item.payload.pull_request.number}` : "#"
-						  } '${item.payload.pull_request.title}')`;
+						? public
+							? `[\`#${item.payload.issue.number}\`](${urlPrefix}/${item.rep.name}/issues/${item.payload.issue.number} '${item.payload.issue.title}')`
+							: `\`#${item.payload.issue.number}\``
+						: public
+						? `[\`#${item.payload.pull_request.number}\`](${urlPrefix}/${item.repo.name}/pull/${item.payload.pull_request.number} '${item.payload.pull_request.title}')`
+						: `\`#${item.payload.pull_request.number}\``;
 				}
-				return `[${branch ? `\`${branch}\`` : public ? item : `🔒${item}`}](${
-					public ? `${urlPrefix}${item}${branch ? `/tree/${branch}` : ""}` : "#"
-				}${public ? "" : " 'Private Repo'"})`;
+				return !public
+					? branch
+						? `\`${branch}\``
+						: `🔒${item}`
+					: `[${branch ? `\`${branch}\`` : item}](${urlPrefix}${item}${branch ? `/tree/${branch}` : ""})`;
 			};
 
 			const actionIcon = (name, alt) =>
