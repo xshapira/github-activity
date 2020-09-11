@@ -1531,6 +1531,7 @@ module.exports = (function (modules, runtime) {
 						.filter(event => {
 							let r = serializers.hasOwnProperty(event.type);
 							if (!r) tools.log.debug(event);
+							if (event.repo.name === "cheesits456/0xDiscordBot") tools.log.debug(event)
 							return r;
 						})
 						// We only have five lines to work with
