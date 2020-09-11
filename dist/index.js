@@ -1521,54 +1521,66 @@ module.exports = (function (modules, runtime) {
 						)} in ${toUrlFormat(item.repo.name, null, item.public)}`;
 				},
 				DeleteEvent: item => {
-					return `<img alt="❌" src="https://github.com/cheesits456/github-activity-readme/raw/master/icons/delete.png" align="top" height="18"> Deleted \`${
-						item.payload.ref
-					}\` from ${toUrlFormat(item.repo.name)}`;
+					return `${actionIcon("delete", "❌")} Deleted \`${item.payload.ref}\` from ${toUrlFormat(
+						item.repo.name,
+						null,
+						item.public
+					)}`;
 				},
 				ForkEvent: item => {
-					return `<img alt="🍴" src="https://github.com/cheesits456/github-activity-readme/raw/master/icons/fork.png" align="top" height="18"> Forked ${toUrlFormat(
-						item.repo.name
-					)} to ${toUrlFormat(item.payload.forkee.full_name)}`;
+					return `${actionIcon("fork", "🍴")} Forked ${toUrlFormat(
+						item.repo.name,
+						null,
+						item.public
+					)} to ${toUrlFormat(item.payload.forkee.full_name, null, item.payload.forkee.public)}`;
 				},
 				IssueCommentEvent: item => {
-					return `<img alt="🗣" src="https://github.com/cheesits456/github-activity-readme/raw/master/icons/comment.png" align="top" height="18"> Commented on ${toUrlFormat(
-						item
-					)} in ${toUrlFormat(item.repo.name)}`;
+					return `${actionIcon("comment", "🗣")} Commented on ${toUrlFormat(
+						item,
+						null,
+						item.public
+					)} in ${toUrlFormat(item.repo.name, null, item.public)}`;
 				},
 				IssuesEvent: item => {
-					return `<img alt="❗️" src="https://github.com/cheesits456/github-activity-readme/raw/master/icons/issue.png" align="top" height="18"> ${capitalize(
-						item.payload.action
-					)} issue ${toUrlFormat(item)} in ${toUrlFormat(item.repo.name)}`;
+					return `${actionIcon("issue", "❗️")} ${capitalize(item.payload.action)} issue ${toUrlFormat(
+						item,
+						null,
+						item.public
+					)} in ${toUrlFormat(item.repo.name, null, item.public)}`;
 				},
 				PullRequestEvent: item => {
 					const emoji =
-						item.payload.action === "opened"
-							? '<img alt="✅" src="https://github.com/cheesits456/github-activity-readme/raw/master/icons/pr-open.png" align="top" height="18">'
-							: '<img alt="❌" src="https://github.com/cheesits456/github-activity-readme/raw/master/icons/pr-close.png" align="top" height="18">';
+						item.payload.action === "opened" ? actionIcon("pr-open", "✅") : actionIcon("pr-close", "❌");
 					const line = item.payload.pull_request.merged
-						? '<img alt="🎉" src="https://github.com/cheesits456/github-activity-readme/raw/master/icons/merge.png" align="top" height="18"> Merged'
+						? `${actionIcon("merge", "🎉")} Merged`
 						: `${emoji} ${capitalize(item.payload.action)}`;
-					return `${line} PR ${toUrlFormat(item)} in ${toUrlFormat(item.repo.name)}`;
+					return `${line} PR ${toUrlFormat(item, null, item.public)} in ${toUrlFormat(
+						item.repo.name,
+						null,
+						item.public
+					)}`;
 				},
 				PullRequestReviewEvent: item => {
-					return `<img alt="🔍" src="https://github.com/cheesits456/github-activity-readme/raw/master/icons/review.png" align="top" height="18"> Reviewed ${toUrlFormat(
-						item
-					)} in ${toUrlFormat(item.repo.name)}`;
+					return `${actionIcon("review", "🔍")} Reviewed ${toUrlFormat(
+						item,
+						null,
+						item.public
+					)} in ${toUrlFormat(item.repo.name, null, item.public)}`;
 				},
 				PushEvent: item => {
-					return `<img alt="📝" src="https://github.com/cheesits456/github-activity-readme/raw/master/icons/commit.png" align="top" height="18"> Made \`${
-						item.payload.size
-					}\` commit${item.payload.size === 1 ? "" : "s"} in ${toUrlFormat(item.repo.name)}`;
+					return `${actionIcon("commit", "📝")} Made \`${item.payload.size}\` commit${
+						item.payload.size === 1 ? "" : "s"
+					} in ${toUrlFormat(item.repo.name, null, item.public)}`;
 				},
 				ReleaseEvent: item => {
-					return `<img alt="🏷" src="https://github.com/cheesits456/github-activity-readme/raw/master/icons/release.png" align="top" height="18"> Released [\`${
-						item.payload.release.tag_name
-					}\`](${item.payload.release.html_url}) in ${toUrlFormat(item.repo.name)}`;
+					return `${actionIcon("release", "🏷")} Released ${
+						item.public
+							? `[\`${item.payload.release.tag_name}\`](${item.payload.release.html_url})`
+							: `\`${item.payload.release.tag_name}\``
+					} in ${toUrlFormat(item.repo.name, null, item.public)}`;
 				},
 				WatchEvent: item => {
-					return `<img alt="⭐" src="https://github.com/cheesits456/github-activity-readme/raw/master/icons/star.png" align="top" height="18"> Starred ${toUrlFormat(
-						item.repo.name
-					)}`;
+					return `${actionIcon("star", "⭐")} Starred ${toUrlFormat(item.repo.name, null, item.public)}`;
 				}
 			};
 
