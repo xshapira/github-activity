@@ -1439,7 +1439,7 @@ module.exports = (function (modules, runtime) {
 			 * @returns {String}
 			 */
 
-			const toUrlFormat = (item, branch, public) => {
+			const toUrlFormat = (item, branch, public = true) => {
 				if (typeof item === "object") {
 					return Object.hasOwnProperty.call(item.payload, "issue")
 						? `[\`#${item.payload.issue.number}\`](${
