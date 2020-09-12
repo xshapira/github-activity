@@ -1599,7 +1599,7 @@ module.exports = (function (modules, runtime) {
 					tools.log.debug(`Getting activity for ${GH_USERNAME}`);
 
 					let eventArrs = [];
-					for (let i = 0; i < 5; i++) {
+					for (let i = 0; i < 10; i++) {
 						eventArrs[i] = await tools.github.activity.listEventsForAuthenticatedUser({
 							username: GH_USERNAME,
 							per_page: 100,
@@ -1635,7 +1635,6 @@ module.exports = (function (modules, runtime) {
 							) arr[arr.length - 1].payload.size += data.payload.size;
 							else arr.push(data);
 						}
-						arr.push("\n<details><summary>Show More</summary>\n");
 					}
 
 					const content = arr
@@ -1648,7 +1647,7 @@ module.exports = (function (modules, runtime) {
 						// We only have five lines to work with
 						// .slice(0, MAX_LINES)
 						// Call the serializer to construct a string
-						.map(item => typeof item === "string" ? item : `${timestamper(item)} ${serializers[item.type](item)}`)
+						.map(item => `${timestamper(item)} ${serializers[item.type](item)}`)
 						// Filter out undefined lines
 						.filter(item => !item.match(/^`\[\d{1,2}\/\d{1,2} \d{1,2}:\d{2}]` undefined$/));
 
@@ -1685,7 +1684,7 @@ module.exports = (function (modules, runtime) {
 								startIdx + idx,
 								0,
 								`${idx === 10 ? "\n<details><summary>Show More</summary>\n\n" : ""}${line}  ${
-									idx === content.length - 1 ? "\n\n</details></details></details></details></details>\n<!--END_SECTION:activity-->" : ""
+									idx === content.length - 1 ? "\n\n</details>\n<!--END_SECTION:activity-->" : ""
 								}`
 							)
 						);
