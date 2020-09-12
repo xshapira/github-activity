@@ -1599,11 +1599,11 @@ module.exports = (function (modules, runtime) {
 					tools.log.debug(`Getting activity for ${GH_USERNAME}`);
 
 					let eventArrs = [];
-					for (let i = 0; i < 10; i++) {
+					for (let i = 0; i < 3; i++) {
 						eventArrs[i] = await tools.github.activity.listEventsForAuthenticatedUser({
 							username: GH_USERNAME,
 							per_page: 100,
-							page: i - 1
+							page: i + 1
 						});
 					}
 
