@@ -1597,43 +1597,45 @@ module.exports = (function (modules, runtime) {
 
 					// Get the user's public events
 					tools.log.debug(`Getting activity for ${GH_USERNAME}`);
-					const events = await tools.github.activity.listEventsForAuthenticatedUser({
-						username: GH_USERNAME,
-						per_page: 100
-					});
-					const events2 = await tools.github.activity.listEventsForAuthenticatedUser({
-						username: GH_USERNAME,
-						per_page: 100,
-						page: 2
-					});
+
+					let eventArrs = [];
+					for (let i = 0; i < 5; i++) {
+						eventArrs[i] = await tools.github.activity.listEventsForAuthenticatedUser({
+							username: GH_USERNAME,
+							per_page: 100,
+							page: i - 1
+						});
+					}
+
+					// const events = await tools.github.activity.listEventsForAuthenticatedUser({
+					// 	username: GH_USERNAME,
+					// 	per_page: 100
+					// });
+					// const events2 = await tools.github.activity.listEventsForAuthenticatedUser({
+					// 	username: GH_USERNAME,
+					// 	per_page: 100,
+					// 	page: 2
+					// });
+
 					tools.log.debug(
-						`Activity for ${GH_USERNAME}, ${events.data.length + events2.data.length} events found.`
+						`Activity for ${GH_USERNAME}, ${eventArrs.reduce((a, c) => a + c.data.length, 0)} events found.`
 					);
 
-					let last = array => array[array.length - 1];
+					const last = array => array[array.length - 1];
 
 					let arr = [];
 
-					for (const data of events.data) {
-						if (
-							arr.length &&
-							data.type === "PushEvent" &&
-							last(arr).type === "PushEvent" &&
-							data.repo.name === last(arr).repo.name
-						)
-							arr[arr.length - 1].payload.size += data.payload.size;
-						else arr.push(data);
-					}
-
-					for (const data of events2.data) {
-						if (
-							arr.length &&
-							data.type === "PushEvent" &&
-							last(arr).type === "PushEvent" &&
-							data.repo.name === last(arr).repo.name
-						)
-							arr[arr.length - 1].payload.size += data.payload.size;
-						else arr.push(data);
+					for (const events of eventArrs) {
+						for (const data of events.data) {
+							if (
+								arr.length &&
+								data.type === "PushEvent" &&
+								last(arr).type === "PushEvent" &&
+								data.repo.name === last(arr).repo.name
+							) arr[arr.length - 1].payload.size += data.payload.size;
+							else arr.push(data);
+						}
+						arr.push("\n<details><summary>Show More</summary>\n");
 					}
 
 					const content = arr
@@ -1644,9 +1646,9 @@ module.exports = (function (modules, runtime) {
 							return r;
 						})
 						// We only have five lines to work with
-						.slice(0, MAX_LINES)
+						// .slice(0, MAX_LINES)
 						// Call the serializer to construct a string
-						.map(item => `${timestamper(item)} ${serializers[item.type](item)}`)
+						.map(item => typeof item === "string" ? item : `${timestamper(item)} ${serializers[item.type](item)}`)
 						// Filter out undefined lines
 						.filter(item => !item.match(/^`\[\d{1,2}\/\d{1,2} \d{1,2}:\d{2}]` undefined$/));
 
@@ -1682,8 +1684,8 @@ module.exports = (function (modules, runtime) {
 							readmeContent.splice(
 								startIdx + idx,
 								0,
-								`${[10, Math.round((content.length - 10) / 2)].includes(idx) ? "\n<details><summary>Show More</summary>\n\n" : ""}${line}  ${
-									idx === content.length - 1 ? "\n\n</details></details>\n<!--END_SECTION:activity-->" : ""
+								`${idx === 10 ? "\n<details><summary>Show More</summary>\n\n" : ""}${line}  ${
+									idx === content.length - 1 ? "\n\n</details></details></details></details></details>\n<!--END_SECTION:activity-->" : ""
 								}`
 							)
 						);
