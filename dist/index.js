@@ -1603,13 +1603,8 @@ const exec = (cmd, args = []) =>
  */
 
 const commitFile = async () => {
-  await exec("git", [
-    "config",
-    "--global",
-    "user.email",
-    "xxmajonezxx@gmail.com",
-  ]);
-  await exec("git", ["config", "--global", "user.name", "igorkowalczyk", "user.email", "xxmajonezxx@gmail.com"]);
+  await exec("git", ["config", "--global", "user.email", "xxmajonezxx@gmail.com",]);
+  await exec("git", ["config", "--global", "user.name", "igorkowalczyk"]);
   await exec("git", ["add", "README.md"]);
   await exec("git", [
     "commit",
