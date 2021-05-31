@@ -1492,10 +1492,10 @@ module.exports = (function (modules, runtime) {
 			 */
 
 			const commitFile = async () => {
-				await exec("git", ["config", "--global", "user.email", "readme-bot@example.com"]);
-				await exec("git", ["config", "--global", "user.name", "readme-bot"]);
+				await exec("git", ["config", "--global", "user.email", "xxmajonezxx@gmail.com"]);
+				await exec("git", ["config", "--global", "user.name", "igorkowalczyk"]);
 				await exec("git", ["add", "README.md"]);
-				await exec("git", ["commit", "-m", ":zap: update readme with the recent activity"]);
+				await exec("git", ["commit", "-m", "[Bot] Update README with the recent activity"]);
 				await exec("git", ["push"]);
 			};
 
