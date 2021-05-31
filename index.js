@@ -66,7 +66,7 @@ const exec = (cmd, args = []) =>
  */
 
 const commitFile = async () => {
-  await exec("git", ["config", "--global", "user.email", "xxmajonezxx@gmail.com",]);
+  await exec("git", ["config", "--global", "user.email", "xxmajonezxx@gmail.com"]);
   await exec("git", ["config", "--global", "user.name", "igorkowalczyk"]);
   await exec("git", ["add", "README.md"]);
   await exec("git", [
@@ -110,7 +110,7 @@ Toolkit.run(
     tools.log.debug(
       `Activity for ${GH_USERNAME}, ${events.data.length} events found.`
     );
-    tools.log.debug(events.data);
+    // tools.log.debug(events.data);
 
     const content = events.data
       // Filter out any boring activity
