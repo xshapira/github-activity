@@ -72,12 +72,12 @@ const commitFile = async () => {
     "user.email",
     "xxmajonezxx@gmail.com",
   ]);
-  await exec("git", ["config", "--global", "user.name", "igorkowalczyk"]);
+  await exec("git", ["config", "--global", "user.name", "igorkowalczyk", "user.email", "xxmajonezxx@gmail.com"]);
   await exec("git", ["add", "README.md"]);
   await exec("git", [
     "commit",
     "-m",
-    ":zap: update readme with the recent activity",
+    "[BOT] Update README with activity",
   ]);
   await exec("git", ["push"]);
 };
