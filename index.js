@@ -98,7 +98,7 @@ Toolkit.run(
 			per_page: 100
 		});
 		tools.log.debug(`Activity for ${GH_USERNAME}, ${events.data.length} events found.`);
-		tools.log.debug(events.data);
+		// tools.log.debug(events.data);
 
 		const content = events.data
 			// Filter out any boring activity
