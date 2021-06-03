@@ -315,7 +315,7 @@ Toolkit.run(
           startIdx + idx,
           0,
           `${
-            idx === 10 ? "\n<details><summary>Show More</summary>\n\n" : ""
+            idx === 10 ? "\n<details><summary>⚡ Show more activity</summary>\n\n" : ""
           }${line}  ${
             idx === content.length - 1
               ? "\n\n</details>\n<!--END_SECTION:activity-->"
