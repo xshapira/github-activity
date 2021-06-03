@@ -52,7 +52,7 @@ const toUrlFormat = (item, branch, public = true) => {
 };
 
 const actionIcon = (name, alt) =>
-  `<img alt="${alt}" src="https://github.com/igorkowalczykbot/github-activity/raw/master/icons/${name}.png" align="top" height="18">`;
+  `<a href="https://github.com/igorkowalczyk" title="${alt}"><img alt="${alt}" src="https://github.com/igorkowalczykbot/github-activity/raw/master/icons/${name}.png" align="top" height="18"></a>`;
 
 /**
  * Execute shell command
@@ -91,9 +91,9 @@ const commitFile = async () => {
     "config",
     "--global",
     "user.email",
-    "xxmajonezxx@gmail.com",
+    "igor.kowalczyk.bot@onet.pl",
   ]);
-  await exec("git", ["config", "--global", "user.name", "IgorKowalczyk"]);
+  await exec("git", ["config", "--global", "user.name", "IgorKowalczykBot"]);
   await exec("git", ["add", "README.md"]);
   await exec("git", [
     "commit",

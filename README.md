@@ -8,7 +8,7 @@ Updates `README.md` with the recent GitHub activity of a user.
 
 ## Instructions
 
-- Add the comment `<!--START_SECTION:activity-->` (entry point) within `README.md`. You can find an example [here](https://github.com/jamesgeorge007/jamesgeorge007/blob/master/README.md).
+- Add the comment `<!--START_SECTION:activity-->` (entry point) within `README.md`.
 
 - It's the time to create a workflow file.
 
@@ -29,14 +29,11 @@ jobs:
 
     steps:
       - uses: actions/checkout@v2
-      - uses: jamesgeorge007/github-activity-readme@master
+      - uses: igorkowalczykbot/github-activity@master
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 ```
 
-The above job runs every half an hour, you can change it as you wish based on the [cron syntax](https://jasonet.co/posts/scheduled-actions/#the-cron-syntax).
-
-You can find an example [here](https://github.com/jamesgeorge007/jamesgeorge007/blob/master/.github/workflows/update-readme.yml).
 
 _Inspired by [JasonEtco/activity-box](https://github.com/JasonEtco/activity-box)_
 
