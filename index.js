@@ -4,7 +4,7 @@ const path = require("path");
 const { spawn } = require("child_process");
 const { Toolkit } = require("actions-toolkit");
 
-const MAX_LINES = 5;
+const MAX_LINES = 100;
 
 /**
  * Returns the sentence case representation
@@ -13,7 +13,7 @@ const MAX_LINES = 5;
  * @returns {String}
  */
 
-const capitalize = str => str.slice(0, 1).toUpperCase() + str.slice(1);
+const capitalize = (str) => str.slice(0, 1).toUpperCase() + str.slice(1);
 
 const urlPrefix = "https://github.com/";
 
@@ -24,14 +24,35 @@ const urlPrefix = "https://github.com/";
  * @returns {String}
  */
 
-const toUrlFormat = item => {
-	if (typeof item === "object") {
-		return Object.hasOwnProperty.call(item.payload, "issue")
-			? `[#${item.payload.issue.number}](${urlPrefix}/${item.repo.name}/issues/${item.payload.issue.number})`
-			: `[#${item.payload.pull_request.number}](${urlPrefix}/${item.repo.name}/pull/${item.payload.pull_request.number})`;
-	}
-	return `[${item}](${urlPrefix}/${item})`;
+const toUrlFormat = (item, branch, public = true) => {
+ if (typeof item === "object") {
+  return Object.hasOwnProperty.call(item.payload, "issue")
+   ? public
+     ? `[\`#${item.payload.issue.number}\`](${urlPrefix}/${
+        item.repo.name
+       }/issues/${
+        item.payload.issue.number
+       } '${item.payload.issue.title.replace(/'/g, "\\'")}')`
+     : `\`#${item.payload.issue.number}\``
+   : public
+   ? `[\`#${item.payload.pull_request.number}\`](${urlPrefix}/${
+      item.repo.name
+     }/pull/${
+      item.payload.pull_request.number
+     } '${item.payload.pull_request.title.replace(/'/g, "\\'")}')`
+   : `\`#${item.payload.pull_request.number}\``;
+ }
+ return !public
+  ? branch
+    ? `\`${branch}\``
+    : `<span title="Private Repo">\`🔒${item}\`</span>`
+  : `[${branch ? `\`${branch}\`` : item}](${urlPrefix}${item}${
+     branch ? `/tree/${branch}` : ""
+    })`;
 };
+
+const actionIcon = (name, alt) =>
+ `<img alt="${alt}" src="https://github.com/igorkowalczykbot/github-activity/raw/master/icons/${name}.png" align="top" height="18">`;
 
 /**
  * Execute shell command
@@ -42,22 +63,22 @@ const toUrlFormat = item => {
  */
 
 const exec = (cmd, args = []) =>
-	new Promise((resolve, reject) => {
-		const app = spawn(cmd, args, { stdio: "pipe" });
-		let stdout = "";
-		app.stdout.on("data", data => {
-			stdout = data;
-		});
-		app.on("close", code => {
-			if (code !== 0 && !stdout.includes("nothing to commit")) {
-				err = new Error(`Invalid status code: ${code}`);
-				err.code = code;
-				return reject(err);
-			}
-			return resolve(code);
-		});
-		app.on("error", reject);
-	});
+ new Promise((resolve, reject) => {
+  const app = spawn(cmd, args, { stdio: "pipe" });
+  let stdout = "";
+  app.stdout.on("data", (data) => {
+   stdout = data;
+  });
+  app.on("close", (code) => {
+   if (code !== 0 && !stdout.includes("nothing to commit")) {
+    err = new Error(`Invalid status code: ${code}`);
+    err.code = code;
+    return reject(err);
+   }
+   return resolve(code);
+  });
+  app.on("error", reject);
+ });
 
 /**
  * Make a commit
@@ -66,139 +87,264 @@ const exec = (cmd, args = []) =>
  */
 
 const commitFile = async () => {
-	await exec("git", ["config", "--global", "user.email", "xxmajonezxx@gmail.com"]);
-	await exec("git", ["config", "--global", "user.name", "igorkowalczyk"]);
-	await exec("git", ["add", "README.md"]);
-	await exec("git", ["commit", "-m", "[Bot] Update README with the recent activity"]);
-	await exec("git", ["push"]);
+ await exec("git", [
+  "config",
+  "--global",
+  "user.email",
+  "xxmajonezxx@gmail.com",
+ ]);
+ await exec("git", ["config", "--global", "user.name", "IgorKowalczyk"]);
+ await exec("git", ["add", "README.md"]);
+ await exec("git", [
+  "commit",
+  "-m",
+  "[Bot] Update README with the recent activity",
+ ]);
+ await exec("git", ["push"]);
 };
 
 const serializers = {
-	IssueCommentEvent: item => {
-		return `🗣 Commented on ${toUrlFormat(item)} in ${toUrlFormat(item.repo.name)}`;
-	},
-	IssuesEvent: item => {
-		return `❗️ ${capitalize(item.payload.action)} issue ${toUrlFormat(item)} in ${toUrlFormat(item.repo.name)}`;
-	},
-	PullRequestEvent: item => {
-		const emoji = item.payload.action === "opened" ? "💪" : "❌";
-		const line = item.payload.pull_request.merged ? "🎉 Merged" : `${emoji} ${capitalize(item.payload.action)}`;
-		return `${line} PR ${toUrlFormat(item)} in ${toUrlFormat(item.repo.name)}`;
-	}
+ CommitCommentEvent: (item) => {
+  const hash = item.payload.comment.commit_id.slice(0, 7);
+  return `${actionIcon("comment", "🗣")} Commented on ${
+   item.public
+    ? `[\`${hash}\`](${item.payload.comment.html_url})`
+    : `\`${hash}\``
+  } in ${toUrlFormat(item.repo.name, null, item.public)}`;
+ },
+ CreateEvent: (item) => {
+  if (item.payload.ref_type === "repository")
+   return `${actionIcon("create-repo", "➕")} Created repository ${toUrlFormat(
+    item.repo.name,
+    null,
+    item.public
+   )}`;
+  if (item.payload.ref_type === "branch")
+   return `${actionIcon("create-branch", "📂")} Created branch ${toUrlFormat(
+    item.repo.name,
+    item.payload.ref,
+    item.public
+   )} in ${toUrlFormat(item.repo.name, null, item.public)}`;
+ },
+ DeleteEvent: (item) => {
+  return `${actionIcon("delete", "❌")} Deleted \`${
+   item.payload.ref
+  }\` from ${toUrlFormat(item.repo.name, null, item.public)}`;
+ },
+ ForkEvent: (item) => {
+  return `${actionIcon("fork", "🍴")} Forked ${toUrlFormat(
+   item.repo.name,
+   null,
+   item.public
+  )} to ${toUrlFormat(
+   item.payload.forkee.full_name,
+   null,
+   item.payload.forkee.public
+  )}`;
+ },
+ IssueCommentEvent: (item) => {
+  return `${actionIcon("comment", "🗣")} Commented on ${toUrlFormat(
+   item,
+   null,
+   item.public
+  )} in ${toUrlFormat(item.repo.name, null, item.public)}`;
+ },
+ IssuesEvent: (item) => {
+  return `${actionIcon("issue", "❗️")} ${capitalize(
+   item.payload.action
+  )} issue ${toUrlFormat(item, null, item.public)} in ${toUrlFormat(
+   item.repo.name,
+   null,
+   item.public
+  )}`;
+ },
+ PullRequestEvent: (item) => {
+  const emoji =
+   item.payload.action === "opened"
+    ? actionIcon("pr-open", "✅")
+    : actionIcon("pr-close", "❌");
+  const line = item.payload.pull_request.merged
+   ? `${actionIcon("merge", "🎉")} Merged`
+   : `${emoji} ${capitalize(item.payload.action)}`;
+  return `${line} PR ${toUrlFormat(item, null, item.public)} in ${toUrlFormat(
+   item.repo.name,
+   null,
+   item.public
+  )}`;
+ },
+ PullRequestReviewEvent: (item) => {
+  return `${actionIcon("review", "🔍")} Reviewed ${toUrlFormat(
+   item,
+   null,
+   item.public
+  )} in ${toUrlFormat(item.repo.name, null, item.public)}`;
+ },
+ PushEvent: (item) => {
+  return `${actionIcon("commit", "📝")} Made \`${item.payload.size}\` commit${
+   item.payload.size === 1 ? "" : "s"
+  } in ${toUrlFormat(item.repo.name, null, item.public)}`;
+ },
+ ReleaseEvent: (item) => {
+  return `${actionIcon("release", "🏷")} Released ${
+   item.public
+    ? `[\`${item.payload.release.tag_name}\`](${item.payload.release.html_url})`
+    : `\`${item.payload.release.tag_name}\``
+  } in ${toUrlFormat(item.repo.name, null, item.public)}`;
+ },
+ WatchEvent: (item) => {
+  return `${actionIcon("star", "⭐")} Starred ${toUrlFormat(
+   item.repo.name,
+   null,
+   item.public
+  )}`;
+ },
 };
 
+const timestamper = (item) =>
+ `\`[${item.created_at
+  .split("T")[0]
+  .split("-")
+  .slice(1, 3)
+  .join("/")} ${item.created_at
+  .split("T")[1]
+  .split(":")
+  .slice(0, 2)
+  .join(":")}]\``;
+
 Toolkit.run(
-	async tools => {
-		const GH_USERNAME = core.getInput("USERNAME");
+ async (tools) => {
+  const GH_USERNAME = core.getInput("USERNAME");
 
-		// Get the user's public events
-		tools.log.debug(`Getting activity for ${GH_USERNAME}`);
-		const events = await tools.github.activity.listPublicEventsForUser({
-			username: GH_USERNAME,
-			per_page: 100
-		});
-		tools.log.debug(`Activity for ${GH_USERNAME}, ${events.data.length} events found.`);
-		// tools.log.debug(events.data);
+  // Get the user's public events
+  tools.log.debug(`Getting activity for ${GH_USERNAME}`);
 
-		const content = events.data
-			// Filter out any boring activity
-			.filter(event => serializers.hasOwnProperty(event.type))
-			// We only have five lines to work with
-			.slice(0, MAX_LINES)
-			// Call the serializer to construct a string
-			.map(item => serializers[item.type](item));
+  let eventArrs = [];
+  for (let i = 0; i < 3; i++) {
+   eventArrs[i] = await tools.github.activity.listEventsForAuthenticatedUser({
+    username: GH_USERNAME,
+    per_page: 100,
+    page: i + 1,
+   });
+  }
 
-		const readmeContent = fs.readFileSync("./README.md", "utf-8").split("\n");
+  // const events = await tools.github.activity.listEventsForAuthenticatedUser({
+  // 	username: GH_USERNAME,
+  // 	per_page: 100
+  // });
+  // const events2 = await tools.github.activity.listEventsForAuthenticatedUser({
+  // 	username: GH_USERNAME,
+  // 	per_page: 100,
+  // 	page: 2
+  // });
 
-		// Find the index corresponding to <!--START_SECTION:activity--> comment
-		let startIdx = readmeContent.findIndex(content => content.trim() === "<!--START_SECTION:activity-->");
+  tools.log.debug(
+   `Activity for ${GH_USERNAME}, ${eventArrs.reduce(
+    (a, c) => a + c.data.length,
+    0
+   )} events found.`
+  );
 
-		// Early return in case the <!--START_SECTION:activity--> comment was not found
-		if (startIdx === -1) {
-			return tools.exit.failure(`Couldn't find the <!--START_SECTION:activity--> comment. Exiting!`);
-		}
+  const last = (array) => array[array.length - 1];
 
-		// Find the index corresponding to <!--END_SECTION:activity--> comment
-		const endIdx = readmeContent.findIndex(content => content.trim() === "<!--END_SECTION:activity-->");
+  let arr = [];
 
-		if (!content.length) {
-			tools.exit.failure("No events found");
-		}
+  for (const events of eventArrs) {
+   for (const data of events.data) {
+    if (
+     arr.length &&
+     data.type === "PushEvent" &&
+     last(arr).type === "PushEvent" &&
+     data.repo.name === last(arr).repo.name
+    )
+     arr[arr.length - 1].payload.size += data.payload.size;
+    else arr.push(data);
+   }
+  }
 
-		if (content.length < 5) {
-			tools.log.info("Found less than 5 activities");
-		}
+  const content = arr
+   // Filter out any boring activity
+   .filter((event) => {
+    let r = serializers.hasOwnProperty(event.type);
+    if (!r) tools.log.debug(event);
+    return r;
+   })
+   // We only have five lines to work with
+   // .slice(0, MAX_LINES)
+   // Call the serializer to construct a string
+   .map((item) => `${timestamper(item)} ${serializers[item.type](item)}`)
+   // Filter out undefined lines
+   .filter(
+    (item) => !item.match(/^`\[\d{1,2}\/\d{1,2} \d{1,2}:\d{2}]` undefined$/)
+   );
 
-		if (startIdx !== -1 && endIdx === -1) {
-			// Add one since the content needs to be inserted just after the initial comment
-			startIdx++;
-			content.forEach((line, idx) => readmeContent.splice(startIdx + idx, 0, `${idx + 1}. ${line}`));
+  const readmeContent = fs.readFileSync("./README.md", "utf-8").split("\n");
 
-			// Append <!--END_SECTION:activity--> comment
-			readmeContent.splice(startIdx + content.length, 0, "<!--END_SECTION:activity-->");
+  // Find the index corresponding to <!--START_SECTION:activity--> comment
+  let startIdx = readmeContent.findIndex(
+   (content) => content.trim() === "<!--START_SECTION:activity-->"
+  );
 
-			// Update README
-			fs.writeFileSync("./README.md", readmeContent.join("\n"));
+  // Early return in case the <!--START_SECTION:activity--> comment was not found
+  if (startIdx === -1) {
+   return tools.exit.failure(
+    `Couldn't find the <!--START_SECTION:activity--> comment. Exiting!`
+   );
+  }
 
-			// Commit to the remote repository
-			try {
-				await commitFile();
-			} catch (err) {
-				tools.log.debug("Something went wrong");
-				return tools.exit.failure(err);
-			}
-			tools.exit.success("Wrote to README");
-		}
+  // Find the index corresponding to <!--END_SECTION:activity--> comment
+  const endIdx = readmeContent.findIndex(
+   (content) => content.trim() === "<!--END_SECTION:activity-->"
+  );
 
-		const oldContent = readmeContent.slice(startIdx + 1, endIdx).join("\n");
-		const newContent = content.map((line, idx) => `${idx + 1}. ${line}`).join("\n");
+  if (!content.length) {
+   tools.exit.failure("No events found");
+  }
 
-		if (oldContent.trim() === newContent.trim()) tools.exit.success("No changes detected");
+  if (content.length < 5) {
+   tools.log.info("Found less than 5 activities");
+  }
 
-		startIdx++;
+  readmeContent.splice(startIdx + 1, endIdx - startIdx);
 
-		// Recent GitHub Activity content between the comments
-		const readmeActivitySection = readmeContent.slice(startIdx, endIdx);
-		if (!readmeActivitySection.length) {
-			content.some((line, idx) => {
-				// User doesn't have 5 public events
-				if (!line) {
-					return true;
-				}
-				readmeContent.splice(startIdx + idx, 0, `${idx + 1}. ${line}`);
-			});
-			tools.log.success("Wrote to README");
-		} else {
-			// It is likely that a newline is inserted after the <!--START_SECTION:activity--> comment (code formatter)
-			let count = 0;
+  if (startIdx !== -1) {
+   // Add one since the content needs to be inserted just after the initial comment
+   startIdx++;
+   content.forEach((line, idx) =>
+    readmeContent.splice(
+     startIdx + idx,
+     0,
+     `${
+      idx === 10 ? "\n<details><summary>Show More</summary>\n\n" : ""
+     }${line}  ${
+      idx === content.length - 1
+       ? "\n\n</details>\n<!--END_SECTION:activity-->"
+       : ""
+     }`
+    )
+   );
 
-			readmeActivitySection.some((line, idx) => {
-				// User doesn't have 5 public events
-				if (!content[count]) {
-					return true;
-				}
-				if (line !== "") {
-					readmeContent[startIdx + idx] = `${count + 1}. ${content[count]}`;
-					count++;
-				}
-			});
-			tools.log.success("Updated README with the recent activity");
-		}
+   // // Append <!--END_SECTION:activity--> comment
+   // readmeContent.splice(
+   //   startIdx + content.length,
+   //   0,
+   //   "<!--END_SECTION:activity-->"
+   // );
 
-		// Update README
-		fs.writeFileSync("./README.md", readmeContent.join("\n"));
+   // Update README
+   fs.writeFileSync("./README.md", readmeContent.join("\n"));
 
-		// Commit to the remote repository
-		try {
-			await commitFile();
-		} catch (err) {
-			tools.log.debug("Something went wrong");
-			return tools.exit.failure(err);
-		}
-		tools.exit.success("Pushed to remote repository");
-	},
-	{
-		event: ["schedule", "workflow_dispatch"],
-		secrets: ["GITHUB_TOKEN"]
-	}
+   // Commit to the remote repository
+   try {
+    await commitFile();
+   } catch (err) {
+    tools.log.debug("Something went wrong");
+    return tools.exit.failure(err);
+   }
+   tools.exit.success("Wrote to README");
+  }
+ },
+ {
+  event: ["schedule", "workflow_dispatch"],
+  secrets: ["GITHUB_TOKEN"],
+ }
 );
