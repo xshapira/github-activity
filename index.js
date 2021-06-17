@@ -179,9 +179,13 @@ const serializers = {
     )} in ${toUrlFormat(item.repo.name, null, item.public)}`;
   },
   PushEvent: (item) => {
+    if (item.repo.name == "igorkowalczyk" || item.repo.name == "igorkowalczyk/igorkowalczyk") {
+     return console.log("Testing");
+    } else {
     return `${actionIcon("commit", "📝")} Made \`${item.payload.size}\` commit${
       item.payload.size === 1 ? "" : "s"
     } in ${toUrlFormat(item.repo.name, null, item.public)}`;
+    }
   },
   ReleaseEvent: (item) => {
     return `${actionIcon("release", "🏷")} Released ${
