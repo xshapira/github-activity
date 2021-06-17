@@ -1641,7 +1641,8 @@ const serializers = {
  },
  PushEvent: (item) => {
   console.log("Testing");
-  return `${actionIcon("commit", "📝")} Made \`${item.payload.size}\` commit${item.payload.size === 1 ? "" : "s"} in <!-- item.repo.name --> ${toUrlFormat(item.repo.name, null, item.public)}`;
+  console.log(item.repo.name);
+  return `${actionIcon("commit", "📝")} Made \`${item.payload.size}\` commit${item.payload.size === 1 ? "" : "s"} in <!-- ${item.repo.name} --> ${toUrlFormat(item.repo.name, null, item.public)}`;
  },
  ReleaseEvent: (item) => {
   return `${actionIcon("release", "🏷")} Released ${item.public ? `[\`${item.payload.release.tag_name}\`](${item.payload.release.html_url})` : `\`${item.payload.release.tag_name}\``} in ${toUrlFormat(item.repo.name, null, item.public)}`;
