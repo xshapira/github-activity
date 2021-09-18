@@ -31,7 +31,7 @@ const toUrlFormat = (item, branch, public = true) => {
  return !public ? (branch ? `\`${branch}\`` : `<span title="Private Repo">\`🔒${item}\`</span>`) : `[${branch ? `\`${branch}\`` : item}](${urlPrefix}${item}${branch ? `/tree/${branch}` : ""})`;
 };
 
-const actionIcon = (name, alt) => `<a href="https://github.com/igorkowalczyk" title="${alt}"><img alt="${alt}" src="https://github.com/igorkowalczykbot/github-activity/raw/master/icons/${name}.png" align="top" height="18"></a>`;
+const actionIcon = (name, alt) => `<a href="https://github.com/Sakshyam6966" title="${alt}"><img alt="${alt}" src="https://github.com/Sakshyam6966/github-activity/raw/master/icons/${name}.png" align="top" height="18"></a>`;
 
 /**
  * Execute shell command
@@ -66,8 +66,8 @@ const exec = (cmd, args = []) =>
  */
 
 const commitFile = async () => {
- await exec("git", ["config", "--global", "user.email", "igor.kowalczyk.bot@onet.pl"]);
- await exec("git", ["config", "--global", "user.name", "IgorKowalczykBot"]);
+ await exec("git", ["config", "--global", "user.email", "saksbot@example.com"]);
+ await exec("git", ["config", "--global", "user.name", "Saks Bot"]);
  await exec("git", ["add", "README.md"]);
  await exec("git", ["commit", "-m", "[Bot] Update README with the recent activity"]);
  await exec("git", ["push"]);
